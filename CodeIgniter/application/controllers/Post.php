@@ -54,10 +54,10 @@ class Post extends CI_Controller {
 	public function edit($id)
 	{
 		$post = $this->post->find($id);
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
+		// $this->load->view('layout/header');
+		// $this->load->view('layout/navbar');
 		$this->load->view('posts/edit', compact('post'));
-		$this->load->view('layout/footer');
+		// $this->load->view('layout/footer');
 	}
 
 	public function update($id)
