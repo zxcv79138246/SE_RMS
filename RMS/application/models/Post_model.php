@@ -17,7 +17,7 @@ class Post_model extends CI_Model {
 
     public function find($id)
     {
-        $query = $this->db->get_where($this->table, ['id' => $id]);
+        $query = $this->db->get_where($this->table, ['id'=> $id]);
         if ($query->result())
             return $query->result()[0];
         else
@@ -50,5 +50,11 @@ class Post_model extends CI_Model {
             return $data;
         else
             return $result;
+    }
+
+    public function comments($id)
+    {
+        $query = $this->db->get_where('comments', ['post_id' => $id]);
+        return $query->result();
     }
 }
