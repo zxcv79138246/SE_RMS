@@ -11,27 +11,18 @@ class Post extends CI_Controller {
 	public function index()
 	{
 		$posts = $this->post->all();
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
-		$this->load->view('posts/index', compact('posts'));
-		$this->load->view('layout/footer');
+		$this->twig->display('posts/index.html', compact('posts'));
 	}
 
 	public function show($id)
 	{
 		$post = $this->post->find($id);
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
-		$this->load->view('posts/show', compact('post'));
-		$this->load->view('layout/footer');
+		$this->twig->display('posts/show.html', compact('post'));
 	}
 
 	public function create()
 	{
-		$this->load->view('layout/header');
-		$this->load->view('layout/navbar');
-		$this->load->view('posts/create');
-		$this->load->view('layout/footer');
+		$this->twig->display('posts/create.html');
 	}
 
 	public function store()
@@ -54,10 +45,7 @@ class Post extends CI_Controller {
 	public function edit($id)
 	{
 		$post = $this->post->find($id);
-		// $this->load->view('layout/header');
-		// $this->load->view('layout/navbar');
-		$this->load->view('posts/edit', compact('post'));
-		// $this->load->view('layout/footer');
+		$this->twig->display('posts/edit.html', compact('post'));
 	}
 
 	public function update($id)

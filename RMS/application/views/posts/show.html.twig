@@ -1,0 +1,7 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block content %}
+	<h2>{{ post.title }}</h2>
+	<p>{{ post.body|nl2br }}</p>
+	<small>Published at {{ post.published_at }}</small>
+{% endblock %}

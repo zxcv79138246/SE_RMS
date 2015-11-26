@@ -1,19 +1,13 @@
 {
-	"description": "The CodeIgniter framework",
-	"name": "codeigniter/framework",
-	"type": "project",
-	"homepage": "http://codeigniter.com",
-	"license": "MIT",
-	"support": {
-		"forum": "http://forum.codeigniter.com/",
-		"wiki": "https://github.com/bcit-ci/CodeIgniter/wiki",
-		"irc": "irc://irc.freenode.net/codeigniter",
-		"source": "https://github.com/bcit-ci/CodeIgniter"
-	},
-	"require": {
-		"php": ">=5.2.4"
-	},
-	"require-dev": {
-		"mikey179/vfsStream": "1.1.*"
-	}
+    "name": "se_rms/rms",
+    "description": "se rms final project",
+    "require": {
+        "kenjis/codeigniter-ss-twig": "^0.1.0"
+    },
+    "authors": [
+        {
+            "name": "se rms",
+            "email": "se-rms@se-rms.ddns.net"
+        }
+    ]
 }
