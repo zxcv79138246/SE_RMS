@@ -3,7 +3,7 @@
 class Reviewer_model extends MY_Model {
 
 	public $table = 'reviewer';
-    protected $primaryKey = ['u_id','r_id'];
+    protected $primaryKey = array('u_id','r_id');
     
 	function __construct()		//constructer    繼承CI_Modle的constructer
     {

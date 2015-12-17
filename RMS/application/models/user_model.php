@@ -3,10 +3,11 @@
 class User_model extends MY_Model {
 
 	public $table = 'user';
-    protected $primaryKey = 'u_id';
+    protected $primaryKey = 'email';
 
 	function __construct()		//constructer    繼承CI_Modle的constructer
     {
         parent::__construct();
     }
+
 }
