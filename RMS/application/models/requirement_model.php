@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Project_model extends MY_Model {
+class Requirement_model extends MY_Model {
 
 	public $table = 'requirement';
     protected $primaryKey = 'r_id';

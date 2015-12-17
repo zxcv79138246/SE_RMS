@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class R_and_r_relation_model extends MY_Model{
+class R_and_R_relation_model extends MY_Model{
 
-	public $table = 'R_and_r_relation';
+	public $table = 'r_and_r_relation';
 	protected $primaryKey = array('r_id1', 'r_id2');
 
 	function __construct()
