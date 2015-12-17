@@ -78,7 +78,6 @@ $db['default'] = array(
 	'hostname' => '127.0.0.1',
 	'username' => 'se_rms',
 	'password' => 'se_rms',
-	'database' => 'guestbook',
 	'database' => 'se_rms',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
