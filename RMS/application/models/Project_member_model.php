@@ -18,6 +18,4 @@ class Project_member_model extends MY_Model{
 		else
 			return false;
 	}
-
-
 }
