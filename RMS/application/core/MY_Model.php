@@ -17,6 +17,7 @@ class MY_Model extends CI_Model
         return $query->result();
     }
 
+    
     public function find($id)
     {
         $query = $this->db->get_where($this->table, [$this->primaryKey => $id]);
