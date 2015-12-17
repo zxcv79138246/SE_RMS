@@ -16,7 +16,6 @@ class MY_Model extends CI_Model
         $query = $this->db->get($this->table);
         return $query->result();
     }
-
     
     public function find($id)
     {
