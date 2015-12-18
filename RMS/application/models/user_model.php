@@ -10,4 +10,15 @@ class User_model extends MY_Model {
         parent::__construct();
     }
 
+    public function login($account)
+    {
+    	$query = $this->db->get_where($this->table,['email' => $account['email'], 'password' => $account['password']]);
+    	if ($query->result())
+    	{
+    		return $query->result()[0];
+    	}else
+    	{
+    		return false;
+    	}
+    }
 }
