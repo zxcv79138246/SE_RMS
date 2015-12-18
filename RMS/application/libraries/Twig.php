@@ -46,7 +46,8 @@ class Twig
 			'paths' => [VIEWPATH],
 			'cache' => APPPATH . '/cache/twig',
 		];
-
+		$CI =& get_instance();
+		$this->addGlobal('session', $CI->session);
 		$this->config = array_merge($this->config, $params);
 	}
 
