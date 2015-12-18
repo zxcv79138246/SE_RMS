@@ -26,11 +26,11 @@
 </html>
 
 <script type="text/javascript">   
-	{% if this.session.flashdata('message') %} // 浮筐處理
+	{% if session.flashdata %} // 浮筐處理
 	$(function () {
 		$.smkAlert({
-		    text: '{{ this.session.flashdata("message") }}',
-		    type: '{{ this.session.flashdata("type") }}',
+		    text: '{{ session.flashdata.message }}',
+		    type: '{{ session.flashdata.type }}',
 		    position: 'top-center'
 		});
 	})
