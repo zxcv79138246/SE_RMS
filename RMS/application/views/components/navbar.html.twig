@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-inverse navbar-static-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
@@ -7,33 +7,50 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Posts</a>
+			<a class="navbar-brand" href="{{ site_url('/index') }}">
+			 	<span class="glyphicon glyphicon-briefcase"></span>  RMS
+			</a>
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav">
-				<li><a href="{{ site_url('post/index') }}">Post list</a></li>
+				<li><a href="{{ site_url('') }}">專案管理</a></li>
+				<li><a href="{{ site_url('') }}">需求管理</a></li>
+				<li><a href="{{ site_url('') }}">TestCase</a></li>
+				<li><a href="{{ site_url('') }}">報表</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{ site_url('post/create') }}">Create a new post</a></li>
-				<li><a href="#" data-toggle="modal" data-target="#sign-in-modal">Sign in</a></li>
+				{% if session.userdata.name %}
+					<li><a href="{{ site_url('login/logout') }}">Logout</a></li>
+				{% else %}
+					<li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
+				{% endif %}
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
-<div class="modal fade" tabindex="-1" role="dialog" id="sign-in-modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <p>One fine body&hellip;</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="login-modal">
+  	<div class="modal-dialog modal-sm">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        		<h4 class="modal-title">Login</h4>
+      		</div>
+      		<form action="{{ site_url('login/login') }}" method="POST">
+    			<div class="modal-body" id="modal-login-body">
+					<div class="input-group form-group">
+            			<span class="input-group-addon">帳號</span>
+            			<input type="text" class="form-control" name = 'email'>
+        			</div>
+        			<div class="input-group form-group">
+            			<span class="input-group-addon" name = 'password'>密碼</span>
+            			<input type="password" class="form-control"  name = 'password'>
+        			</div>
+				</div>
+				<div class="modal-footer">
+        			<button type="submit" class="btn btn-primary">登入</button>
+    			</div>
+      		</form>
+    	</div><!-- /.modal-content -->
+  	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
