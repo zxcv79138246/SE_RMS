@@ -17,10 +17,19 @@
 				<li><a href="{{ site_url('') }}">需求管理</a></li>
 				<li><a href="{{ site_url('') }}">TestCase</a></li>
 				<li><a href="{{ site_url('') }}">報表</a></li>
+				<li><a href="{{ site_url('') }}">會員管理</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				{% if session.userdata.name %}
-					<li><a href="{{ site_url('login/logout') }}">Logout</a></li>
+					<li class="dropdown">
+  						<a id="dLabel" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+    						{{ session.userdata.name }}
+    						<span class="caret"></span>
+  						</a>
+  						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  							<li><a href="{{ site_url('login/logout') }}">Logout</a></li>
+  						</ul>
+					</li>
 				{% else %}
 					<li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
 				{% endif %}
