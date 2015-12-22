@@ -33,4 +33,84 @@ class Usermanage extends CI_Controller
 		}
 		redirect('/usermanage');
 	}
+
+	public function create()
+	{
+		$this->twig->display('rms/usermanage/create.html');
+	}
+
+	public function edit($u_id)
+	{
+		$user = $this->user->find($u_id);
+		$this->twig->display('rms/usermanage/edit.html',compact('user'));
+
+	}
+
+	public function store()
+	{
+		if ($this->verification())
+		{
+			$userdata = [
+				'name' => $this->input->post('name'),
+				'email' => $this->input->post('email'),
+				'password' => $this->input->post('password'),
+				'priority' => $this->input->post('priority'),
+			];
+			if (!$this->user->duplicateCheck(['email'=>$userdata['email']], 1)) 
+			{
+				if ($users = $this->user->insert($userdata))
+				{
+					$this->session->set_flashdata('message', "新增使用者：{$userdata['name']} 成功");
+					$this->session->set_flashdata('type', 'success');
+				}
+			} else {
+				$this->session->set_flashdata('message', "Email重複");
+				$this->session->set_flashdata('type', 'danger');
+
+			}
+		}
+		redirect('/usermanage');
+	}
+
+	public function update($u_id)
+	{
+		if ($this->verification())
+		{
+			$userdata = [
+				'name' => $this->input->post('name'),
+				'email' => $this->input->post('email'),
+				'password' => $this->input->post('password'),
+				'priority' => $this->input->post('priority'),
+			];
+			if (!$this->user->duplicateCheck(['email'=>$userdata['email']], 0)) 
+			{
+				if ($users = $this->user->update($userdata,['u_id' => $u_id]))
+				{
+					$this->session->set_flashdata('message', "{$userdata['name']} 修改成功");
+					$this->session->set_flashdata('type', 'success');
+				}
+			} else {
+				$this->session->set_flashdata('message', "Email重複");
+				$this->session->set_flashdata('type', 'danger');
+
+			}
+		}
+		redirect('/usermanage');	
+	}
+
+	public function verification()
+	{
+		$this->form_validation->set_rules('name','Name','required');
+		$this->form_validation->set_rules('email','Email','required');
+		$this->form_validation->set_rules('password','Password','required');
+		$this->form_validation->set_rules('priority','Priority','required');
+
+		if (!$this->form_validation->run())
+		{
+			$this->session->set_flashdata('message', "有欄位為空值");
+			$this->session->set_flashdata('type', 'danger');
+		}
+		else
+			return true;
+	}
 }
