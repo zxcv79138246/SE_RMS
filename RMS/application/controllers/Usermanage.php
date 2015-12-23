@@ -113,4 +113,22 @@ class Usermanage extends CI_Controller
 		else
 			return true;
 	}
+
+	public function search()
+	{
+		$condition = $this->input->get('search');
+		$users = $this->user->search(['name','email'],$condition);
+		if (!$users)
+		{
+			$this->session->set_flashdata('message', "搜尋不到相似資料或內容不存在");
+			$this->session->set_flashdata('type', 'danger');
+
+			redirect('/usermanage');
+		}else
+		{
+			$this->twig->display('rms/usermanage/usermanage.html', compact('users'));
+
+		}
+		
+	}
 }
