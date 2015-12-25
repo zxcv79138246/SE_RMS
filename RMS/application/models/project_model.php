@@ -19,4 +19,23 @@ class Project_model extends MY_Model {
     	return $query->result();
     }
 
+    public function findProject($id)
+    {
+        $query = $this->db->get_where($this->table, ['p_id' => $id]);
+        if ($query->result())
+            return $query->result()[0];
+        else
+            return false;
+    }
+
+    public function getLeaderName($p_id)
+    {
+                $query = $this->db->query("SELECT 
+                                     U.`name` AS leaderName 
+                                    FROM `project` as P 
+                                    LEFT JOIN `user` as U on P.`leader` = U.`u_id`
+                                    WHERE P.`p_id` = $p_id "
+                                    );
+        return $query->result()[0]->leaderName;
+    }
 }
