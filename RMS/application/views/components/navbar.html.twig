@@ -64,5 +64,10 @@
 <script>
 	var route = ['/RMS/index.php/index','/RMS/index.php/usermanage'];
 	var index = route.indexOf(window.location.pathname);
-	$('.subsystem > li').eq(index).addClass('active');
+	if (index = -1)
+	{
+		$('.subsystem > li').eq(0).addClass('active');
+	}else{
+		$('.subsystem > li').eq(index).addClass('active');
+	}
 </script>
