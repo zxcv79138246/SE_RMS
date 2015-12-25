@@ -12,12 +12,9 @@
 			</a>
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
-			<ul class="nav navbar-nav">
-				<li><a href="{{ site_url('') }}">專案管理</a></li>
-				<li><a href="{{ site_url('') }}">需求管理</a></li>
-				<li><a href="{{ site_url('') }}">TestCase</a></li>
-				<li><a href="{{ site_url('') }}">報表</a></li>
-				<li><a href="{{ site_url('') }}">會員管理</a></li>
+			<ul class="nav navbar-nav subsystem">
+				<li><a href="{{ site_url('/index') }}">專案</a></li>
+				<li><a href="{{ site_url('/usermanage') }}">會員管理</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				{% if session.userdata.name %}
@@ -63,3 +60,9 @@
     	</div><!-- /.modal-content -->
   	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script>
+	var route = ['/RMS/index.php/index','/RMS/index.php/usermanage'];
+	var index = route.indexOf(window.location.pathname);
+	$('.subsystem > li').eq(index).addClass('active');
+</script>

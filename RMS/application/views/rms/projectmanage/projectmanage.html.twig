@@ -1,8 +1,9 @@
+
 {% extends 'layout/layout.html.twig' %}
 {% block content %}
 	<div class="row form-group">
 		<div class="col-md-3">
-			<form class="form" role="search" action="{{ site_url('/usermanage/search') }}" method="get" >
+			<form class="form" role="search" action="" method="get" >
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Search" name="search">
 					<span class="input-group-btn">
@@ -12,39 +13,43 @@
 			</form>
 		</div>
 		<div class="col-md-offset-10">
-			<a href="#" data-url="{{ site_url('/usermanage/create') }}" class="btn btn-primary edit-btn" data-toggle="modal" data-target=".edit-modal">＋NEW</a>
+			<a href="#" data-url="{{ site_url('/projectmanage/create') }}" class="btn btn-primary edit-btn" data-toggle="modal" data-target=".edit-modal">＋NEW</a>
 		</div>
 	</div>
+
 	<div class="row col-md-10 col-md-offset-1 table-responsive">
 		<table class="table table-hover">
-			<tr>
-				<th>U_ID</th>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Password</th>
-				<th>Priority</th>
-				<th>Edit</th>
-				<th>Remove</th>
-			{% for user in users %}
-			<tr>
-				<td>{{ user.u_id }}</td>
-				<td>{{ user.name }}</td>
-				<td>{{ user.email }}</td>
-				<td>{{ user.password }}</td>
-				<td>{{ user.priority }}</td>
-				<td><a href="#" data-url="{{ site_url(['/usermanage/edit', user.u_id]) }}" class="btn btn-info btn-xs edit-btn" data-toggle="modal" data-target=".edit-modal">Edit</a></td>
-				<td><a href="{{ site_url(['/usermanage/destory', user.u_id]) }}" class="btn btn-danger btn-xs">Remove</a></td>			
+
+			{% for project in projects %}
+			<tr class = "projectBlock">
+				<td>
+					<p>負 責 人:{{ project.leaderName }}</p>
+				<!--	<p>專案編號:{{ project.p_id }}</p> -->
+					<p>專案名稱:{{ project.name }}</p>
+					<p>專案描述:</p>
+					{{ project.description }}
+				</td>
+			<!--	<td class = "projectInfo">{{ project.p_id }}</td>	
+				<td class = "projectInfo">{{ project.name }}</td>
+				<td class = "projectInfo">{{ project.date }}</td>
+				<td class = "projectInfo">{{ project.description }}</td>
+				<td class = "projectInfo">{{ project.leaderName }}</td>
+			-->
+				<td class = "projectInfo">
+					<a href="#" data-url="{{ site_url(['/projectmanage/edit', project.p_id]) }}" class="btn btn-info btn-xs edit-btn" data-toggle="modal" data-target=".edit-modal">Edit</a>
+					<a href="{{ site_url(['/projectmanage/destory', project.p_id]) }}" class="btn btn-danger btn-xs">Remove</a>
+				</td>		
+			
 			</tr>
 			{% endfor %}
 		</table>
 	</div>
-
 	<div class="modal fade edit-modal" tabindex="-1" role="dialog">  <!-- 浮筐  -->
   	<div class="modal-dialog">
     	<div class="modal-content">
          	<div class="modal-header">
            		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      			<h3>會員資料</h3>
+      			<h3>專案資料</h3>
       		</div>
       		<div class="modal-body" id="modal-body">
         		<p></p>
@@ -67,4 +72,3 @@
 	});
 </script>
 {% endblock %}
-

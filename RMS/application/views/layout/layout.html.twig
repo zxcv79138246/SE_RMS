@@ -10,7 +10,9 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/smokejs/3.0.1/js/smoke.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/smokejs/3.0.1/css/smoke.min.css">
 		<script src="https://cdn.jsdelivr.net/jquery.scrollup/2.4.0/jquery.scrollUp.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{ base_url('assets/css/Rms.css')}}">
 	</head>
+
 	<body>
 		<div class="container">
 		{% include 'components/navbar.html.twig' %}
@@ -26,7 +28,7 @@
 </html>
 
 <script type="text/javascript">   
-	{% if session.flashdata %} // 浮筐處理
+	{% if session.flashdata %} // 提醒處理
 	$(function () {
 		$.smkAlert({
 		    text: '{{ session.flashdata.message }}',

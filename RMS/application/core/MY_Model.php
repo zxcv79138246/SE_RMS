@@ -57,4 +57,25 @@ class MY_Model extends CI_Model
             return $query;
     }
 
+    public function duplicateCheck($data, $is_create = 0)  //驗證使否有重複內容
+    {
+        $this->db->from($this->table);
+        foreach ($data as $key => $value) {
+            $this->db->or_where($key, $value);
+        }
+        $query = $this->db->get();
+        return ($query->num_rows() + $is_create) > 1;
+    }
+
+    public function search($fields, $condition)   //搜尋  $fields 要搜尋的欄位 $condition 條件
+    {
+        $this->db->from($this->table);
+        foreach ($fields as $field) {
+            $this->db->or_like($field, $condition);
+        }
+        $query = $this->db->get();
+        return ($query->result()) ? $query->result() : false;
+    }
+
+
 }

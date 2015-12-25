@@ -3,46 +3,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
 * 
 */
-class Usermanage extends CI_Controller
+class Projectmanage extends CI_Controller
 {
 	
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('user_model', 'user');
+		$this->load->model('project_model', 'project');
 		if ($this->session->userdata('priority') != 2)
 		{
 			$this->session->set_flashdata('message', '權限不足');
 			$this->session->set_flashdata('type', 'danger');
-			redirect('/index');
+			//redirect('/index');
 		}
 	}
 
 	public function index()
 	{
-		$users = $this->user->all();
-		$this->twig->display('rms/usermanage/usermanage.html', compact('users'));
+		$projects = $this->project->all();
+		$this->twig->display('rms/projectmanage/projectmanage.html', compact('projects'));
 	}
 
-	public function destory($u_id)
+	public function destory($p_id)
 	{
-		if ($destoried = $this->user->destory(['u_id'=>$u_id]))
+		if ($destoried = $this->project->destory(['p_id'=>$p_id]))
 		{
 			$this->session->set_flashdata('message',"{$destoried[0]->name} 已被刪除");
 			$this->session->set_flashdata('type','warning');
 		}
-		redirect('/usermanage');
+		redirect('/index');
 	}
 
 	public function create()
-	{
-		$this->twig->display('rms/usermanage/create.html');
+	{	
+		if ($this->session->userdata('priority') != 1)
+		{
+			$this->session->set_flashdata('message', '權限不足');
+			$this->session->set_flashdata('type', 'danger');
+		}
+		else 
+			$this->twig->display('rms/projectmanage/create.html');
 	}
 
-	public function edit($u_id)
+	public function edit($p_id)
 	{
-		$user = $this->user->find($u_id);
-		$this->twig->display('rms/usermanage/edit.html',compact('user'));
+		$project = $this->project->where(['p_id' =>$p_id])[0];
+		$this->twig->display('rms/projectmanage/edit.html',compact('project'));
 
 	}
 
@@ -72,19 +78,17 @@ class Usermanage extends CI_Controller
 		redirect('/usermanage');
 	}
 
-	public function update($u_id)
+	public function update($p_id)
 	{
 		if ($this->verification())
 		{
-			$userdata = [
+			$projectData = [
 				'name' => $this->input->post('name'),
-				'email' => $this->input->post('email'),
-				'password' => $this->input->post('password'),
-				'priority' => $this->input->post('priority'),
+				'description' => $this->input->post('description'),
 			];
-			if (!$this->user->duplicateCheck(['email'=>$userdata['email']], 0)) 
-			{
-				if ($users = $this->user->update($userdata,['u_id' => $u_id]))
+			if (!$this->project->duplicateCheck(['name'=>$projectData['name']], 0)) 
+			{	
+				if ($projects = $this->project->update($projectData,['p_id' => $p_id]))
 				{
 					$this->session->set_flashdata('message', "{$userdata['name']} 修改成功");
 					$this->session->set_flashdata('type', 'success');
@@ -95,16 +99,12 @@ class Usermanage extends CI_Controller
 
 			}
 		}
-		redirect('/usermanage');	
+		redirect('/index');	
 	}
 
 	public function verification()
 	{
 		$this->form_validation->set_rules('name','Name','required');
-		$this->form_validation->set_rules('email','Email','required');
-		$this->form_validation->set_rules('password','Password','required');
-		$this->form_validation->set_rules('priority','Priority','required');
-
 		if (!$this->form_validation->run())
 		{
 			$this->session->set_flashdata('message', "有欄位為空值");
@@ -112,23 +112,5 @@ class Usermanage extends CI_Controller
 		}
 		else
 			return true;
-	}
-
-	public function search()
-	{
-		$condition = $this->input->get('search');
-		$users = $this->user->search(['name','email'],$condition);
-		if (!$users)
-		{
-			$this->session->set_flashdata('message', "搜尋不到相似資料或內容不存在");
-			$this->session->set_flashdata('type', 'danger');
-
-			redirect('/usermanage');
-		}else
-		{
-			$this->twig->display('rms/usermanage/usermanage.html', compact('users'));
-
-		}
-		
 	}
 }
