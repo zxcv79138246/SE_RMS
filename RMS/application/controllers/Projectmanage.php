@@ -75,19 +75,14 @@ class Projectmanage extends CI_Controller
 			if (!$this->project->duplicateCheck(['name'=>$projectData['name']], 1)) 
 			{
 				if ($projects = $this->project->insert($projectData))
-				{	
-					$memberData = 
-					[
-						'p_id'=>$this->project->find($projectData['name'])->p_id,
-						'u_id'=>$this->session->userdata['u_id'],
-					];
-					$this->projectMember->insert($memberData);
+				{
 					$this->session->set_flashdata('message', "新增專案：{$projectData['name']} 成功");
 					$this->session->set_flashdata('type', 'success');
 				}
 			} else {
 				$this->session->set_flashdata('message', "Name重複");
 				$this->session->set_flashdata('type', 'danger');
+
 			}
 		}
 		redirect('/usermanage');

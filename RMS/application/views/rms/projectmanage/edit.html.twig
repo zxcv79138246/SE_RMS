@@ -20,7 +20,7 @@
 							{% for user in memberUser %}
 								<p class = "projectMemberList" >
 									{{user.name}}
-									<a href="{{ site_url(['/projectmanage/removeMember',user.u_id,project.p_id]) }}" class="btn btn-danger btn-xs">－Remove</a>
+									<a href="{{ site_url(['/projectmanage/removeMember',user.u_id,project.p_id]) }}" class="btn btn-danger btn-xs">＋Remove</a>
 								</p>
 							{% endfor %}
 					</div>
