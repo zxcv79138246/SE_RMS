@@ -10,17 +10,19 @@ class Projectmanage extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('project_model', 'project');
-		if ($this->session->userdata('priority') != 2)
+		$this->load->model('project_member_model','projectMember');
+		$this->load->model('user_model','user');
+		if ($this->session->userdata('priority') != 1)
 		{
 			$this->session->set_flashdata('message', '權限不足');
 			$this->session->set_flashdata('type', 'danger');
-			//redirect('/index');
+			redirect('/index');
 		}
 	}
 
 	public function index()
 	{
-		$projects = $this->project->all();
+		$projects = $this->project->where(['leader' => $this->session->userdata['u_id']]);
 		$this->twig->display('rms/projectmanage/projectmanage.html', compact('projects'));
 	}
 
@@ -48,29 +50,37 @@ class Projectmanage extends CI_Controller
 	public function edit($p_id)
 	{
 		$project = $this->project->where(['p_id' =>$p_id])[0];
-		$this->twig->display('rms/projectmanage/edit.html',compact('project'));
-
+		$users = $this->user->where(['priority' => '0','priority' => '1']);
+		$memberUser=[];
+		$notMemberUser=[];
+		foreach($users as $user)
+		{
+			if($this->projectMember->isMember($user->u_id,$p_id))
+				$memberUser[count($memberUser)]=$user;
+			else
+				$notMemberUser[count($notMemberUser)]=$user;
+		}
+		$this->twig->display('rms/projectmanage/edit.html',compact('project','notMemberUser','memberUser'));
 	}
 
 	public function store()
 	{
 		if ($this->verification())
 		{
-			$userdata = [
-				'name' => $this->input->post('name'),
-				'email' => $this->input->post('email'),
-				'password' => $this->input->post('password'),
-				'priority' => $this->input->post('priority'),
+			$projectData = [
+				'leader' => $this->session->userdata['u_id'],
+				'name' =>  $this->input->post('name'),
+				'description' => $this->input->post('description'),
 			];
-			if (!$this->user->duplicateCheck(['email'=>$userdata['email']], 1)) 
+			if (!$this->project->duplicateCheck(['name'=>$projectData['name']], 1)) 
 			{
-				if ($users = $this->user->insert($userdata))
+				if ($projects = $this->project->insert($projectData))
 				{
-					$this->session->set_flashdata('message', "新增使用者：{$userdata['name']} 成功");
+					$this->session->set_flashdata('message', "新增專案：{$projectData['name']} 成功");
 					$this->session->set_flashdata('type', 'success');
 				}
 			} else {
-				$this->session->set_flashdata('message', "Email重複");
+				$this->session->set_flashdata('message', "Name重複");
 				$this->session->set_flashdata('type', 'danger');
 
 			}

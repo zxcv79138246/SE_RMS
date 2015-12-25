@@ -16,6 +16,6 @@ class Index extends CI_Controller
 	{
 		$projects = $this->project->all();
 		//$projects = '';
-		$this->twig->display('rms/projectmanage/projectmanage.html', compact('projects'));
+		$this->twig->display('rms/projectlist/projectlist.html', compact('projects'));
 	}
 }
