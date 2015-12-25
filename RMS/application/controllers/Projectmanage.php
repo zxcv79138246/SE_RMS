@@ -87,7 +87,19 @@ class Projectmanage extends CI_Controller
 		}
 		redirect('/usermanage');
 	}
+	public function addMember($u_id , $p_id)
+	{	
+		$data = ['u_id'=>$u_id,'p_id'=>$p_id];
+		$this->projectMember->insert($data);
+		redirect('/projectmanage');
+	}
 
+	public function removeMember($u_id , $p_id)
+	{	
+		$data = ['u_id'=>$u_id,'p_id'=>$p_id];
+		$this->projectMember->destory($data);
+		redirect('/projectmanage');
+	}
 	public function update($p_id)
 	{
 		if ($this->verification())

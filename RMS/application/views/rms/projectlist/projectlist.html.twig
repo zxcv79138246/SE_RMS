@@ -18,20 +18,16 @@
 	</div>
 
 	<div class="row col-md-10 col-md-offset-1 table-responsive">
-		<table class="table table-hover">
-
 			{% for project in projects %}
-			<tr class = "projectBlock">
+			<div class = "projectBlock">
 				<td>
 					<p>負 責 人:{{ project.leaderName }}</p>
-				<!--	<p>專案編號:{{ project.p_id }}</p> -->
 					<p>專案名稱:{{ project.name }}</p>
 					<p>專案描述:</p>
 					<h class="projectInfo">{{ project.description }}</h>
 				</td>
-			</tr>
+			</div>
 			{% endfor %}
-		</table>
 	</div>
 	<div class="modal fade edit-modal" tabindex="-1" role="dialog">  <!-- 浮筐  -->
   	<div class="modal-dialog">

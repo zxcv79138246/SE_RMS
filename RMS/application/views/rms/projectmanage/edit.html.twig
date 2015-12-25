@@ -14,30 +14,33 @@
 	</div>
 	<div class="form-group">
 		<label class="col-md-2 control-label">成員列表</label>
-	</div>
-	<div class = "memberListFrame">
-		<div class="form-group">
-				<div class="col-md-3">
-						{% for user in notMemberUser %}
-							<p class = "projectMemberList" >{{user.name}}</p>
-							<a href="{{ site_url(['/projectMember/create',user.u_id]) }}" class="btn btn-danger btn-xs">＋Add</a>
-				</td>	
-						{% endfor %}
-				</div>
+		<div class = "memberListFrame">
+			<div class="form-group">
+					<div class="col-md-3">
+							{% for user in memberUser %}
+								<p class = "projectMemberList" >
+									{{user.name}}
+									<a href="{{ site_url(['/projectmanage/removeMember',user.u_id,project.p_id]) }}" class="btn btn-danger btn-xs">＋Remove</a>
+								</p>
+							{% endfor %}
+					</div>
+			</div>
 		</div>
 	</div>
-	<div class = "memberListFrame">
-		<div class="form-group">
+	<div class="form-group">
+		<label class="col-md-2 control-label">新增成員</label>
+		<div class = "memberListFrame">
+			<div class="form-group">
 				<div class="col-md-3">
-						{% for user in MemberUser %}
-							<p class = "projectMemberList" >{{user.name}}</p>
+						{% for user in notMemberUser %}
+							<p class = "projectMemberList" >
+								{{user.name}}
+								<a href="{{ site_url(['/projectmanage/addMember',user.u_id,project.p_id]) }}" class="btn btn-danger btn-xs edit-btn">＋Add</a>
+							</p>
 						{% endfor %}
 				</div>
+			</div>
 		</div>
 	</div>
 	<button type="submit" class="btn btn-primary col-md-offset-10">Update</button>
 </form>
-<script type="text/javascript">
-	
-
-</script>

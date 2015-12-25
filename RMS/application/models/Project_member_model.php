@@ -19,9 +19,9 @@ class Project_member_model extends MY_Model
 	public function isMember($u_id,$p_id)
 	{
 		$query = $this->db->get_where($this->table, ['p_id'=> $p_id, 'u_id' => $u_id]);
-		if($query->result())
-			return ture;
+		if($query->result());
 		else
 			return false;
+		return true;
 	}
 }
