@@ -22,7 +22,8 @@ class Projectmanage extends CI_Controller
 
 	public function index()
 	{
-		$projects = $this->project->where(['leader' => $this->session->userdata['u_id']]);
+		$u_id = $this->session->userdata('u_id');
+		$projects = $this->project->participate($u_id);
 		$this->twig->display('rms/projectmanage/projectmanage.html', compact('projects'));
 	}
 
@@ -76,8 +77,17 @@ class Projectmanage extends CI_Controller
 			{
 				if ($projects = $this->project->insert($projectData))
 				{
-					$this->session->set_flashdata('message', "新增專案：{$projectData['name']} 成功");
-					$this->session->set_flashdata('type', 'success');
+					$insertID=$this->db->insert_id();
+					$projectMember = [
+						'p_id' => $insertID,
+						'u_id' => $this->session->userdata('u_id'),
+						'priority' => 1,
+					];
+					if ($this->projectMember->insert($projectMember))
+					{
+						$this->session->set_flashdata('message', "新增專案：{$projectData['name']} 成功");
+						$this->session->set_flashdata('type', 'success');	
+					}
 				}
 			} else {
 				$this->session->set_flashdata('message', "Name重複");
@@ -85,7 +95,7 @@ class Projectmanage extends CI_Controller
 
 			}
 		}
-		redirect('/usermanage');
+		redirect('/projectmanage');
 	}
 	public function addMember($u_id , $p_id)
 	{	

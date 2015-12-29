@@ -19,4 +19,13 @@ class Project_model extends MY_Model {
     	return $query->result();
     }
 
+    public function participate($u_id)
+    {
+        $query = $this->db->query("SELECT P.*, U.`name` AS leaderName 
+                                    FROM `project` AS P
+                                    LEFT JOIN `user` AS U ON P.`leader` = U.`u_id`
+                                    LEFT JOIN `project_member` AS P_M ON P_M.`p_id` = P.`p_id`
+                                    WHERE P_M.`u_id` = $u_id");
+        return $query->result();
+    }
 }

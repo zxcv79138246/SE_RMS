@@ -8,14 +8,11 @@ class Index extends CI_Controller
 	
 	function __construct()
 	{
-		parent::__construct();
-		$this->load->model('project_model','project');	
+		parent::__construct();	
 	}
 
 	public function index()
 	{
-		$projects = $this->project->all();
-		//$projects = '';
-		$this->twig->display('rms/projectlist/projectlist.html', compact('projects'));
+		$this->twig->display('rms/index.html');
 	}
 }
