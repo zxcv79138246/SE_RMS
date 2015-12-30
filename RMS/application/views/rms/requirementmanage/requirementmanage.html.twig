@@ -1,0 +1,43 @@
+{% extends 'layout/layout.html.twig' %}
+{% block content %}
+	<!--	Search Block-->
+	<div class = "row form-group">
+		<div class = "col-md-3">
+			<form class = "form" role = "search" action = "" method = "get">
+				<div class = "input-group">
+					<input type = "text" class = "form-control" placeholder = "Search" name = "search">
+					<span class = "input-group-btn">
+					<button class = "btn btn-default" type = "submit">Search</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!--	Requirement List	-->
+	<div class="panel panel-default">
+  	<!-- Default panel contents -->
+  		<div class="panel-heading">Requirement List</div>
+  		<div class="panel-body">
+  			<!-- Table -->
+  			<table class="table">
+  				<tr>
+  					<td>#</td>
+  					<td>Name</td>
+  					<td>Level</td>
+  					<td>Functional</td>
+  					<td>Description</td>
+  					<td>State</td>
+  				</tr>
+  				{% for key, requirement in requirements %}
+					<tr>
+						<td>{{ key }}</td>
+						<td>{{ requirement.name }}</td>
+						<td>{{ requirement.level}}</td>
+						<td>{{ requirement.functional }}</td>
+						<td>{{ requirement.description }}</td>
+						<td>{{ requirement.state }}</td>
+					</tr>
+				{% endfor %}
+    		</table>
+    	</div>
+	</div>
+{% endblock %}
