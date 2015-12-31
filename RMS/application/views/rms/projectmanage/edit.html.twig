@@ -20,9 +20,9 @@
 						{% for user in memberUser %}
 							<span id="u_id-{{user.u_id}}">
 								<a class="btn {{ (user.u_id == project.leader)? 'btn-primary' : 'btn-default' }} btn-xs">
-									<span class="member" data-uId= "{{user.u_id}}">{{user.u_id}}, {{user.name}}</span>
+									<span class="member" data-uId= "{{user.u_id}}" data-uName = "{{user.name}}">{{user.u_id}}, {{user.name}}</span>
 									{% if user.u_id != project.leader %}
-										<a class="btn btn-danger btn-xs removeMember">x</a>
+										<a class="btn btn-danger btn-xs removeMember" data-uId="{{user.u_id}}">x</a>
 									{% endif %}
 								</a>
 							</span>
@@ -38,7 +38,7 @@
 					<div class="col-md-7">
 						<select class="form-control" id ="newMember" >
 							{% for user in notMemberUser %}
-								<option id ="addNewMember" value="{{user.u_id}}">{{user.u_id}}, {{user.name}}</option>
+								<option id ="opt-{{user.u_id}}" value="{{user.u_id}}">{{user.u_id}}, {{user.name}}</option>
 							{% endfor %}
 						</select>
 					</div>

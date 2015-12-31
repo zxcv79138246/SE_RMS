@@ -116,8 +116,9 @@ class Projectmanage extends CI_Controller
 	{	
 		$data = ['u_id'=>$u_id,'p_id'=>$p_id];
 		$resault = $this->projectMember->destory($data);
+		$user = $this->user->find($u_id);
 		if ($resault)
-			echo json_encode($resault[0]) ;
+			echo json_encode($user);
 	}
 
 	public function update($p_id)

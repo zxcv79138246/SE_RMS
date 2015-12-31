@@ -12,7 +12,7 @@ $(function(){
             			type: 'POST',
             			dataType: 'JSON',
             			data: {
-            				u_id: $('#addNewMember').val(),
+            				u_id: $('#newMember').val(),
             				p_id: p_id,
             				priority: $('#priority').val()
             			},
@@ -31,12 +31,13 @@ $(function(){
             				var $remove = $('<a>')
     										.addClass('btn btn-danger btn-xs removeMember')
     										.html('x')
-    										.attr('data-id', response.projectID);
+    										.attr('data-uId', response.userID);
                             $name.append($data);
     						$span.append($name).append($remove);
     						$span.appendTo($('.member-list'));
+                            $('#opt-'+response.userID).remove();
                             $remove.click(function(event) {
-                                var u_id = $('.member').attr('data-uId');
+                                var u_id = $(this).attr('data-uId');
                                 $.ajax({
                                     url: '/RMS/index.php/projectmanage/removeMember/' + u_id + '/' + p_id,
                                     dataType: 'JSON',
@@ -46,10 +47,12 @@ $(function(){
                                     },
                                 })
                                 .success(function(response) {
-                                    console.log(response);
-                                    console.log(response.u_id);
+                                    var $option = $('<option>')
+                                                        .attr('id','opt-'+response.u_id)
+                                                        .attr('value',response.u_id)
+                                                        .html(response.u_id+ ', ' + response.name);
+                                    $option.appendTo($('#newMember'));
                                     $('#u_id-' + response.u_id).remove();
-                                    console.log($('#u_id-' + response.u_id));
                                 })
                             });
             			}
@@ -57,7 +60,7 @@ $(function(){
             	});
                 
                 $('.removeMember').click(function(event) {
-                    var u_id = $('.member').attr('data-uId');
+                    var u_id = $(this).attr('data-uId');
                     $.ajax({
                         url: '/RMS/index.php/projectmanage/removeMember/' + u_id + '/' + p_id,
                         dataType: 'JSON',
@@ -67,10 +70,12 @@ $(function(){
                         },
                     })
                     .success(function(response) {
-                        console.log(response);
-                        console.log(response.u_id);
+                        var $option = $('<option>')
+                                            .attr('id','opt-'+response.u_id)
+                                            .attr('value',response.u_id)
+                                            .html(response.u_id+ ', ' + response.name);
+                        $option.appendTo($('#newMember'));
                         $('#u_id-' + response.u_id).remove();
-                        console.log($('#u_id-' + response.u_id));
                     })
                 });
             }
