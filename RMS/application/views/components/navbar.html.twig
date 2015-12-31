@@ -15,6 +15,7 @@
 			<ul class="nav navbar-nav subsystem">
 				<li><a href="{{ site_url('/projectmanage') }}">專案</a></li>
 				<li><a href="{{ site_url('/usermanage') }}">會員管理</a></li>
+				<li><a href="{{ site_url('/requirementmanage') }}">需求管理</a></li>
 				<li><a>TestCase</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
@@ -63,7 +64,7 @@
 </div><!-- /.modal -->
 
 <script>
-	var route = ['/RMS/index.php/projectmanage','/RMS/index.php/usermanage'];
+	var route = ['/RMS/index.php/projectmanage','/RMS/index.php/usermanage','RMS/index.php/requirementmanage'];
 	var index = route.indexOf(window.location.pathname);
 	if (index == -1)
 	{
