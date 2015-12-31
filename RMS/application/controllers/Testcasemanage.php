@@ -43,7 +43,6 @@ class Testcasemanage extends CI_Controller
 		 {
 				$this->session->set_flashdata('message', "Testcase名稱重複");
 				$this->session->set_flashdata('type', 'danger');
-
 		}
 		else 
 		{
@@ -62,5 +61,11 @@ class Testcasemanage extends CI_Controller
 			$this->session->set_flashdata('type','warning');
 		}
 		redirect('/testcasemanage');
+	}
+
+	public function show($t_id)
+	{
+		$testcase = $this->testcase->where(['t_id'=>$t_id])[0];
+		$this->twig->display("rms/testcasemanage/show.html",compact('testcase'));	
 	}
 } 
