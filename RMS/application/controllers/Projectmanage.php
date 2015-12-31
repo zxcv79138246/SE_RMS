@@ -81,7 +81,7 @@ class Projectmanage extends CI_Controller
 					$projectMember = [
 						'p_id' => $insertID,
 						'u_id' => $this->session->userdata('u_id'),
-						'priority' => 1,
+						'priority' => 2,
 					];
 					if ($this->projectMember->insert($projectMember))
 					{
