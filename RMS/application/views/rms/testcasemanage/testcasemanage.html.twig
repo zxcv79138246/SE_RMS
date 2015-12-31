@@ -1,0 +1,49 @@
+{% extends 'layout/layout.html.twig' %}
+{% block content %}
+	<div class="row form-group">
+		<div class="col-md-3">
+			<form class="form" role="search" action="{{ site_url('') }}" method="get" >
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Search" name="search">
+					<span class="input-group-btn">
+					    <button class="btn btn-default" type="submit">Search</button>
+					</span>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-offset-10">
+			<a href="#" data-url="{{ site_url('/testcasemanage/create') }}" class="btn btn-primary edit-btn" data-toggle="modal" data-target=".edit-modal">＋NEW</a>
+		</div>
+	</div>
+	<div class="row col-md-10 col-md-offset-1 table-responsive">
+		<table class="table table-hover">
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Owner</th>
+				<th>Remove</th>
+			{% for testcase in testcases %}
+			<tr>
+				<td>{{ testcase.name }}</td>
+				<td>{{ testcase.description }}</td>
+				<td>{{ testcase.owner }}</td>
+				<td><a href="{{ site_url(['/testcasemanage/destroy',testcase.t_id]) }}" class="btn btn-danger btn-xs">Remove</a></td>			
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	<div class="modal fade edit-modal" tabindex="-1" role="dialog">  <!-- 浮筐  -->
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+	         	<div class="modal-header">
+	           		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      			<h3>TestCase</h3>
+	      		</div>
+	      		<div class="modal-body" id="modal-body">
+	        		<p></p>
+	      		</div>
+	    	</div><!-- /.modal-content -->
+	  	</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->	
+	<script src = '{{base_url('assets/js/TestcaseManage.js')}}'></script>
+{% endblock %}
