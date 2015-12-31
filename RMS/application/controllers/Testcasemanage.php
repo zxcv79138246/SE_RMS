@@ -47,7 +47,7 @@ class Testcasemanage extends CI_Controller
 		}
 		else 
 		{
-				//$this->testcase->insert($data);
+				$this->testcase->insert($data);
 				$this->session->set_flashdata('message', "TestCase {$data['name']} 新增成功");
 				$this->session->set_flashdata('type', 'success');
 		}	
