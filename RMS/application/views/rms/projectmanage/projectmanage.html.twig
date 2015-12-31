@@ -27,8 +27,8 @@
 					<div class="abs-bottom-right">
 						<a href="{{ site_url([]) }}" class="btn btn-success btn-xs">進入project</a>
 						{% if (session.userdata('u_id') == project.leader) %}
-							<a href="#" data-url="{{ site_url(['/projectmanage/edit', project.p_id]) }}" class="btn btn-info btn-xs edit-btn" data-toggle="modal" data-target=".edit-modal">Edit</a>
-							<a href="{{ site_url(['/projectmanage/destory', project.p_id]) }}" class="btn btn-danger btn-xs">Remove</a>
+							<a data-url="{{ site_url(['/projectmanage/edit', project.p_id]) }}" class="btn btn-info btn-xs edit-btn" data-toggle="modal" data-target=".edit-modal">Edit</a>
+							<a href="{{ site_url(['/projectmanage/destory', project.p_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a>
 						{% endif %}
 					</div>
 				</div>
@@ -49,18 +49,6 @@
     	</div><!-- /.modal-content -->
   	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<script>
-	$(function (){
-		$(".edit-btn").click(function(event) {
-			$.ajax({
-				url: $(this).data('url'),
-				type: 'get',
-				success:function (response){
-					$('#modal-body').html(response);
-				}
-			})
-		});
-	});
-</script>
-<script src= "{{ base_url('assets/js/projectBlock.js')}}"></script>
+
+<script src = '{{base_url('assets/js/ProjectManage.js')}}'></script>
 {% endblock %}

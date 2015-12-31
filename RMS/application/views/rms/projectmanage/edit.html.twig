@@ -8,39 +8,53 @@
 	</div>
 	<div class="form-group">
 		<label class="col-md-2 control-label">Description</label>
-		<div class="col-md-3">
-			<input type="text" class="form-control" name="description" value="{{ (validation_errors()) ? set_value('description') : project.description }}">
+		<div class="col-md-8">
+			<textarea type="text" class="form-control" name="description">{{ project.description }}</textarea>
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-md-2 control-label">成員列表</label>
 		<div class = "memberListFrame">
 			<div class="form-group">
-					<div class="col-md-3">
-							{% for user in memberUser %}
-								<p class = "projectMemberList" >
-									{{user.name}}
-									<a href="{{ site_url(['/projectmanage/removeMember',user.u_id,project.p_id]) }}" class="btn btn-danger btn-xs">＋Remove</a>
-								</p>
-							{% endfor %}
+					<div class="col-md-9 member-list">
+						{% for user in memberUser %}
+							<span id="u_id-{{user.u_id}}">
+								<a class="btn {{ (user.u_id == project.leader)? 'btn-primary' : 'btn-default' }} btn-xs">
+									<span class="member" data-uId= "{{user.u_id}}">{{user.u_id}}, {{user.name}}</span>
+									{% if user.u_id != project.leader %}
+										<a class="btn btn-danger btn-xs removeMember">x</a>
+									{% endif %}
+								</a>
+							</span>
+						{% endfor %}
 					</div>
 			</div>
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-md-2 control-label">新增成員</label>
-		<div class = "memberListFrame">
-			<div class="form-group">
-				<div class="col-md-3">
-						{% for user in notMemberUser %}
-							<p class = "projectMemberList" >
-								{{user.name}}
-								<a href="{{ site_url(['/projectmanage/addMember',user.u_id,project.p_id]) }}" class="btn btn-danger btn-xs edit-btn">＋Add</a>
-							</p>
-						{% endfor %}
+			<div class = "col-md-7">
+				<div class="form-group">
+					<div class="col-md-7">
+						<select class="form-control" id ="newMember" >
+							{% for user in notMemberUser %}
+								<option id ="addNewMember" value="{{user.u_id}}">{{user.u_id}}, {{user.name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-md-5">
+						<select class="form-control" id ="priority" >
+							<option value="0">客戶</option>
+							<option value="1">開發人員</option>
+							<option value="2">專案管理者</option>
+						</select>
+					</div>
 				</div>
 			</div>
+			<div class="col-md-1">
+				<a type="submit" class="btn btn-warning btn-xs" id='Addmember'>＋Add</a>
+			</div>
 		</div>
-	</div>
 	<button type="submit" class="btn btn-primary col-md-offset-10">Update</button>
 </form>
+<script> var p_id = {{ project.p_id }} </script>
