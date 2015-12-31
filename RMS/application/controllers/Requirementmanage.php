@@ -14,5 +14,10 @@ class Requirementmanage extends CI_Controller
 		$requirements = $this->requirement->all();
 		$this->twig->display('rms/requirementmanage/requirementmanage.html', compact('requirements'));
 	}
+
+	public function create()
+	{
+		$this->twig->display('rms/requirementmanage/create.html');
+	}
 }
 ?>
