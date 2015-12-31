@@ -97,19 +97,29 @@ class Projectmanage extends CI_Controller
 		}
 		redirect('/projectmanage');
 	}
-	public function addMember($u_id , $p_id)
+
+	public function addMember()
 	{	
-		$data = ['u_id'=>$u_id,'p_id'=>$p_id];
-		$this->projectMember->insert($data);
-		redirect('/projectmanage');
+		$u_id = $this->input->post('u_id');
+		$p_id = $this->input->post('p_id');
+		$priority = $this->input->post('priority');
+		$data = ['u_id'=>$u_id,'p_id'=>$p_id,'priority'=>$priority];
+		$result = $this->projectMember->insert($data);
+		$newmember = NULL;
+		if ($result)
+			$newmember = $this->projectMember->dataInProject($u_id,$p_id);
+		echo json_encode($newmember);
+
 	}
 
 	public function removeMember($u_id , $p_id)
 	{	
 		$data = ['u_id'=>$u_id,'p_id'=>$p_id];
-		$this->projectMember->destory($data);
-		redirect('/projectmanage');
+		$resault = $this->projectMember->destory($data);
+		if ($resault)
+			echo json_encode($resault[0]) ;
 	}
+
 	public function update($p_id)
 	{
 		if ($this->verification())
