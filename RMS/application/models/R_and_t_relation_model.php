@@ -28,4 +28,25 @@ class R_and_T_Relation_model extends MY_Model{
         $query = $this->db->query($sql);
         return ($query->result()) ? $query->result()[0] : false;
     }
+
+    public function searchRelTest($r_id)
+    {
+    	$this->db->select('test_case.t_id, test_case.name');
+    	$this->db->from($this->table);
+    	$this->db->join('test_case','test_case.t_id = r_and_t_relation.t_id');
+    	$this->db->where('r_and_t_relation.r_id',$r_id);
+    	$query=$this->db->get();
+    	return $query->result();
+    }
+
+    public function searchRelReq($t_id)
+    {
+    	
+    	$this->db->select('requirement.r_id, requirement.name');
+    	$this->db->from($this->table);
+    	$this->db->join('requirement','requirement.r_id = r_and_t_relation.r_id');
+    	$this->db->where('r_and_t_relation.t_id',$t_id);
+    	$query=$this->db->get();
+    	return $query->result();
+    }
 }

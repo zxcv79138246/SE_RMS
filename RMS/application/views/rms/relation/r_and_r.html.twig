@@ -4,23 +4,28 @@
 		<div class="col-md-12">
 			<h3 class="text-center relative">
 			需求與需求關連
-			<a href="{{site_url('/relation')}}" class="btn btn-info abs-right">需求＆TestCase</a>
+			<div class="abs-right">
+				<a href="{{ site_url('relation/deleteRel') }}" class="btn btn-danger">刪除關聯</a>
+				<a href="{{site_url('/relation')}}" class="btn btn-info">需求＆TestCase</a>
+			</div>
 			</h3>
 		</div>
 	</div>
-	<form role="form" action="" method="post">
+	<form role="form" action="storeRR" method="post">
 		<div class="row form-group">
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-5">
+						<h4 class="text-center">需求1列表</h4>
 						<select name="req1_form[]" id="req1" class="form-control" size="20" multiple="multiple">
 							{% for key,requirement in requirements %}	
-								<option val="{{ requirement.r_id }}">{{requirement.name}}</option>
+								<option value="{{ requirement.r_id }}">{{requirement.name}}</option>
 							{% endfor %}					
 						</select>
 					</div>
 					
 					<div class="col-md-2">
+						<br /><br />
 						<button type="button" id="req1_undo" class="btn btn-primary btn-block">上一步</button>
 						<button type="button" id="req1_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
 						<button type="button" id="req1_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
@@ -30,6 +35,7 @@
 					</div>
 					
 					<div class="col-md-5">
+						<h4 class="text-center">要關聯的需求1</h4>
 						<select name="req1_to[]" id="req1_to" class="form-control" size="20" multiple="multiple">
 						</select>
 					</div>
@@ -38,10 +44,12 @@
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-5">
+						<h4 class="text-center">要關聯的需求2</h4>
 						<select name="req2_to[]" id="req2_to" class="form-control" size="20" multiple="multiple"></select>
 					</div>
 				
 					<div class="col-md-2">
+						<br /><br />
 						<button type="button" id="req2_undo" class="btn btn-primary btn-block">上一步</button>
 						<button type="button" id="req2_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
 						<button type="button" id="req2_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
@@ -51,9 +59,10 @@
 					</div>
 				
 					<div class="col-md-5">
+						<h4 class="text-center">需求2列表</h4>
 						<select name="req2_from[]" id="req2" class="form-control" size="20" multiple="multiple">
 							{% for key,requirement in requirements %}
-								<option val="{{ requirement.r_id }}" id="req2-{{requirement.r_id}}">{{ requirement .name }}</option>
+								<option value="{{ requirement.r_id }}" id="req2-{{requirement.r_id}}">{{ requirement .name }}</option>
 							{% endfor %}
 						</select>
 					</div>
@@ -76,7 +85,7 @@
 				var dfd = jQuery.Deferred();
 				req1s_id = [];
 				$options.map(function(index) {
-					req1s_id.push($options[index].attributes.val.nodeValue);
+					req1s_id.push($options[index].attributes.value.nodeValue);
 				});
 				var req2_to = $('#req2_to');
 				var req2s = req2_to.find('option');
@@ -84,7 +93,7 @@
 				console.log(req1s_id.join(','));
 
 				req2s.map(function (index) {
-					req2s_id.push(req2s[index].attributes.val.nodeValue);
+					req2s_id.push(req2s[index].attributes.value.nodeValue);
 				})
 				$.ajax({
 					url: '/RMS/index.php/relation/repeatRRCheck',
@@ -120,7 +129,7 @@
 				var dfd = jQuery.Deferred();
 				req2s_id = [];
 				$options.map(function(index) {
-					req2s_id.push($options[index].attributes.val.nodeValue);
+					req2s_id.push($options[index].attributes.value.nodeValue);
 				});
 				var req1_to = $('#req1_to');
 				var req1s = req1_to.find('option');
@@ -128,7 +137,7 @@
 				console.log(req2s_id.join(','));
 
 				req1s.map(function (index) {
-					req1s_id.push(req1s[index].attributes.val.nodeValue);
+					req1s_id.push(req1s[index].attributes.value.nodeValue);
 				})
 				$.ajax({
 					url: '/RMS/index.php/relation/repeatRRCheck',

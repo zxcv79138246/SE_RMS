@@ -28,4 +28,15 @@ class R_and_R_relation_model extends MY_Model{
         $query = $this->db->query($sql);
         return ($query->result()) ? $query->result()[0] : false;
     }
+
+    public function searchRelReq($r_id)
+    {
+    	$sql = 'select r1.r_id as r1_id, r2.r_id as r2_id, r1.name as r1Name, r2.name as r2Name ';
+    	$sql .= "from {$this->table} ";
+    	$sql .= 'join requirement r1 on r1.r_id = r_and_r_relation.r_id1 ';
+        $sql .= 'join requirement r2 on r2.r_id = r_and_r_relation.r_id2 ';
+        $sql .= "where r_and_r_relation.r_id1 = {$r_id} or r_and_r_relation.r_id2 = {$r_id} ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 }

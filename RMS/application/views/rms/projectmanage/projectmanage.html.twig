@@ -25,7 +25,7 @@
 					<label>描述:</label>
 					<p class="projectDescript">{{ project.description }}</p>
 					<div class="abs-bottom-right">
-						<a href="{{ site_url(['/requirementmanage']) }}" class="btn btn-success btn-xs">進入project</a>
+						<a href="{{ site_url(['/requirementmanage/intoProject']) }}" class="btn btn-success btn-xs">進入project</a>
 						{% if (session.userdata('u_id') == project.leader) %}
 							<a data-url="{{ site_url(['/projectmanage/edit', project.p_id]) }}" class="btn btn-info btn-xs edit-btn" data-toggle="modal" data-target=".edit-modal">Edit</a>
 							<a href="{{ site_url(['/projectmanage/destory', project.p_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a>

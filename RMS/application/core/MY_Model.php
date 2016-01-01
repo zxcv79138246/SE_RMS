@@ -77,5 +77,11 @@ class MY_Model extends CI_Model
         return ($query->result()) ? $query->result() : false;
     }
 
+    public function insertBatch($data)
+    {
+        $query=$this->db->insert_batch($this->table,$data);
+        return $query;
+    }
+
 
 }

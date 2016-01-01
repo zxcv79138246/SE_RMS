@@ -1,13 +1,54 @@
 {% extends 'layout/layout.html.twig' %}
 {% block content %}
 	<div class="row form-group">
+		<div class = "col-md-4">
+			<form class ="form-horizontal" role="form" action="{{ site_url('relation/searchReqRel') }}" method="get">
+				<div class="form-group">
+					<label class="control-label col-md-2">需求：</label>
+					<div class = "col-md-6">
+						<select name="sel_req" id ="sel_req" class="form-control">
+							<option value="">--搜尋需求--</option>
+							{% for key,requirement in requirements %}
+								<option value="{{ requirement.r_id }}" id="req-{{requirement.r_id}}">{{requirement.name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class = "col-md-1">
+						<button type="submit" class="btn btn-default">搜尋</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class = "col-md-4">
+			<form class ="form-horizontal" role="form" action="{{ site_url('relation/searchTestRel') }}" method="get">
+				<div class="form-group">
+					<label class="control-label col-md-3">TestCase：</label>
+					<div class = "col-md-6">
+						<select name="sel_test" id ="sel_test" class="form-control">
+							<option value="">--搜尋TestCase--</option>
+							{% for key,testcase in testcases %}
+								<option value="{{testcase.t_id}}" id="test-{{testcase.t_id}}">{{testcase.name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class = "col-md-1">
+						<button type="submit" class="btn btn-default">搜尋</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class = "col-md-6">
+		</div>
 		<div class="col-md-12">
 			<h3 class="text-center relative">
-			需求與TestCase關連
+			需求與TestCase關聯刪除
 			<div class="abs-right">
-				<a href="{{ site_url('relation/deleteRel') }}" class="btn btn-danger">刪除關聯</a>
 				<a href="{{ site_url('relation/reqAndReqPqge') }}" class="btn btn-info">需求＆需求</a>
+				<a href="{{site_url('/relation')}}" class="btn btn-success">需求＆TestCase</a>
 			</div>
+
 			</h3>
 		</div>
 	</div>
@@ -16,10 +57,10 @@
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-5">
-						<h4 class="text-center">需求列表</h4>
+						<h4 class="text-center">相關連需求列表</h4>
 						<select name="requirement_form[]" id="requirement" class="form-control" size="20" multiple="multiple">
-							{% for key,requirement in requirements %}	
-								<option value="{{requirement.r_id}}">{{requirement.name}}</option>
+							{% for key,relReq in relReqs %}	
+								<option value="{{relReq.r_id}}">{{relReq.name}}</option>
 							{% endfor %}					
 						</select>
 					</div>
@@ -35,7 +76,7 @@
 					</div>
 					
 					<div class="col-md-5">
-						<h4 class="text-center">要關聯的需求</h4>
+						<h4 class="text-center">要刪除關聯的需求</h4>
 						<select name="requirement_to[]" id="requirement_to" class="form-control" size="20" multiple="multiple">
 						</select>
 					</div>
@@ -44,7 +85,7 @@
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-5">
-						<h4 class="text-center">要關聯的TestCase</h4>
+						<h4 class="text-center">要刪除關聯的TestCase</h4>
 						<select name="test_to[]" id="test_to" class="form-control" size="20" multiple="multiple"></select>
 					</div>
 				
@@ -59,10 +100,10 @@
 					</div>
 				
 					<div class="col-md-5">
-						<h4 class="text-center">TestCase列表</h4>
+						<h4 class="text-center">相關連TestCase列表</h4>
 						<select name="test_from[]" id="test" class="form-control" size="20" multiple="multiple">
-							{% for key,testcase in testcases %}
-								<option value="{{ testcase.t_id }}">{{ testcase.name }}</option>
+							{% for key,relTest in relTests %}
+								<option value="{{ relTest.t_id }}" >{{ relTest.name }}</option>
 							{% endfor %}
 						</select>
 					</div>
@@ -71,7 +112,7 @@
 		</div>
 		<div class="row form-group">
 			<div class="text-center">
-				<button type ="submit" class="btn btn-success">確認儲存</button>
+				<button type ="submit" class="btn btn-danger">確認刪除</button>
 			</div>
 		</div> 
 	</form>
@@ -80,98 +121,8 @@
 {% block script %}
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
-
-		var options = {
-		
-		}
-
-		$('#requirement').multiselect({
-			beforeMoveToRight: function ($left, $right, $options) {				//處理關聯衝突
-				var dfd = jQuery.Deferred();
-				requirements_id = [];
-				$options.map(function(index) {
-					requirements_id.push($options[index].attributes.value.nodeValue);
-				});
-				var test_to = $('#test_to');
-				var tests = test_to.find('option');
-				var tests_id = [];
-				console.log(requirements_id.join(','));
-
-				tests.map(function (index) {
-					tests_id.push(tests[index].attributes.value.nodeValue);
-				})
-				$.ajax({
-					url: '/RMS/index.php/relation/repeatRTCheck',
-					type: 'GET',
-					dataType: 'JSON',
-					data: {
-						requirement: requirements_id.join(','),
-						tests: tests_id.join(','),
-					},
-					success: function (response) {
-			         	if (response.state == 'safe')
-							dfd.resolve(true);
-						else {
-							$.smkAlert({
-							    text: response.message,
-							    type: 'danger',
-							    position: 'top-center'
-							});
-							dfd.resolve(false);
-						}
-					},
-					error: function () {
-						console.log('error');
-						dfd.resolve(false);
-					}
-				})
-				return dfd.promise();
-			}
-		});
-
-		$('#test').multiselect({
-			beforeMoveToRight: function ($left, $right, $options) {
-				var dfd = jQuery.Deferred();
-				tests_id = [];
-				$options.map(function(index) {
-					tests_id.push($options[index].attributes.value.nodeValue);
-				});
-				var requirement_to = $('#requirement_to');
-				var requirements = requirement_to.find('option');
-				var requirements_id = [];
-				console.log(tests_id.join(','));
-
-				requirements.map(function (index) {
-					requirements_id.push(requirements[index].attributes.value.nodeValue);
-				})
-				$.ajax({
-					url: '/RMS/index.php/relation/repeatRTCheck',
-					type: 'GET',
-					dataType: 'JSON',
-					data: {
-						requirement: requirements_id.join(','),
-						tests: tests_id.join(','),
-					},
-					success: function (response) {
-			         	if (response.state == 'safe')
-							dfd.resolve(true);
-						else {
-							$.smkAlert({
-							    text: response.message,
-							    type: 'danger',
-							    position: 'top-center'
-							});
-							dfd.resolve(false);
-						}
-					},
-					error: function () {
-						console.log('error');
-						dfd.resolve(false);
-					}
-				})
-				return dfd.promise();
-			}
-		});
+		$('#req-{{req}}').attr('selected','selected');
+		$('#test-{{test}}').attr('selected','selected');
 	});
 </script>
 
