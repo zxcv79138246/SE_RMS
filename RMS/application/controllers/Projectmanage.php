@@ -167,7 +167,9 @@ class Projectmanage extends CI_Controller
 
 	public function intoProject($p_id)
 	{
-		$this->session->userdata('p_id'=>$p_id);
+		
+		$data = ['p_id'=>$p_id];
+		$this->session->set_userdata($data);
 		redirect('/requirementmanage');
 	}
 }
