@@ -40,7 +40,7 @@ class Test_user extends CI_Controller
 
 	function TEST_USER_FIND($data){
 			//TEST FIND
-			$test = $this->user->find($data['email']);
+			$test = $this->user->where(['email' => $data['email']])[];
 			$this->unit->run($test->email,$data['email'],'USER_FIND_EMAIL');
 			$this->unit->run($test->name,$data['name'],'USER_FIND_NAME');
 			$this->unit->run($test->password,$data['password'],'USER_FIND_PASSWORD');
