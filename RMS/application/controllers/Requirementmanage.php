@@ -2,6 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Requirementmanage extends CI_Controller
 {
+	private $u_id;
+	private $p_id;
+
 	function __construct()
 	{
 		parent::__construct();
@@ -11,7 +14,8 @@ class Requirementmanage extends CI_Controller
 	public function index()
 	{
 		$u_id = $this->session->userdata('u_id');
-		$requirements = $this->requirement->all();
+		$p_id = $this->session->userdata('p_id');
+		$requirements = $this->requirement->getReqByPID($p_id);
 		//	Functional value is 1, Non-functional value is 0 (in database)
 		$functional_display = ['Non-functional', 'Functional'];
 		$this->twig->display('rms/requirementmanage/requirementmanage.html', compact('requirements', 'functional_display'));
