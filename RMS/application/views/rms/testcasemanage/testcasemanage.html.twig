@@ -11,7 +11,7 @@
 				</div>
 			</form>
 		</div>
-		<div class="col-md-offset-10">
+		<div  class="col-md-offset-8 col-md-1 pull-right" >
 			<a href="#" data-url="{{ site_url('/testcasemanage/create') }}" class="btn btn-primary edit-btn" data-toggle="modal" data-target=".edit-modal">＋NEW</a>
 		</div>
 	</div>
@@ -23,16 +23,20 @@
 					<th>Name</th>
 					<th>Description</th>
 					<th>Owner</th>
+					<th>查看</th>
+					<th>Edit</th>
 					<th>Remove</th>
 			</thead>
 			<tbody>
 			{% for key,testcase in testcases %}
-				<tr data-url="{{ site_url(['/testcasemanage/show',testcase.t_id]) }}" class="edit-btn" data-toggle="modal" data-target=".edit-modal" >
+				<tr>
 					<td>{{key+1}}</td>
 					<td>{{ testcase.name }}</td>
 					<td>{{ testcase.description }}</td>
 					<td>{{ testcase.owner }}</td>
-					<td><a href="{{ site_url(['/testcasemanage/destroy',testcase.t_id]) }}" class="btn btn-danger btn-xs">Remove</a></td>
+					<td><a data-url="{{ site_url(['/testcasemanage/show',testcase.t_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
+					<td><a data-url="{{ site_url(['/testcasemanage/edit',testcase.t_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Edit</a></td>
+					<td><a href="{{ site_url(['/testcasemanage/destroy',testcase.t_id]) }}" class="btn btn-danger btn-xs">Remove</a></td>					
 				</tr>
 			{% endfor %}
 			</tbody>

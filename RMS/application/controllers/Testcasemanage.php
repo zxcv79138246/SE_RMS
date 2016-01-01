@@ -7,6 +7,8 @@ class Testcasemanage extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('testcase_model','testcase');
+		$this->load->model('R_and_t_relation_model','RTrelation');
+		$this->load->model('Requirement_model','requirement');
 	}
 
 	public function selectProject($p_id)
@@ -55,7 +57,14 @@ class Testcasemanage extends CI_Controller
 
 	public function destroy($t_id)
 	{	
-		if ($destoried = $this->testcase->destory(['t_id'=>$t_id]))
+		$relationCounts =count($this->RTrelation->where(['t_id'=>$t_id])); 
+		if( $relationCounts > 0 )
+		{
+
+			$this->session->set_flashdata('message',"尚有 {$relationCounts} 個關聯存在");
+			$this->session->set_flashdata('type','warning');
+		}
+		else if ($destoried = $this->testcase->destory(['t_id'=>$t_id]))
 		{
 			$this->session->set_flashdata('message',"{$destoried[0]->name} 已被刪除");
 			$this->session->set_flashdata('type','warning');
@@ -66,6 +75,44 @@ class Testcasemanage extends CI_Controller
 	public function show($t_id)
 	{
 		$testcase = $this->testcase->where(['t_id'=>$t_id])[0];
-		$this->twig->display("rms/testcasemanage/show.html",compact('testcase'));	
+		$relations = $this->RTrelation->where(['t_id'=>$t_id]);
+		$relationNames =[];
+		foreach($relations as $relation)
+		{
+			$requirement = $this->requirement->where(['r_id'=>$relation->r_id])[0];
+			$relationNames['name'] = $requirement->name;
+		}
+		$this->twig->display("rms/testcasemanage/show.html",compact('testcase','relationNames'));	
 	}
+
+	public function edit($t_id)
+	{
+		$testcase = $this->testcase->where(['t_id'=>$t_id])[0];
+		$this->twig->display("rms/testcasemanage/edit.html",compact('testcase'));			
+	}
+
+	public function update($t_id)
+	{
+		$testcase=
+		[
+			'name' => $this->input->post('testcaseName'),
+			'description' => $this->input->post('testcaseDescription'),
+			'input_data' => $this->input->post('testcaseInput_data'),
+			'expected_results' => $this->input->post('testcaseExpected_results'),
+			'attachment' => $this->input->post('testcaseAttachment'),
+		];
+		if($this->testcase->duplicateCheck(['name'=>$data['name'],'p_id'=>$this->currentProject],0))
+		 {
+				$this->session->set_flashdata('message', "Testcase名稱重複");
+				$this->session->set_flashdata('type', 'danger');
+		}
+		else 
+		{
+				$this->testcase->update($testcase,['t_id'=>$t_id,'p_id'=>$this->currentProject]);
+				$this->session->set_flashdata('message', "TestCase 修改成功");
+				$this->session->set_flashdata('type', 'success');
+		}
+		redirect('/testcasemanage');	
+	}
+
 } 
