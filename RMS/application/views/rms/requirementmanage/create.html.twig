@@ -1,31 +1,153 @@
 <!--	State 一定是待審核	-->
-<form class = 'form-horizontal' role = 'form' method  = 'POST'>
-	<div class = 'form-group'>
-		<label class = 'col-md-2' control-label>Name</label>
-		<div class = 'col-md-3'>
-			<input type = 'text' class = 'form-control' name = 'name'>
+<div>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#normal" aria-controls="normal" role="tab" data-toggle="tab">Normal</a></li>
+    <li role="presentation"><a href="#use_case" aria-controls="use_case" role="tab" data-toggle="tab">Use case</a></li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="normal">
+    	<div class="panel-body">
+	    	<form class = 'form-horizontal' role = 'form' method  = 'POST'>
+			<!--	Name    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Name</label>
+				<div class = 'col-md-3'>
+					<input type = 'text' class = 'form-control' name = 'name'>
+				</div>
+			</div>
+			<!--	Version    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Version</label>
+				<div class = 'col-md-3'>
+					<input type = 'text' class = 'form-control' name = 'version'>
+				</div>
+			</div>
+			<!--	Functional    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Functional</label>
+				<div class = 'col-md-5'>
+					<select class = 'form-control' id = 'functional'>
+						<option value = '1'>Functional</option>
+						<option value = '0'>Non-functional</option>
+					</select>
+				</div>
+			</div>
+			<!--	Level    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Level</label>
+				<div class = 'col-md-3'>
+					<input type = 'text' class = 'form-control' name = 'level'>
+				</div>
+			</div>
+			<!--	Description    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Description</label>
+				<div class = 'col-md-8'>
+					<textarea class="form-control" class = 'form-control' name = 'description'></textarea>
+				</div>
+			</div>
+			<!--	Memo    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Memo</label>
+				<div class = 'col-md-8'>
+					<textarea class="form-control" class = 'form-control' name = 'memo'></textarea>
+				</div>
+			</div>
+			</form>
+			<button type="submit" class="btn btn-primary col-md-offset-10">NEW</button>
 		</div>
-	</div>
-	<div class = 'form-group'>
-		<label class = 'col-md-2' control-label>Functional</label>
-		<!--	ToDo：12/31	-->
-	</div>
-	<div class = 'form-group'>
-		<label class = 'col-md-2' control-label>Version</label>
-		<div class = 'col-md-3'>
-			<input type = 'text' class = 'form-control' name = 'version'>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="use_case">
+    	<div class="panel-body">
+	    	<form class = 'form-horizontal' role = 'form' method  = 'POST' id = 'create_form'>
+			<!--	Name    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Name</label>
+				<div class = 'col-md-3'>
+					<input type = 'text' class = 'form-control' name = 'name'>
+				</div>
+			</div>
+			<!--	Version    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Version</label>
+				<div class = 'col-md-3'>
+					<input type = 'text' class = 'form-control' name = 'version'>
+				</div>
+			</div>
+			<!--	Functional    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Functional</label>
+				<div class = 'col-md-5'>
+					<select class = 'form-control' id = 'functional'>
+						<option value = '1'>Functional</option>
+						<option value = '0'>Non-functional</option>
+					</select>
+				</div>
+			</div>
+			<!--	Level    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Level</label>
+				<div class = 'col-md-3'>
+					<input type = 'text' class = 'form-control' name = 'level'>
+				</div>
+			</div>
+			<!--	Description    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Description</label>
+				<div class = 'col-md-8'>
+					<textarea class="form-control" class = 'form-control' name = 'description'></textarea>
+				</div>
+			</div>
+			<!--	Memo    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Memo</label>
+				<div class = 'col-md-8'>
+					<textarea class="form-control" class = 'form-control' name = 'memo'></textarea>
+				</div>
+			</div>
+			<!--	Target    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Target</label>
+				<div class = 'col-md-8'>
+					<textarea class="form-control" class = 'form-control' name = 'target'></textarea>
+				</div>
+			</div>
+			<!--	Precondition    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Precondition</label>
+				<div class = 'col-md-8'>
+					<textarea class="form-control" class = 'form-control' name = 'precondition'></textarea>
+				</div>
+			</div>
+			<!--	Postcondition    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Postcondition</label>
+				<div class = 'col-md-8'>
+					<textarea class="form-control" class = 'form-control' name = 'postcondition'></textarea>
+				</div>
+			</div>
+			<!--	Main flow    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Main flow</label>
+				<div class = 'col-md-8'>
+					<textarea class="form-control" class = 'form-control' name = 'main_flow'></textarea>
+				</div>
+			</div>
+			<!--	Alter flow    -->
+			<div class = 'form-group'>
+				<label class = 'col-md-3' control-label>Alter_flow</label>
+				<div class = 'col-md-8'>
+					<textarea class="form-control" class = 'form-control' name = 'alter_flow'></textarea>
+				</div>
+			</div>
+			</form>
+			<button type="submit" class="btn btn-primary col-md-offset-10">NEW</button>
 		</div>
-	</div>
-	<div class = 'form-group'>
-		<label class = 'col-md-2' control-label>Level</label>
-		<div class = 'col-md-3'>
-			<input type = 'text' class = 'form-control' name = 'level'>
-		</div>
-	</div>
-	<div class = 'form-group'>
-		<label class = 'col-md-2' control-label>Description</label>
-		<div class = 'col-md-8'>
-			<textarea class="form-control" class = 'form-control' name = 'description'></textarea>
-		</div>
-	</div>
-</form>
+    </div>
+  </div>
+</div>
+
+	

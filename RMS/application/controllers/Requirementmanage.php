@@ -12,7 +12,9 @@ class Requirementmanage extends CI_Controller
 	{
 		$u_id = $this->session->userdata('u_id');
 		$requirements = $this->requirement->all();
-		$this->twig->display('rms/requirementmanage/requirementmanage.html', compact('requirements'));
+		//	Functional value is 1, Non-functional value is 0 (in database)
+		$functional_display = ['Non-functional', 'Functional'];
+		$this->twig->display('rms/requirementmanage/requirementmanage.html', compact('requirements', 'functional_display'));
 	}
 
 	public function create()
