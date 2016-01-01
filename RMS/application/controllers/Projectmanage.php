@@ -169,7 +169,7 @@ class Projectmanage extends CI_Controller
 	{
 		
 		$data = ['p_id'=>$p_id];
-		$this->session->set_userdata($data);
+		$this->session->set_userdata($data); 
 		redirect('/requirementmanage');
 	}
 }

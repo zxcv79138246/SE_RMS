@@ -15,5 +15,4 @@ class Testcase_model extends MY_Model {
         return ($query->num_rows() + $is_create) > 1;
     }
 
-
 }

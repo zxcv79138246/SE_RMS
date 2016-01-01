@@ -19,8 +19,9 @@ class Relation extends CI_Controller
 
 	public function index()				//初始 (需求＆Test case)
 	{
-		$requirements = $this->requirememt->all();
-		$testcases = $this->testcase->all();
+		$p_id = $this->session->userdata('p_id');
+		$requirements = $this->requirememt->find();
+		$testcases = $this->testcase->find();
 		$this->twig->display('rms/relation/r_and_t.html',compact('requirements','testcases'));
 	}
 
