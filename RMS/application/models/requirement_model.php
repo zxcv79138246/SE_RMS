@@ -9,4 +9,13 @@ class Requirement_model extends MY_Model {
     {
         parent::__construct();
     }
+
+    public function getReqByPID($p_id)
+    {
+    	$query = $this->db->get_where($this->table, ['p_id' => $p_id]);
+        if ($query->result())
+            return $query->result()[0];
+        else
+            return false;
+    }
 }
