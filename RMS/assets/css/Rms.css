@@ -27,3 +27,8 @@
 .member-list{
 	margin: 7px;
 }
+
+.abs-right {
+	position: absolute;
+	right: 0;
+}

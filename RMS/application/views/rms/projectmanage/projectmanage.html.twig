@@ -15,17 +15,17 @@
 			<a href="#" data-url="{{ site_url('/projectmanage/create') }}" class="btn btn-primary edit-btn" data-toggle="modal" data-target=".edit-modal">＋NEW</a>
 		</div>
 	</div>
-	<div class = "row">
+		<div class = "row">
 		{% for key,project in projects %}
 			<div class="col-md-3 relative">
-				<div class="projectBlock caption">
+				<div class="projectBlock caption project" data-container="body" data-toggle="popover" data-placement="bottom" data-content="" data-proID="{{project.p_id}}" id = "pro-{{project.p_id}}">
 					<h4 class="text-center projectName">{{ project.name }}</h4>
 					<label>管理者: {{project.leaderName}}</label>
 					<br />
 					<label>描述:</label>
 					<p class="projectDescript">{{ project.description }}</p>
 					<div class="abs-bottom-right">
-						<a href="{{ site_url([]) }}" class="btn btn-success btn-xs">進入project</a>
+						<a href="{{ site_url(['/requirementmanage']) }}" class="btn btn-success btn-xs">進入project</a>
 						{% if (session.userdata('u_id') == project.leader) %}
 							<a data-url="{{ site_url(['/projectmanage/edit', project.p_id]) }}" class="btn btn-info btn-xs edit-btn" data-toggle="modal" data-target=".edit-modal">Edit</a>
 							<a href="{{ site_url(['/projectmanage/destory', project.p_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a>

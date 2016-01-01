@@ -1,0 +1,165 @@
+{% extends 'layout/layout.html.twig' %}
+{% block content %}
+	<div class="row form-group">
+		<div class="col-md-12">
+			<h3 class="text-center relative">
+			需求與需求關連
+			<a href="{{site_url('/relation')}}" class="btn btn-info abs-right">需求＆TestCase</a>
+			</h3>
+		</div>
+	</div>
+	<form role="form" action="" method="post">
+		<div class="row form-group">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-5">
+						<select name="req1_form[]" id="req1" class="form-control" size="20" multiple="multiple">
+							{% for key,requirement in requirements %}	
+								<option val="{{ requirement.r_id }}">{{requirement.name}}</option>
+							{% endfor %}					
+						</select>
+					</div>
+					
+					<div class="col-md-2">
+						<button type="button" id="req1_undo" class="btn btn-primary btn-block">上一步</button>
+						<button type="button" id="req1_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+						<button type="button" id="req1_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+						<button type="button" id="req1_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+						<button type="button" id="req1_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+						<button type="button" id="req1_redo" class="btn btn-warning btn-block">下一步</button>
+					</div>
+					
+					<div class="col-md-5">
+						<select name="req1_to[]" id="req1_to" class="form-control" size="20" multiple="multiple">
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-5">
+						<select name="req2_to[]" id="req2_to" class="form-control" size="20" multiple="multiple"></select>
+					</div>
+				
+					<div class="col-md-2">
+						<button type="button" id="req2_undo" class="btn btn-primary btn-block">上一步</button>
+						<button type="button" id="req2_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+						<button type="button" id="req2_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+						<button type="button" id="req2_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+						<button type="button" id="req2_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+						<button type="button" id="req2_redo" class="btn btn-warning btn-block">下一步</button>
+					</div>
+				
+					<div class="col-md-5">
+						<select name="req2_from[]" id="req2" class="form-control" size="20" multiple="multiple">
+							{% for key,requirement in requirements %}
+								<option val="{{ requirement.r_id }}" id="req2-{{requirement.r_id}}">{{ requirement .name }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="text-center">
+				<button type ="submit" class="btn btn-success">確認儲存</button>
+			</div>
+		</div> 
+	</form>
+	
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$('#req1').multiselect({
+			beforeMoveToRight: function ($left, $right, $options) {				//處理關聯衝突
+				var dfd = jQuery.Deferred();
+				req1s_id = [];
+				$options.map(function(index) {
+					req1s_id.push($options[index].attributes.val.nodeValue);
+				});
+				var req2_to = $('#req2_to');
+				var req2s = req2_to.find('option');
+				var req2s_id = [];
+				console.log(req1s_id.join(','));
+
+				req2s.map(function (index) {
+					req2s_id.push(req2s[index].attributes.val.nodeValue);
+				})
+				$.ajax({
+					url: '/RMS/index.php/relation/repeatRRCheck',
+					type: 'GET',
+					dataType: 'JSON',
+					data: {
+						req1: req1s_id.join(','),
+						req2: req2s_id.join(','),
+					},
+					success: function (response) {
+			         	if (response.state == 'safe')
+							dfd.resolve(true);
+						else {
+							$.smkAlert({
+							    text: response.message,
+							    type: 'danger',
+							    position: 'top-center'
+							});
+							dfd.resolve(false);
+						}
+					},
+					error: function () {
+						console.log('error');
+						dfd.resolve(false);
+					}
+				})
+				return dfd.promise();
+			}
+		}); 
+
+		$('#req2').multiselect({
+			beforeMoveToRight: function ($left, $right, $options) {
+				var dfd = jQuery.Deferred();
+				req2s_id = [];
+				$options.map(function(index) {
+					req2s_id.push($options[index].attributes.val.nodeValue);
+				});
+				var req1_to = $('#req1_to');
+				var req1s = req1_to.find('option');
+				var req1s_id = [];
+				console.log(req2s_id.join(','));
+
+				req1s.map(function (index) {
+					req1s_id.push(req1s[index].attributes.val.nodeValue);
+				})
+				$.ajax({
+					url: '/RMS/index.php/relation/repeatRRCheck',
+					type: 'GET',
+					dataType: 'JSON',
+					data: {
+						req1: req1s_id.join(','),
+						req2: req2s_id.join(','),
+					},
+					success: function (response) {
+			         	if (response.state == 'safe')
+							dfd.resolve(true);
+						else {
+							$.smkAlert({
+							    text: response.message,
+							    type: 'danger',
+							    position: 'top-center'
+							});
+							dfd.resolve(false);
+						}
+					},
+					error: function () {
+						console.log('error');
+						dfd.resolve(false);
+					}
+				})
+				return dfd.promise();
+			}
+		});
+	});
+</script>
+
+
+{% endblock %}

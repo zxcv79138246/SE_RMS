@@ -12,6 +12,8 @@
 		<script src="https://cdn.jsdelivr.net/jquery.scrollup/2.4.0/jquery.scrollUp.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="{{ base_url('assets/css/Rms.css')}}">
 		<script type="text/javascript" src ="{{base_url('assets/js/RMS.js')}}"></script>
+		<script type="text/javascript" src ="{{base_url('assets/js/multiselect.min.js')}}"></script>
+
 	</head>
 
 	<body>
@@ -22,8 +24,10 @@
 		{% endblock %}
 		</div>
 		<hr />
-		<div class="text-center">
-			<p>power by RMS</p>
+		<div class="form-group">
+			<div class="row text-center">
+				<p>power by RMS</p>
+			</div>
 		</div>
 	</body>
 </html>
@@ -38,6 +42,7 @@
 		});
 	})
 	{% endif %}
+	
 	$(function(){			//scrollup
   		$.scrollUp({
   			scrollText: '^',
@@ -47,3 +52,7 @@
 
 	});
 </script>
+
+{% block script %}
+			 
+{% endblock %}
