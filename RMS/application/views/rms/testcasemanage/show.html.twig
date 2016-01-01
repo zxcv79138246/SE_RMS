@@ -28,3 +28,9 @@
 		<p name = "testcaseAttachment" class="form-control">{{testcase.attachment}}</p>
 	</div>
 </div>	
+<div class = "form-group row">
+	<label class="col-md-2 control-label" >關聯需求</label>	
+	{% for relation in relationNames%}
+		<p>{{relationNames.name}}</p>
+	{% endfor %}
+</div>	

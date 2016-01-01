@@ -9,13 +9,34 @@ class R_and_R_relation_model extends MY_Model{
 		parent::__construct();
 	}
 
-	public function find($r_id1, $r_id2)
-	{
-		$query = $this->db->getwhere($this->table, 
-			[$primaryKey[0] => $r_id1, $primaryKey[1] => $r_id2]);
-		if($query->result())
-			return $query->result[0];
-		else
-			return false;
-	}
+	public function repeatCheck($data, $is_create = 0)  //驗證使否有重複內容
+    {
+        $sql = 'select r1.name as r1Name, r2.name as r2Name ';
+        $sql .= "from {$this->table} ";
+        $sql .= 'join requirement r1 on r1.r_id = r_and_r_relation.r_id1 ';
+        $sql .= 'join requirement r2 on r2.r_id = r_and_r_relation.r_id2 ';
+        $or_where = [];
+        foreach ($data['r_and_r_relation.r_id1'] as $key => $value) {
+        	$or_where[] = "r_and_r_relation.r_id1 = {$value} ";
+        }
+        $sql .= 'where (' . implode(' or ', $or_where) . ') ';
+        $req_or_where=[];
+        foreach ($data['r_and_r_relation.r_id2'] as $key => $value) {
+        	$req_or_where[] = "r_and_r_relation.r_id2 = {$value}";
+        }
+        $sql .= 'and (' . implode(' or ',$req_or_where) . ') ';
+        $query = $this->db->query($sql);
+        return ($query->result()) ? $query->result()[0] : false;
+    }
+
+    public function searchRelReq($r_id)
+    {
+    	$sql = 'select r1.r_id as r1_id, r2.r_id as r2_id, r1.name as r1Name, r2.name as r2Name ';
+    	$sql .= "from {$this->table} ";
+    	$sql .= 'join requirement r1 on r1.r_id = r_and_r_relation.r_id1 ';
+        $sql .= 'join requirement r2 on r2.r_id = r_and_r_relation.r_id2 ';
+        $sql .= "where r_and_r_relation.r_id1 = {$r_id} or r_and_r_relation.r_id2 = {$r_id} ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 }

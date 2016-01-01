@@ -31,10 +31,10 @@ class Projectmanage extends CI_Controller
 	{
 		if ($destoried = $this->project->destory(['p_id'=>$p_id]))
 		{
-			$this->session->set_flashdata('message',"{$destoried[0]->name} 已被刪除");
+			$this->session->set_flashdata('message',"專案：{$destoried[0]->name} 已被刪除");
 			$this->session->set_flashdata('type','warning');
 		}
-		redirect('/index');
+		redirect('/projectmanage');
 	}
 
 	public function create()
@@ -98,6 +98,14 @@ class Projectmanage extends CI_Controller
 		redirect('/projectmanage');
 	}
 
+	public function getProjectData($p_id)
+	{
+		$members = $this->projectMember->allMemberName($p_id);
+		//var_dump($p_id);
+		if ($members)
+			echo json_encode($members);
+	}
+
 	public function addMember()
 	{	
 		$u_id = $this->input->post('u_id');
@@ -107,7 +115,7 @@ class Projectmanage extends CI_Controller
 		$result = $this->projectMember->insert($data);
 		$newmember = NULL;
 		if ($result)
-			$newmember = $this->projectMember->dataInProject($u_id,$p_id);
+			$newmember = $this->projectMember->memberDataInProject($u_id,$p_id);
 		echo json_encode($newmember);
 
 	}
@@ -155,5 +163,13 @@ class Projectmanage extends CI_Controller
 		}
 		else
 			return true;
+	}
+
+	public function intoProject($p_id)
+	{
+		
+		$data = ['p_id'=>$p_id];
+		$this->session->set_userdata($data); 
+		redirect('/requirementmanage');
 	}
 }

@@ -25,7 +25,7 @@ class Project_member_model extends MY_Model
 		return true;
 	}
 
-	public function dataInProject($u_id,$p_id)
+	public function memberDataInProject($u_id,$p_id)
     {
      	$this->db->select('user.u_id AS userID, user.name AS userName, project_member.priority AS projectPriority, project_member.p_id AS projectID');
      	$this->db->from($this->table);   
@@ -37,5 +37,19 @@ class Project_member_model extends MY_Model
      		return $query->result()[0];
      	else
      		return false;
+    }
+
+    public function allMemberName($p_id)
+    {
+    	$this->db->select('user.name AS userName, user.u_id AS uID');
+     	$this->db->from($this->table);   
+     	$this->db->join('user','user.u_id = project_member.u_id');
+     	$this->db->where('project_member.p_id',$p_id);
+     	$query = $this->db->get();
+     	if ($query)
+     		return $query->result();
+     	else
+     		return false;
+
     }
 }

@@ -6,7 +6,7 @@ $(function(){
             success: function(response) {
             	$('#modal-body').html(response);
 
-            	$('#Addmember').click(function(event) {
+            	$('#Addmember').click(function(event) {                //加入成員
             		$.ajax({
             			url: '/RMS/index.php/projectmanage/addMember',
             			type: 'POST',
@@ -35,7 +35,7 @@ $(function(){
                             $name.append($data);
     						$span.append($name).append($remove);
     						$span.appendTo($('.member-list'));
-                            $('#opt-'+response.userID).remove();
+                            $('#opt-'+response.userID).remove();     //加入後刪除選項
                             $remove.click(function(event) {
                                 var u_id = $(this).attr('data-uId');
                                 $.ajax({
@@ -59,7 +59,7 @@ $(function(){
             		})            		
             	});
                 
-                $('.removeMember').click(function(event) {
+                $('.removeMember').click(function(event) {              //刪除成員
                     var u_id = $(this).attr('data-uId');
                     $.ajax({
                         url: '/RMS/index.php/projectmanage/removeMember/' + u_id + '/' + p_id,
@@ -75,10 +75,37 @@ $(function(){
                                             .attr('value',response.u_id)
                                             .html(response.u_id+ ', ' + response.name);
                         $option.appendTo($('#newMember'));
-                        $('#u_id-' + response.u_id).remove();
+                        $('#u_id-' + response.u_id).remove();       //刪除後加入選項
                     })
                 });
             }
         });
 	});
+    
+    //置入提示視窗資料
+    $('.project').click(function(event) {
+        var p_id = $(this).attr('data-proID');
+        $.ajax({
+            url: '/RMS/index.php/projectmanage/getProjectData/' + p_id,
+            dataType: 'JSON',
+            data: {p_id: p_id},
+        })
+        .success(function(response) {
+            var membersName='';
+            console.log(response);
+            //console.log(response[0].userName);
+            for (var i in response){
+                membersName = membersName + response[i].userName + ', ';
+                console.log(response[i].userName);
+            }
+            console.log('#pro-'+p_id);
+            $('#pro-'+p_id).attr('data-content',"建立日期：project.date <br /> 成員： <br />" + membersName);
+        }) 
+    });
+
+    // 點擊跳提示視窗
+    $('.project').popover({
+        html: true
+    });
+
 })

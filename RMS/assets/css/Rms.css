@@ -27,3 +27,13 @@
 .member-list{
 	margin: 7px;
 }
+
+.abs-right {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.del-left{
+	right:100px;
+}
