@@ -1,0 +1,36 @@
+<div class = "form-group row">
+	<label class="col-md-2 control-label" >測試名稱</label>	
+	<div class = "col-md-5">
+		<p name = "testcaseName" class="form-control" >{{testcase.name}}</p>
+	</div>
+</div>
+<div class = "form-group row">
+	<label class="col-md-2 control-label" >測試描述</label>	
+	<div class = "col-md-8">
+		<p name = "testcaseDescription" class="form-control">{{testcase.description}}</p>
+	</div>
+</div>	
+<div class = "form-group row">
+	<label class="col-md-2 control-label" >輸入資料</label>	
+	<div class = "col-md-8">
+		<p name = "testcaseInput_data" class="form-control" >{{testcase.input_data}}</p>
+	</div>
+</div>
+<div class = "form-group row">
+	<label class="col-md-2 control-label" >輸出結果</label>	
+	<div class = "col-md-8">
+		<p name = "testcaseExpected_results" class="form-control">{{testcase.expected_results}}</p>
+	</div>
+</div>	
+<div class = "form-group row">
+	<label class="col-md-2 control-label" >附　　件</label>	
+	<div class = "col-md-8">
+		<p name = "testcaseAttachment" class="form-control">{{testcase.attachment}}</p>
+	</div>
+</div>	
+<div class = "form-group row">
+	<label class="col-md-2 control-label" >關聯需求</label>	
+	{% for relation in relationNames%}
+		<p>{{relationNames.name}}</p>
+	{% endfor %}
+</div>	

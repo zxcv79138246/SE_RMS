@@ -2,26 +2,18 @@
 
 class Testcase_model extends MY_Model {
 
-	public $table = 'testcase';
+	public $table = 'test_case';
     protected $primaryKey = 't_id';
 
-	function __construct()		//constructer    繼承CI_Modle的constructer
+    public function duplicateCheck($data, $is_create = 0)  //驗證使否有重複內容
     {
-        parent::__construct();
+        $this->db->from($this->table);
+        foreach ($data as $key => $value) {
+            $this->db->where($key);
+        }
+        $query = $this->db->get();
+        return ($query->num_rows() + $is_create) > 1;
     }
 
-    public function all($p_id)
-    {
-    	$query = $this->db->get($this->table,['p_id' => $p_id]);
-    	return $query->result();
-    }
 
-    public function find($t_id,$p_id)
-    {
-    	$query = $this->db->get_where($this->table, [$this->primaryKey => $t_id , 'p_id' => $p_id]);
-    	if ($query->result())
-    		return $query->result()[0];
-    	else
-    		return false;
-    }
 }
