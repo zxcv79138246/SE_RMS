@@ -20,14 +20,15 @@ class Relation extends CI_Controller
 	public function index()				//初始 (需求＆Test case)
 	{
 		$p_id = $this->session->userdata('p_id');
-		$requirements = $this->requirememt->find();
-		$testcases = $this->testcase->find();
+		$requirements = $this->requirememt->getReqByPID($p_id);
+		$testcases = $this->testcase->getTestByPID($p_id);
 		$this->twig->display('rms/relation/r_and_t.html',compact('requirements','testcases'));
 	}
 
 	public function reqAndReqPqge()
 	{
-		$requirements = $this->requirememt->all();
+		$p_id = $this->session->userdata('p_id');
+		$requirements = $this->requirememt->getReqByPID($p_id);
 		$this->twig->display('rms/relation/r_and_r.html',compact('requirements','testcases'));
 	}
 
@@ -120,8 +121,9 @@ class Relation extends CI_Controller
 
 	public function deleteRel()
 	{
-		$requirements = $this->requirememt->all();
-		$testcases = $this->testcase->all();
+		$p_id = $this->session->userdata('p_id');
+		$requirements = $this->requirememt->getReqByPID($p_id);
+		$testcases = $this->testcase->getTestByPID($p_id);
 		$relReqs="";
 		$relTests="";
 		$req="";

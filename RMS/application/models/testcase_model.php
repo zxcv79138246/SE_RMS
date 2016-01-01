@@ -14,5 +14,17 @@ class Testcase_model extends MY_Model {
         $query = $this->db->get();
         return ($query->num_rows() + $is_create) > 1;
     }
+    
+    public function getTestByPID($p_id)
+    {
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $this->db->where('p_id',$p_id);
+        $query = $this->db->get();
+        if ($query->result())
+            return $query->result();
+        else
+            return false;
+    }
 
 }
