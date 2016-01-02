@@ -40,6 +40,23 @@ class Requirementmanage extends CI_Controller
 		$this->twig->display('rms/requirementmanage/create.html');
 	}
 
+	public function edit($r_id)
+	{
+		$requirement = $this->requirement->where(['r_id'=>$r_id])[0];
+		$functional_seleted; $type_selected;
+		//	Defult Select (functional)
+		if($requirement->functional == 1)
+			$functional_seleted = ['selected', ''];
+		else
+			$functional_seleted = ['', 'selected'];
+		//	Defult Tab (Type)
+		if($requirement->type == 'normal')
+			$type_selected = ['active', ''];
+		else
+			$type_selected = ['', 'active'];
+		$this->twig->display("rms/requirementmanage/edit.html",compact('requirement', 'functional_seleted', 'type_selected'));
+	}
+
 	public function store($type)
 	{
 		if($this->verification($type))
@@ -134,6 +151,65 @@ class Requirementmanage extends CI_Controller
 			$this->twig->display('rms/requirementmanage/info_normal.html', compact('requirement', 'r_r_relationList1', 'r_r_relationList2', 'r_t_relationList', 'functional_display'));
 		else
 			$this->twig->display('rms/requirementmanage/info_usecase.html', compact('requirement', 'r_r_relationList1', 'r_r_relationList2', 'r_t_relationList', 'functional_display'));
+	}
+
+	public function update($type)
+	{
+		if($this->verification($type))
+		{
+			$state = '待審核';
+			$tempDate = date('Y-m-d H:i:s');
+			$reqData;
+			if($type == 'normal')
+			{
+				$reqData = [
+					'p_id' => $this->current_project,
+					'name' => $this->input->post('name'),
+					'functional' => $this->input->post('functional'),
+					'type' => $type,
+					'description' => $this->input->post('description'),
+					'version' => $this->input->post('version'),
+					'level' => $this->input->post('level'),
+					'state' => $state,
+					'owner' => $this->current_user,
+					'last_edit_date' => $tempDate,
+					'memo' => $this->input->post('memo')
+				];
+			}
+			else
+			{
+				$reqData = [
+					'p_id' => $this->current_project,
+					'name' => $this->input->post('name'),
+					'functional' => $this->input->post('functional'),
+					'type' => $type,
+					'description' => $this->input->post('description'),
+					'version' => $this->input->post('version'),
+					'level' => $this->input->post('level'),
+					'state' => $state,
+					'owner' => $this->current_user,
+					'last_edit_date' => $tempDate,
+					'memo' => $this->input->post('memo'),
+					'target' => $this->input->post('target'),
+					'precondition' => $this->input->post('precondition'),
+					'postcondition' => $this->input->post('postcondition'),
+					'main_flow' => $this->input->post('main_flow'),
+					'alter_flow' => $this->input->post('alter_flow')
+				];
+			}
+			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $reqData['p_id']], 0))
+			 {
+					$this->session->set_flashdata('message', "Requirement名稱重複");
+					$this->session->set_flashdata('type', 'danger');
+			}
+			else 
+			{
+					$this->requirement->update($reqData);
+					$this->session->set_flashdata('message', "Requirement名稱 {$reqData['name']} 新增成功");
+					$this->session->set_flashdata('type', 'success');
+			}
+		}
+		redirect('/requirementmanage');
 	}
 
 	public function verification($type)

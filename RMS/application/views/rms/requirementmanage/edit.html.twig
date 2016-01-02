@@ -2,26 +2,26 @@
 <div>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#normal" aria-controls="normal" role="tab" data-toggle="tab">Normal</a></li>
-    <li role="presentation"><a href="#use_case" aria-controls="use_case" role="tab" data-toggle="tab">Use case</a></li>
+    <li role="presentation" class={{ type_selected[0] }}><a href="#normal" aria-controls="normal" role="tab" data-toggle="tab">Normal</a></li>
+    <li role="presentation" class={{ type_selected[1] }}><a href="#use_case" aria-controls="use_case" role="tab" data-toggle="tab">Use case</a></li>
   </ul>
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id = 'normal'>
+    <div role="tabpanel" class="tab-pane {{ type_selected[0] }}" id = 'normal'>
     	<div class="panel-body">
-	    	<form class = 'form-horizontal' role = 'form' method  = 'POST' action = '{{site_url(['requirementmanage/store', 'normal'])}}'>
+	    	<form class = 'form-horizontal' role = 'form' method  = 'POST' action = '{{site_url(['requirementmanage/update', 'normal'])}}'>
 			<!--	Name    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Name</label>
 				<div class = 'col-md-6'>
-					<input type = 'text' class = 'form-control' name = 'name'>
+					<input type = 'text' class = 'form-control' name = 'name' value = {{ requirement.name }}>
 				</div>
 			</div>
 			<!--	Version    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Version</label>
 				<div class = 'col-md-6'>
-					<input type = 'text' class = 'form-control' name = 'version'>
+					<input type = 'text' class = 'form-control' name = 'version' value = {{ requirement.version }}>
 				</div>
 			</div>
 			<!--	Functional    -->
@@ -29,8 +29,8 @@
 				<label class = 'col-md-3' control-label>Functional</label>
 				<div class = 'col-md-6'>
 					<select class = 'form-control' name = 'functional'>
-						<option value = '1'>Functional</option>
-						<option value = '0'>Non-functional</option>
+						<option {{ functional_seleted[0] }} value = '1'>Functional</option>
+						<option {{ functional_seleted[1] }} value = '0'>Non-functional</option>
 					</select>
 				</div>
 			</div>
@@ -38,43 +38,43 @@
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Level</label>
 				<div class = 'col-md-6'>
-					<input type = 'text' class = 'form-control' name = 'level'>
+					<input type = 'text' class = 'form-control' name = 'level' value = {{ requirement.level }}>
 				</div>
 			</div>
 			<!--	Description    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Description</label>
 				<div class = 'col-md-8'>
-					<textarea class="form-control" class = 'form-control' name = 'description'></textarea>
+					<textarea class="form-control" class = 'form-control' name = 'description'>{{ requirement.description }}</textarea>
 				</div>
 			</div>
 			<!--	Memo    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Memo</label>
 				<div class = 'col-md-8'>
-					<textarea class="form-control" class = 'form-control' name = 'memo'></textarea>
+					<textarea class="form-control" class = 'form-control' name = 'memo'>{{ requirement.memo }}</textarea>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary col-md-offset-10">NEW</button>
+			<button type="submit" class="btn btn-primary col-md-offset-10">Update</button>
 			</form>
 		</div>
     </div>
 
-    <div role="tabpanel" class="tab-pane" id="use_case">
+    <div role="tabpanel" class="tab-pane {{ type_selected[1] }}" id="use_case">
     	<div class="panel-body">
-	    	<form class = 'form-horizontal' role = 'form' method  = 'POST' action = '{{site_url(['requirementmanage/store', 'usecase'])}}'>
+	    	<form class = 'form-horizontal' role = 'form' method  = 'POST' action = '{{site_url(['requirementmanage/update', 'usecase'])}}'>
 			<!--	Name    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Name</label>
 				<div class = 'col-md-6'>
-					<input type = 'text' class = 'form-control' name = 'name'>
+					<input type = 'text' class = 'form-control' name = 'name' value = {{ requirement.name }}>
 				</div>
 			</div>
 			<!--	Version    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Version</label>
 				<div class = 'col-md-6'>
-					<input type = 'text' class = 'form-control' name = 'version'>
+					<input type = 'text' class = 'form-control' name = 'version' value = {{ requirement.version }}>
 				</div>
 			</div>
 			<!--	Functional    -->
@@ -82,8 +82,8 @@
 				<label class = 'col-md-3' control-label>Functional</label>
 				<div class = 'col-md-6'>
 					<select class = 'form-control' name = 'functional'>
-						<option value = '1'>Functional</option>
-						<option value = '0'>Non-functional</option>
+						<option {{ functional_seleted[0] }} value = '1'>Functional</option>
+						<option {{ functional_seleted[1] }} value = '0'>Non-functional</option>
 					</select>
 				</div>
 			</div>
@@ -91,59 +91,59 @@
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Level</label>
 				<div class = 'col-md-6'>
-					<input type = 'text' class = 'form-control' name = 'level'>
+					<input type = 'text' class = 'form-control' name = 'level' value = {{ requirement.level }}>
 				</div>
 			</div>
 			<!--	Description    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Description</label>
 				<div class = 'col-md-8'>
-					<textarea class="form-control" class = 'form-control' name = 'description'></textarea>
+					<textarea class="form-control" class = 'form-control' name = 'description'>{{ requirement.description }}</textarea>
 				</div>
 			</div>
 			<!--	Memo    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Memo</label>
 				<div class = 'col-md-8'>
-					<textarea class="form-control" class = 'form-control' name = 'memo'></textarea>
+					<textarea class="form-control" class = 'form-control' name = 'memo'>{{ requirement.memo }}</textarea>
 				</div>
 			</div>
 			<!--	Target    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Target</label>
 				<div class = 'col-md-6'>
-					<input tpye = 'text' class="form-control" class = 'form-control' name = 'target'>
+					<input tpye = 'text' class="form-control" class = 'form-control' name = 'target' value = {{ requirement.target }}>
 				</div>
 			</div>
 			<!--	Precondition    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Precondition</label>
 				<div class = 'col-md-8'>
-					<textarea class="form-control" class = 'form-control' name = 'precondition'></textarea>
+					<textarea class="form-control" class = 'form-control' name = 'precondition'>{{ requirement.precondition }}</textarea>
 				</div>
 			</div>
 			<!--	Postcondition    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Postcondition</label>
 				<div class = 'col-md-8'>
-					<textarea class="form-control" class = 'form-control' name = 'postcondition'></textarea>
+					<textarea class="form-control" class = 'form-control' name = 'postcondition'>{{ requirement.postcondition }}</textarea>
 				</div>
 			</div>
 			<!--	Main flow    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Main flow</label>
 				<div class = 'col-md-8'>
-					<textarea class="form-control" class = 'form-control' name = 'main_flow'></textarea>
+					<textarea class="form-control" class = 'form-control' name = 'main_flow'>{{ requirement.main_flow }}</textarea>
 				</div>
 			</div>
 			<!--	Alter flow    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Alter flow</label>
 				<div class = 'col-md-8'>
-					<textarea class="form-control" class = 'form-control' name = 'alter_flow'></textarea>
+					<textarea class="form-control" class = 'form-control' name = 'alter_flow'>{{ requirement.alter_flow}}</textarea>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary col-md-offset-10">NEW</button>
+			<button type="submit" class="btn btn-primary col-md-offset-10">Update</button>
 			</form>
 		</div>
     </div>
