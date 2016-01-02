@@ -137,8 +137,8 @@ class Projectmanage extends CI_Controller
 				'name' => $this->input->post('name'),
 				'description' => $this->input->post('description'),
 			];
-			
-			$nowfield = $this->project->find($p_id);
+
+			$nowfield = $this->project->findNowField($p_id);
 			$nameChange=0;
 			if ($projectData['name'] != $nowfield->name){
 				$nameChange = 1;

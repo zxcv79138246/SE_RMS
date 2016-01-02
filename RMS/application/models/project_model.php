@@ -28,4 +28,14 @@ class Project_model extends MY_Model {
                                     WHERE P_M.`u_id` = $u_id");
         return $query->result();
     }
+
+    public function findNowField($p_id)
+    {
+        $query = $this->db->get_where($this->table, ['p_id' => $p_id]);
+        if ($query->result())
+            return $query->result()[0];
+        else
+            return false;
+    }
+
 }
