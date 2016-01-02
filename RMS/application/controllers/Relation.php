@@ -74,7 +74,11 @@ class Relation extends CI_Controller
 		if (!($req2_ids == '' || $req1_ids == '')) {
 			if ($result = $this->r_r->repeatCheck(['r_and_r_relation.r_id1'=>$req1s,'r_and_r_relation.r_id2'=>$req2s], 1))
 			{
-				$message[] = $result->r1Name . ' 跟 ' . $result->r2Name . ' 衝突';
+				$message[] = $result->r1Name . ' 跟 ' . $result->r2Name . ' 已有關聯';
+			}
+			if ($result = $this->r_r->repeatCheck(['r_and_r_relation.r_id1'=>$req2s,'r_and_r_relation.r_id2'=>$req1s], 1))
+			{
+				$message[] = $result->r1Name . ' 跟 ' . $result->r2Name . ' 已有關聯';
 			}
 		}
 		echo json_encode([
