@@ -137,7 +137,12 @@ class Projectmanage extends CI_Controller
 				'name' => $this->input->post('name'),
 				'description' => $this->input->post('description'),
 			];
-			if (!$this->project->duplicateCheck(['name'=>$projectData['name']], 0)) 
+			$nowfield = $this->project->find($p_id);
+			$nameChange=0;
+			if ($projectData['name']!=$nowfield['name']){
+				$nameChange = 1;
+			}
+			if (!$this->project->duplicateCheck(['name'=>$projectData['name']], $nameChange)) 
 			{	
 				if ($projects = $this->project->update($projectData,['p_id' => $p_id]))
 				{
@@ -145,12 +150,12 @@ class Projectmanage extends CI_Controller
 					$this->session->set_flashdata('type', 'success');
 				}
 			} else {
-				$this->session->set_flashdata('message', "Email重複");
+				$this->session->set_flashdata('message', "Name重複");
 				$this->session->set_flashdata('type', 'danger');
 
 			}
 		}
-		redirect('/index');	
+		redirect('/projectmanage');	
 	}
 
 	public function verification()
