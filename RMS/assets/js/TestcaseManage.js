@@ -38,4 +38,33 @@ $(function (){
 			}
 		})
 	});
+	//搜尋的AJAX
+	$(".btn-search").click(function(event) {
+		$.ajax({
+			url: '/RMS/index.php/testcasemanage/search',
+			dataType:'JSON',
+			type:'POST',
+			data:
+			{
+				searchCondition: $('#searchCondition').val(),
+			},
+			success:function(response)
+			{		
+				for(var i = 0; i<  $(".testcaseRow").length ;i++)
+				{
+					var currentRow = $(".testcaseRow")[i];
+					$(currentRow).hide();
+				}		
+				$.each(response,function(index,value){
+					$.each($(".testcaseRow"),function(rowIndex,rowValue)
+					{
+						if($(rowValue).attr('testcaseid')==value['t_id'])
+							$(rowValue).show();
+					})
+				})
+			}
+
+			
+		})		
+	});
 });

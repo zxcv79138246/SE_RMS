@@ -118,4 +118,9 @@ class Testcasemanage extends CI_Controller
 		redirect('/testcasemanage');	
 	}
 
+	public function search()
+	{	
+		 $result=$this->testcase->searchTestcase($this->currentProject,$this->input->post('searchCondition'));
+		 echo json_encode($result);
+	}
 } 
