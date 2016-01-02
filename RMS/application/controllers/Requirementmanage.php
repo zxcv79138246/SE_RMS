@@ -2,36 +2,33 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Requirementmanage extends CI_Controller
 {
-	private $u_id;
-	private $p_id;
-
+	private $current_user = 0;
+	private $current_project = 0;
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('Requirement_model', 'requirement');
+		$this->current_user = $this->session->userdata('u_id');
+		$this->current_project = $this->session->userdata('p_id');
 	}
 
 	public function index()
 	{
-		$u_id = $this->session->userdata('u_id');
-		$p_id = $this->session->userdata('p_id');
-		if(is_null($u_id))
+		if(is_null($this->current_user))
 		{
 			$this->session->set_flashdata('message', '尚未登入');
 			$this->session->set_flashdata('type', 'danger');
 			redirect('/index');
 		}
-		if(is_null($p_id))
+		if(is_null($this->current_project))
 		{
 			$this->session->set_flashdata('message', '尚未選擇專案');
 			$this->session->set_flashdata('type', 'danger');
 			redirect('/index');
 		}
-		$requirements = $this->requirement->getReqByPID($p_id);
+		$requirements = $this->requirement->getReqByPID($this->current_project);
 		//	Functional value is 1, Non-functional value is 0 (in database)
 		$functional_display = ['Non-functional', 'Functional'];
-
-
 		$this->twig->display('rms/requirementmanage/requirementmanage.html', compact('requirements', 'functional_display'));
 	}
 
@@ -40,43 +37,87 @@ class Requirementmanage extends CI_Controller
 		$this->twig->display('rms/requirementmanage/create.html');
 	}
 
-	public function storeNormal()
+	public function store($type)
 	{
-		if ($this->verification())
+		if($this->verification($type))
 		{
-			$requirementData = [
-				'leader' => $this->session->userdata['u_id'],
-				'name' =>  $this->input->post('name'),
-				'description' => $this->input->post('description'),
-			];
-			if (!$this->project->duplicateCheck(['name'=>$projectData['name']], 1)) 
+			$state = '待審核';
+			$tempDate = date('Y-m-d H:i:s');
+			$reqData;
+			if($type = 'normal')
 			{
-				if ($projects = $this->project->insert($projectData))
-				{
-					$insertID=$this->db->insert_id();
-					$projectMember = [
-						'p_id' => $insertID,
-						'u_id' => $this->session->userdata('u_id'),
-						'priority' => 2,
-					];
-					if ($this->projectMember->insert($projectMember))
-					{
-						$this->session->set_flashdata('message', "新增專案：{$projectData['name']} 成功");
-						$this->session->set_flashdata('type', 'success');	
-					}
-				}
-			} else {
-				$this->session->set_flashdata('message', "Name重複");
-				$this->session->set_flashdata('type', 'danger');
-
+				$reqData = [
+					'p_id' => $this->current_project,
+					'name' => $this->input->post('name'),
+					'functional' => $this->input->post('functional'),
+					'type' => $type,
+					'description' => $this->input->post('description'),
+					'version' => $this->input->post('version'),
+					'level' => $this->input->post('level'),
+					'state' => $state,
+					'owner' => $this->current_user,
+					'last_edit_date' => $tempDate,
+					'memo' => $this->input->post('memo')
+				];
+			}
+			else
+			{
+				$reqData = [
+					'p_id' => $this->current_project,
+					'name' => $this->input->post('name'),
+					'functional' => $this->input->post('functional'),
+					'type' => $type,
+					'description' => $this->input->post('description'),
+					'version' => $this->input->post('version'),
+					'level' => $this->input->post('level'),
+					'state' => $state,
+					'owner' => $this->current_user,
+					'last_edit_date' => $tempDate,
+					'memo' => $this->input->post('memo'),
+					'target' => $this->input->post('target'),
+					'precondition' => $this->input->post('precondition'),
+					'postcondition' => $this->input->post('postcondition'),
+					'main_flow' => $this->input->post('main_flow'),
+					'alter_flow' => $this->input->post('alter_flow')
+				];
+			}
+			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $reqData['p_id']], 1))
+			 {
+					$this->session->set_flashdata('message', "Requirement名稱重複");
+					$this->session->set_flashdata('type', 'danger');
+			}
+			else 
+			{
+					$this->requirement->insert($reqData);
+					$this->session->set_flashdata('message', "Requirement名稱 {$reqData['name']} 新增成功");
+					$this->session->set_flashdata('type', 'success');
 			}
 		}
 		redirect('/requirementmanage');
 	}
 
-	public function verification()
+	public function verification($type)
 	{
-		$this->form_validation->set_rules('name','Name','required');
+		if($type = 'normal' || $type = 'use case')
+		{
+			$this->form_validation->set_rules('name','Name','required');
+			$this->form_validation->set_rules('version','Version','required');
+			$this->form_validation->set_rules('level','Level','required');
+			$this->form_validation->set_rules('description','Description','required');
+		}
+		else if($type = 'use case')
+		{
+			$this->form_validation->set_rules('target','Target','required');
+			$this->form_validation->set_rules('precondition','Precondition','required');
+			$this->form_validation->set_rules('postcondition','Postcondition','required');
+			$this->form_validation->set_rules('main_flow','Main_flow','required');
+			$this->form_validation->set_rules('alter_flow','Alter_flow','required');
+		}
+		else
+		{
+			$this->session->set_flashdata('message', "狀態(Type)異常");
+			$this->session->set_flashdata('type', 'danger');
+		}
 		if (!$this->form_validation->run())
 		{
 			$this->session->set_flashdata('message', "有欄位為空值");
