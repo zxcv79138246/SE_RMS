@@ -250,15 +250,18 @@ class Requirementmanage extends CI_Controller
 	}
 
 	public function search()
-	{	
+	{
+		echo("<script>console.log('test')</script>");
 		if($this->input->post('searchTarget') =='owner')			
-		 	$searchCondition = $this->user->where(['name'=>$this->input->post('searchCondition')])[0]->u_id;
+		 	$searchCondition = $this->user->where(['name'=>$this->input->post('searchCondition_1')])[0]->u_id;
 		else if($this->input->post('searchTarget') =='functional')
-			$searchCondition = $this->input->post('searchCondition') == 'Functional' ? 1 : 0;
-		else
-		 	$searchCondition = $this->input->post('searchCondition');
+			$searchCondition = $this->input->post('searchCondition_2');
+		else if($this->input->post('searchTarget') =='state')
+		 	$searchCondition = $this->input->post('searchCondition_2');
+		else if($this->input->post('searchTarget') =='onwer')
+		 	$searchCondition = $this->input->post('searchCondition_1');
 		$result = $this->requirement->like_search($this->current_project, $searchCondition, $this->input->post('searchTarget'));
-		 echo json_encode($result);
+		echo json_encode($result);
 	}
 
 	public function verification($type)
