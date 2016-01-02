@@ -8,13 +8,12 @@
 			<span class="input-group-btn">
 				<div class = 'select-list'>
 					<select class="form-control" id="searchCondition_2">
-						<option class = "change_opt" value="defult"></option>
 					</select>
 				</div>
 			</span>
 			<span class="input-group-btn">  
 				<div class ="select-list">
-					<select class="form-control" id="searchTarget" >
+					<select class="form-control" id="searchTarget">
 						<option value="name">By Name</option>
 						<option value="functional">By Functional</option>
 						<option value="state">By State</option>
@@ -52,7 +51,7 @@
 			</thead>
 			<tbody>
 				{% for key, requirement in requirements %}
-					<tr class = 'reqRow' reqId = '{{ requirement.r_id }}' owner = ' {{requirement.owner}} ' functional = '{{ requirement.functional }}' state = '{{ requirement.state }}'>
+					<tr class = 'reqRow' reqId = '{{ requirement.r_id }}' owner = '{{ requirement.owner }}' functional = '{{ requirement.functional }}' state = '{{ requirement.state }}'>
 						<td class = 'seqNumber'>{{ key + 1 }}</td>
 						<td>{{ requirement.name }}</td>
 						<td>{{ requirement.level}}</td>

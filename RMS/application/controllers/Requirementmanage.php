@@ -251,16 +251,31 @@ class Requirementmanage extends CI_Controller
 
 	public function search()
 	{
-		echo("<script>console.log('test')</script>");
-		if($this->input->post('searchTarget') =='owner')			
-		 	$searchCondition = $this->user->where(['name'=>$this->input->post('searchCondition_1')])[0]->u_id;
+		$result = [];
+		if($this->input->post('searchTarget') =='owner')
+		{
+			$searchCondition = $this->input->post('searchCondition_1');
+			$users = $this->user->like_search($searchCondition, "name");
+			foreach ($users as $record) {
+				$requirement = $this->requirement->where(['p_id' => $this->current_project, 'owner' => $record->u_id]);
+				$result = array_merge($result, $requirement);
+			}
+		}
 		else if($this->input->post('searchTarget') =='functional')
+		{
 			$searchCondition = $this->input->post('searchCondition_2');
+			$result = $this->requirement->like_search($this->current_project, $searchCondition, $this->input->post('searchTarget'));
+		}
 		else if($this->input->post('searchTarget') =='state')
+		{
 		 	$searchCondition = $this->input->post('searchCondition_2');
-		else if($this->input->post('searchTarget') =='onwer')
+			$result = $this->requirement->like_search($this->current_project, $searchCondition, $this->input->post('searchTarget'));
+		}
+		else if($this->input->post('searchTarget') =='name')
+		{
 		 	$searchCondition = $this->input->post('searchCondition_1');
-		$result = $this->requirement->like_search($this->current_project, $searchCondition, $this->input->post('searchTarget'));
+			$result = $this->requirement->like_search($this->current_project, $searchCondition, $this->input->post('searchTarget'));
+		}
 		echo json_encode($result);
 	}
 

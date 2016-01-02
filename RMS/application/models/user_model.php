@@ -21,4 +21,10 @@ class User_model extends MY_Model {
     		return false;
     	}
     }
+
+    public function like_search($condition, $target)
+    {
+        $query = $this->db->query("SELECT * FROM $this->table WHERE $target LIKE '%$condition%'");
+        return $query->result();
+    }
 }
