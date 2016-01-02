@@ -2,17 +2,17 @@
 
 class Requirement_model extends MY_Model {
 
-	public $table = 'requirement';
+    public $table = 'requirement';
     protected $primaryKey = 'r_id';
 
-	function __construct()		//constructer    繼承MY_Modle的constructer
+    function __construct()      //constructer    繼承MY_Modle的constructer
     {
         parent::__construct();
     }
 
     public function getReqByPID($p_id)
     {
-    	$query = $this->db->get_where($this->table, ['p_id' => $p_id]);
+        $query = $this->db->get_where($this->table, ['p_id' => $p_id]);
         if ($query->result())
             return $query->result();
         else
@@ -27,5 +27,15 @@ class Requirement_model extends MY_Model {
         }
         $query = $this->db->get();
         return ($query->num_rows() + $is_create) > 1;
+    }
+
+    public function like_search($p_id, $condition, $target)
+    {
+        $query = $this->db->query("SELECT A.* 
+                                    FROM 
+                                    (SELECT * FROM $this->table WHERE  `p_id` = $p_id) as A
+                                     WHERE A.{$target} LIKE '%$condition%'   
+                                    ");
+        return $query->result();
     }
 }

@@ -7,6 +7,7 @@ class Requirementmanage extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('user_model', 'user');
 		$this->load->model('Requirement_model', 'requirement');
 		$this->load->model('Testcase_model', 'testcase');
 		$this->load->model('R_and_r_relation_model', 'r_r_relation');
@@ -30,6 +31,13 @@ class Requirementmanage extends CI_Controller
 			redirect('/index');
 		}
 		$requirements = $this->requirement->getReqByPID($this->current_project);
+		if($requirements != false)
+		{
+			for($i=0 ;$i<count($requirements);$i++){
+				$ownerName = $this->user->where(['u_id'=>$requirements[$i]->owner])[0]->name;
+				$requirements[$i]->ownerName = $ownerName;
+			}
+		}
 		//	Functional value is 1, Non-functional value is 0 (in database)
 		$functional_display = ['Non-functional', 'Functional'];
 		$this->twig->display('rms/requirementmanage/requirementmanage.html', compact('requirements', 'functional_display'));
@@ -101,7 +109,7 @@ class Requirementmanage extends CI_Controller
 					'alter_flow' => $this->input->post('alter_flow')
 				];
 			}
-			if($this->requirement->duplicateReqCheck(['name' => $reqData['name'],'p_id' => $reqData['p_id']], 1))
+			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $reqData['p_id']], 1))
 			 {
 					$this->session->set_flashdata('message', "Requirement名稱重複");
 					$this->session->set_flashdata('type', 'danger');
@@ -222,9 +230,9 @@ class Requirementmanage extends CI_Controller
 
 	public function destroy($r_id)
 	{
-		$numberOf_r_r_relations1 = $this->r_r_relation->where(['r_id1' => $r_id]);
-		$numberOf_r_r_relations2 = $this->r_r_relation->where(['r_id2' => $r_id]);
-		$numberOf_r_t_relations = $this->r_t_relation->where(['r_id' => $r_id]);
+		$numberOf_r_r_relations1 = count($this->r_r_relation->where(['r_id1' => $r_id]));
+		$numberOf_r_r_relations2 = count($this->r_r_relation->where(['r_id2' => $r_id]));
+		$numberOf_r_t_relations = count($this->r_t_relation->where(['r_id' => $r_id]));
 		$numberOf_relation = $numberOf_r_r_relations1 + $numberOf_r_r_relations2 + $numberOf_r_t_relations;
 		$response=[];
 		if($numberOf_relation > 0)
@@ -239,6 +247,18 @@ class Requirementmanage extends CI_Controller
 			$response['r_id']=$r_id;
 		}
 		echo json_encode($response);
+	}
+
+	public function search()
+	{	
+		if($this->input->post('searchTarget') =='owner')			
+		 	$searchCondition = $this->user->where(['name'=>$this->input->post('searchCondition')])[0]->u_id;
+		else if($this->input->post('searchTarget') =='functional')
+			$searchCondition = $this->input->post('searchCondition') == 'Functional' ? 1 : 0;
+		else
+		 	$searchCondition = $this->input->post('searchCondition');
+		$result = $this->requirement->like_search($this->current_project, $searchCondition, $this->input->post('searchTarget'));
+		 echo json_encode($result);
 	}
 
 	public function verification($type)
