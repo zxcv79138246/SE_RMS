@@ -29,14 +29,14 @@
 			</thead>
 			<tbody>
 			{% for key,testcase in testcases %}
-				<tr>
-					<td>{{key+1}}</td>
+				<tr class="testcaseRow" testcaseID="{{testcase.t_id}}">
+					<td class="seqNumber">{{key+1}}</td>
 					<td>{{ testcase.name }}</td>
 					<td>{{ testcase.description }}</td>
 					<td>{{ testcase.owner }}</td>
 					<td><a data-url="{{ site_url(['/testcasemanage/show',testcase.t_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
 					<td><a data-url="{{ site_url(['/testcasemanage/edit',testcase.t_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Edit</a></td>
-					<td><a href="{{ site_url(['/testcasemanage/destroy',testcase.t_id]) }}" class="btn btn-danger btn-xs">Remove</a></td>					
+					<td><a data-url="{{ site_url(['/testcasemanage/destroy',testcase.t_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a></td>					
 				</tr>
 			{% endfor %}
 			</tbody>

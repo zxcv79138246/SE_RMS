@@ -30,6 +30,8 @@ class Requirementmanage extends CI_Controller
 		$requirements = $this->requirement->getReqByPID($p_id);
 		//	Functional value is 1, Non-functional value is 0 (in database)
 		$functional_display = ['Non-functional', 'Functional'];
+
+
 		$this->twig->display('rms/requirementmanage/requirementmanage.html', compact('requirements', 'functional_display'));
 	}
 

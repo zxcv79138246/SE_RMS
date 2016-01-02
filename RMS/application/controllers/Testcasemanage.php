@@ -2,13 +2,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Testcasemanage extends CI_Controller
 {
-	private $currentProject = 135;
+	private $currentProject =0;
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('testcase_model','testcase');
 		$this->load->model('R_and_t_relation_model','RTrelation');
 		$this->load->model('Requirement_model','requirement');
+		$this->currentProject = $this->session->userdata('p_id');
 	}
 
 	public function selectProject($p_id)
@@ -58,18 +59,20 @@ class Testcasemanage extends CI_Controller
 	public function destroy($t_id)
 	{	
 		$relationCounts =count($this->RTrelation->where(['t_id'=>$t_id])); 
+		$response=[];
 		if( $relationCounts > 0 )
 		{
-
-			$this->session->set_flashdata('message',"尚有 {$relationCounts} 個關聯存在");
-			$this->session->set_flashdata('type','warning');
+			$response['message'] = "尚有 {$relationCounts} 個關聯存在";
+			$response['messageType'] = 'warning';
 		}
 		else if ($destoried = $this->testcase->destory(['t_id'=>$t_id]))
-		{
-			$this->session->set_flashdata('message',"{$destoried[0]->name} 已被刪除");
-			$this->session->set_flashdata('type','warning');
+		{	
+			$response['message'] = "{$destoried[0]->name} 已被刪除";
+			$response['messageType'] = 'warning';			
+			$response['t_id']=$t_id;
 		}
-		redirect('/testcasemanage');
+		echo json_encode($response);
+
 	}
 
 	public function show($t_id)

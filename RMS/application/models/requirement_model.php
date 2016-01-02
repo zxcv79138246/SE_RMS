@@ -18,4 +18,5 @@ class Requirement_model extends MY_Model {
         else
             return false;
     }
+
 }
