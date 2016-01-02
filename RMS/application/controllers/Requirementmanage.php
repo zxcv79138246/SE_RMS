@@ -47,7 +47,7 @@ class Requirementmanage extends CI_Controller
 			$state = '待審核';
 			$tempDate = date('Y-m-d H:i:s');
 			$reqData;
-			if($type = 'normal')
+			if($type == 'normal')
 			{
 				$reqData = [
 					'p_id' => $this->current_project,
@@ -130,25 +130,28 @@ class Requirementmanage extends CI_Controller
 			$relationNames['name'] = $testcases->name;
 			$r_t_relationList[count($r_t_relationList)] = $relationNames;
 		}
-		$this->twig->display('rms/requirementmanage/info_normal.html', compact('requirement', 'r_r_relationList1', 'r_r_relationList2', 'r_t_relationList', 'functional_display'));
+		if($requirement->type == 'normal')
+			$this->twig->display('rms/requirementmanage/info_normal.html', compact('requirement', 'r_r_relationList1', 'r_r_relationList2', 'r_t_relationList', 'functional_display'));
+		else
+			$this->twig->display('rms/requirementmanage/info_usecase.html', compact('requirement', 'r_r_relationList1', 'r_r_relationList2', 'r_t_relationList', 'functional_display'));
 	}
 
 	public function verification($type)
 	{
-		if($type = 'normal' || $type = 'use case')
+		$this->form_validation->set_rules('name','Name','required');
+		$this->form_validation->set_rules('version','Version','required');
+		$this->form_validation->set_rules('level','Level','required');
+		$this->form_validation->set_rules('description','Description','required');
+		if($type == 'normal')
 		{
-			$this->form_validation->set_rules('name','Name','required');
-			$this->form_validation->set_rules('version','Version','required');
-			$this->form_validation->set_rules('level','Level','required');
-			$this->form_validation->set_rules('description','Description','required');
 		}
-		else if($type = 'use case')
+		else if($type == 'usecase')
 		{
 			$this->form_validation->set_rules('target','Target','required');
 			$this->form_validation->set_rules('precondition','Precondition','required');
 			$this->form_validation->set_rules('postcondition','Postcondition','required');
-			$this->form_validation->set_rules('main_flow','Main_flow','required');
-			$this->form_validation->set_rules('alter_flow','Alter_flow','required');
+			$this->form_validation->set_rules('main_flow','Main flow','required');
+			$this->form_validation->set_rules('alter_flow','Alter flow','required');
 		}
 		else
 		{
