@@ -153,7 +153,7 @@ class Requirementmanage extends CI_Controller
 			$this->twig->display('rms/requirementmanage/info_usecase.html', compact('requirement', 'r_r_relationList1', 'r_r_relationList2', 'r_t_relationList', 'functional_display'));
 	}
 
-	public function update($type)
+	public function update($type, $r_id)
 	{
 		if($this->verification($type))
 		{
@@ -163,7 +163,6 @@ class Requirementmanage extends CI_Controller
 			if($type == 'normal')
 			{
 				$reqData = [
-					'p_id' => $this->current_project,
 					'name' => $this->input->post('name'),
 					'functional' => $this->input->post('functional'),
 					'type' => $type,
@@ -179,7 +178,6 @@ class Requirementmanage extends CI_Controller
 			else
 			{
 				$reqData = [
-					'p_id' => $this->current_project,
 					'name' => $this->input->post('name'),
 					'functional' => $this->input->post('functional'),
 					'type' => $type,
@@ -197,15 +195,15 @@ class Requirementmanage extends CI_Controller
 					'alter_flow' => $this->input->post('alter_flow')
 				];
 			}
-			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $reqData['p_id']], 0))
-			 {
+			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $this->current_project], 1))
+			{
 					$this->session->set_flashdata('message', "Requirement名稱重複");
 					$this->session->set_flashdata('type', 'danger');
 			}
 			else 
 			{
-					$this->requirement->update($reqData);
-					$this->session->set_flashdata('message', "Requirement名稱 {$reqData['name']} 新增成功");
+					$this->requirement->update($reqData, ['r_id' => $r_id]);
+					$this->session->set_flashdata('message', "Requirement名稱 {$reqData['name']} 修改成功");
 					$this->session->set_flashdata('type', 'success');
 			}
 		}
