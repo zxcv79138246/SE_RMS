@@ -30,17 +30,23 @@
 					<th>Functional</th>
 					<th>Description</th>
 					<th>State</th>
+					<th>查看</th>
+					<th>Edit</th>
+					<th>Remove</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for key, requirement in requirements %}
-					<tr>
+					<tr >
 						<td>{{ key + 1 }}</td>
 						<td>{{ requirement.name }}</td>
 						<td>{{ requirement.level}}</td>
 						<td>{{ functional_display[requirement.functional] }}</td>
 						<td>{{ requirement.description }}</td>
 						<td>{{ requirement.state }}</td>
+						<td><a data-url="{{ site_url(['/requirementmanage/info',requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
+						<td><a data-url="{{ site_url(['/requirementmanage/edit',requirement.r_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Edit</a></td>
+						<td><a data-url="{{ site_url(['/requirementmanage/destroy',requirement.r_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a></td>
 					</tr>
 				{% endfor %}
 			</tbody>

@@ -8,6 +8,9 @@ class Requirementmanage extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('Requirement_model', 'requirement');
+		$this->load->model('Testcase_model', 'testcase');
+		$this->load->model('R_and_r_relation_model', 'r_r_relation');
+		$this->load->model('R_and_t_relation_model', 'r_t_relation');
 		$this->current_user = $this->session->userdata('u_id');
 		$this->current_project = $this->session->userdata('p_id');
 	}
@@ -94,6 +97,40 @@ class Requirementmanage extends CI_Controller
 			}
 		}
 		redirect('/requirementmanage');
+	}
+
+	public function info($r_id)
+	{
+		$requirement = $this->requirement->where(['r_id' => $r_id])[0];
+		$functional_display = ['Non-functional', 'Functional'];
+		$r_r_relations1 = $this->r_r_relation->where(['r_id1' => $r_id]);
+		$r_r_relations2 = $this->r_r_relation->where(['r_id2' => $r_id]);
+		$r_t_relations = $this->r_t_relation->where(['r_id' => $r_id]);
+		$r_r_relationList1 = [];
+		$r_r_relationList2 = [];
+		$r_t_relationList = [];
+		foreach($r_r_relations1 as $relation)
+		{
+			$relationNames =[];
+			$requirements = $this->requirement->where(['r_id' => $relation->r_id2])[0];
+			$relationNames['name'] = $requirements->name;
+			$r_r_relationList1[count($r_r_relationList1)] = $relationNames;
+		}
+		foreach($r_r_relations2 as $relation)
+		{
+			$relationNames =[];
+			$requirements = $this->requirement->where(['r_id' => $relation->r_id1])[0];
+			$relationNames['name'] = $requirements->name;
+			$r_r_relationList2[count($r_r_relationList2)] = $relationNames;
+		}
+		foreach($r_t_relations as $relation)
+		{
+			$relationNames =[];
+			$testcases = $this->testcase->where(['t_id' => $relation->t_id])[0];
+			$relationNames['name'] = $testcases->name;
+			$r_t_relationList[count($r_t_relationList)] = $relationNames;
+		}
+		$this->twig->display('rms/requirementmanage/info_normal.html', compact('requirement', 'r_r_relationList1', 'r_r_relationList2', 'r_t_relationList', 'functional_display'));
 	}
 
 	public function verification($type)
