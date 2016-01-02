@@ -7,9 +7,9 @@
   </ul>
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" action="{{ site_url(['requirementmanage/storeNormal']) }}">
+    <div role="tabpanel" class="tab-pane active" id = 'normal'>
     	<div class="panel-body">
-	    	<form class = 'form-horizontal' role = 'form' method  = 'POST'>
+	    	<form class = 'form-horizontal' role = 'form' method  = 'POST' action = '{{site_url(['requirementmanage/store', 'normal'])}}'>
 			<!--	Name    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Name</label>
@@ -28,7 +28,7 @@
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Functional</label>
 				<div class = 'col-md-6'>
-					<select class = 'form-control' id = 'functional'>
+					<select class = 'form-control' name = 'functional'>
 						<option value = '1'>Functional</option>
 						<option value = '0'>Non-functional</option>
 					</select>
@@ -55,14 +55,14 @@
 					<textarea class="form-control" class = 'form-control' name = 'memo'></textarea>
 				</div>
 			</div>
-			</form>
 			<button type="submit" class="btn btn-primary col-md-offset-10">NEW</button>
+			</form>
 		</div>
     </div>
 
     <div role="tabpanel" class="tab-pane" id="use_case">
     	<div class="panel-body">
-	    	<form class = 'form-horizontal' role = 'form' method  = 'POST' action="{{ site_url(['requirementmanage/storeUsecase']) }}">
+	    	<form class = 'form-horizontal' role = 'form' method  = 'POST' action = '{{site_url(['requirementmanage/store', 'use case'])}}'>
 			<!--	Name    -->
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Name</label>
@@ -81,7 +81,7 @@
 			<div class = 'form-group'>
 				<label class = 'col-md-3' control-label>Functional</label>
 				<div class = 'col-md-6'>
-					<select class = 'form-control' id = 'functional'>
+					<select class = 'form-control' name = 'functional'>
 						<option value = '1'>Functional</option>
 						<option value = '0'>Non-functional</option>
 					</select>
@@ -143,8 +143,8 @@
 					<textarea class="form-control" class = 'form-control' name = 'alter_flow'></textarea>
 				</div>
 			</div>
-			</form>
 			<button type="submit" class="btn btn-primary col-md-offset-10">NEW</button>
+			</form>
 		</div>
     </div>
   </div>

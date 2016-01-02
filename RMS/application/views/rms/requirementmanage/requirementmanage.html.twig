@@ -35,7 +35,7 @@
 			<tbody>
 				{% for key, requirement in requirements %}
 					<tr>
-						<td>{{ key }}</td>
+						<td>{{ key + 1 }}</td>
 						<td>{{ requirement.name }}</td>
 						<td>{{ requirement.level}}</td>
 						<td>{{ functional_display[requirement.functional] }}</td>

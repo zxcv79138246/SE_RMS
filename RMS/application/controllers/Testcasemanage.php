@@ -9,6 +9,7 @@ class Testcasemanage extends CI_Controller
 		$this->load->model('testcase_model','testcase');
 		$this->load->model('R_and_t_relation_model','RTrelation');
 		$this->load->model('Requirement_model','requirement');
+		$this->load->model('User_model','user');
 		$this->currentProject = $this->session->userdata('p_id');
 	}
 
@@ -22,6 +23,10 @@ class Testcasemanage extends CI_Controller
 	public function index()
 	{
 		$testcases = $this->testcase->where(['p_id'=>$this->currentProject]);
+		for($i=0 ;$i<count($testcases);$i++){
+			$ownerName = $this->user->where(['u_id'=>$testcases[$i]->owner])[0]->name;
+			$testcases[$i]->ownerName = $ownerName;
+		}		
 		$this->twig->display("rms/testcasemanage/testcasemanage.html",compact("testcases"));
 	}
 
@@ -79,13 +84,15 @@ class Testcasemanage extends CI_Controller
 	{
 		$testcase = $this->testcase->where(['t_id'=>$t_id])[0];
 		$relations = $this->RTrelation->where(['t_id'=>$t_id]);
-		$relationNames =[];
+		$relationList = [];
 		foreach($relations as $relation)
 		{
+			$relationNames =[];
 			$requirement = $this->requirement->where(['r_id'=>$relation->r_id])[0];
 			$relationNames['name'] = $requirement->name;
+			$relationList[count($relationList)] = $relationNames;
 		}
-		$this->twig->display("rms/testcasemanage/show.html",compact('testcase','relationNames'));	
+		$this->twig->display("rms/testcasemanage/show.html",compact('testcase','relationList'));	
 	}
 
 	public function edit($t_id)
@@ -120,7 +127,11 @@ class Testcasemanage extends CI_Controller
 
 	public function search()
 	{	
-		 $result=$this->testcase->searchTestcase($this->currentProject,$this->input->post('searchCondition'));
+		if($this->input->post('searchTarget') =='owner')			
+		 	$searchCondition =$this->user->where(['name'=>$this->input->post('searchCondition')])[0]->u_id;
+		else if($this->input->post('searchTarget') =='name')
+		 	$searchCondition = $this->input->post('searchCondition');
+		$result = $this->testcase->searchTestcase($this->currentProject,$searchCondition ,$this->input->post('searchTarget'));
 		 echo json_encode($result);
 	}
 } 
