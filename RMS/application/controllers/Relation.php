@@ -147,6 +147,51 @@ class Relation extends CI_Controller
 		$this->twig->display('rms/relation/del_rt.html',compact('requirements','testcases','relReqs','relTests','req','test'));
 	}
 
+	public function delReqRelation()
+	{
+		$r_id = $this->input->get('r_id');
+		$t_id = $this->input->get('t_id');
+		$delR_ids = $this->input->get('requirement_to[]');
+		$delT_ids = $this->input->get('test_to[]');;
+		$is_del=0;
+		// var_dump($t_id);
+		// exit;
+		if ($r_id)
+		{
+			if ($delR_ids!=null)
+			{
+				if ($this->r_r->destoryRelation($r_id,$delR_ids)){
+					$is_del=1;
+				}
+			}
+
+			if ($delT_ids!==null)
+			{
+				if ($this->r_t->destoryReqRelation($r_id,$delT_ids)){
+					$is_del=1;
+				}
+			}
+		}
+		
+		if ($t_id)
+		{
+			if ($delR_ids!==null)
+			{
+				if ($this->r_t->destoryTestRelation($t_id,$delR_ids)){
+					$is_del=1;
+				}
+			}
+		}
+
+		if ($is_del)
+		{
+			$this->session->set_flashdata('message','刪除關聯成功');
+			$this->session->set_flashdata('type','warning');
+		}
+
+		redirect('/relation/deleteRelPage');
+	}
+
 	public function searchReqRel()
 	{
 		$p_id = $this->session->userdata('p_id');

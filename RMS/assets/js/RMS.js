@@ -1,7 +1,7 @@
 $(function(){
 	$('.projectDescript').each(function(index, el) {				//處理project描述過長
 		$(this).attr("title", '');
-		var descriptLength = 90;
+		var descriptLength = 70;
         if ($(this).text().length > descriptLength) {
             $(this).attr("title", $(this).text());
             var text = $(this).text().substring(0, descriptLength - 1) + "...";

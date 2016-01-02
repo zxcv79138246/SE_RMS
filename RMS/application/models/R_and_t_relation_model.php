@@ -49,4 +49,32 @@ class R_and_T_Relation_model extends MY_Model{
     	$query=$this->db->get();
     	return $query->result();
     }
+
+    public function destoryReqRelation($r_id,$delT_ids)
+    {
+    	$sql = 'delete ';
+    	$sql .= "from {$this->table} ";
+    	$where = [];
+    	foreach ($delT_ids as $key => $delT_id) {
+    		$where[] = "t_id = {$delT_id}";
+    	}
+    	$sql .= "where ( r_id = {$r_id} and (" . implode(' or ', $where) . ') ) ';
+    	$query = $this->db->query($sql);
+    	return $query;
+    }
+
+    public function destoryTestRelation($t_id,$delR_ids)
+    {
+    	$sql = 'delete ';
+    	$sql .= "from {$this->table} ";
+    	$where = [];
+    	foreach ($delR_ids as $key => $delR_id) {
+    		$where[] = "r_id = {$delR_id}";
+    	}
+    	$sql .= "where ( t_id = {$t_id} and (" . implode(' or ', $where) . ') ) ';
+    	$query = $this->db->query($sql);
+    	return $query;
+    }
+
+
 }

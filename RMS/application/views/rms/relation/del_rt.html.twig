@@ -1,5 +1,6 @@
 {% extends 'layout/layout.html.twig' %}
 {% block content %}
+	
 	<div class="row form-group">
 		<div class = "col-md-4">
 			<form class ="form-horizontal" role="form" action="{{ site_url('relation/searchReqRel') }}" method="get">
@@ -38,25 +39,28 @@
 			</form>
 		</div>
 	</div>
-	<div class="row form-group">
-		<div class = "col-md-6">
-		</div>
-		<div class="col-md-12">
-			<h3 class="text-center relative">
-			需求與TestCase關聯刪除
-			<div class="abs-right">
-				<a href="{{ site_url('relation/reqAndReqPqge') }}" class="btn btn-info">需求＆需求</a>
-				<a href="{{site_url('/relation')}}" class="btn btn-success">需求＆TestCase</a>
+	<form role="form" action="{{ site_url('relation/delReqRelation') }}" method="get">
+		<input value="{{req}}" id ="dataReq" name="r_id">
+		<input value="{{test}}" id ="dataTest" name="t_id">
+		<div class="row form-group">
+			<div class = "col-md-6">
 			</div>
+			<div class="col-md-12">
+				<h3 class="text-center relative">
+				需求與TestCase關聯刪除
+				<div class="abs-right">
+					<a href="{{ site_url('relation/reqAndReqPqge') }}" class="btn btn-info">需求＆需求</a>
+					<a href="{{site_url('/relation')}}" class="btn btn-success">需求＆TestCase</a>
+				</div>
 
-			</h3>
+				</h3>
+			</div>
 		</div>
-	</div>
-	<form role="form" action="storeRT" method="post">
+	
 		<div class="row form-group">
 			<div class="col-md-6">
 				<div class="row">
-					<div class="col-md-5">
+					<div class="col-md-5 rel-btn">
 						<h4 class="text-center">相關連需求列表</h4>
 						<select name="requirement_form[]" id="requirement" class="form-control" size="20" multiple="multiple">
 							{% for key,relReq in relReqs %}	
@@ -89,7 +93,7 @@
 						<select name="test_to[]" id="test_to" class="form-control" size="20" multiple="multiple"></select>
 					</div>
 				
-					<div class="col-md-2">
+					<div class="col-md-2 rel-btn">
 						<br /><br />
 						<button type="button" id="test_undo" class="btn btn-primary btn-block">上一步</button>
 						<button type="button" id="test_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
@@ -121,8 +125,26 @@
 {% block script %}
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
+		$('#test').multiselect({
+			beforeMoveToRight: function ($left, $right, $options) {
+				var dfd = jQuery.Deferred();
+				dfd.resolve(true);
+				return dfd.promise();
+			}
+		});
+
+		$('#requirement').multiselect({
+			beforeMoveToRight: function ($left, $right, $options) {
+				var dfd = jQuery.Deferred();
+				dfd.resolve(true);
+				return dfd.promise();
+			}
+		});
+
 		$('#req-{{req}}').attr('selected','selected');
 		$('#test-{{test}}').attr('selected','selected');
+		$('#dataReq').hide();
+		$('#dataTest').hide();
 	});
 </script>
 
