@@ -15,6 +15,18 @@ class Requirementmanage extends CI_Controller
 	{
 		$u_id = $this->session->userdata('u_id');
 		$p_id = $this->session->userdata('p_id');
+		if(is_null($u_id))
+		{
+			$this->session->set_flashdata('message', '尚未登入');
+			$this->session->set_flashdata('type', 'danger');
+			redirect('/index');
+		}
+		if(is_null($p_id))
+		{
+			$this->session->set_flashdata('message', '尚未選擇專案');
+			$this->session->set_flashdata('type', 'danger');
+			redirect('/index');
+		}
 		$requirements = $this->requirement->getReqByPID($p_id);
 		//	Functional value is 1, Non-functional value is 0 (in database)
 		$functional_display = ['Non-functional', 'Functional'];

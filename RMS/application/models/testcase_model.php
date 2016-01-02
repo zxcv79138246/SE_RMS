@@ -27,4 +27,13 @@ class Testcase_model extends MY_Model {
             return false;
     }
 
+    public function searchTestcase($p_id , $likeCondition)
+    {
+        $query = $this->db->query("SELECT A.* 
+                                    FROM 
+                                    (SELECT * FROM $this->table WHERE  `p_id` = $p_id) as A
+                                     WHERE A.`name` LIKE '%$likeCondition%'   
+                                    ");
+        return $query->result();
+    }
 }
