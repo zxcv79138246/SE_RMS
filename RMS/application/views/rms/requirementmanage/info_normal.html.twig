@@ -1,0 +1,71 @@
+<!--	Name    -->
+<div class = 'form-group row'>
+	<label class = 'col-md-3' control-label>Name</label>
+	<div class = 'col-md-6'>
+		<p class="form-control">{{ requirement.name }}</p>
+	</div>
+</div>
+<!--	Version    -->
+<div class = 'form-group row'>
+	<label class = 'col-md-3' control-label>Version</label>
+	<div class = 'col-md-6'>
+		<p class="form-control">{{ requirement.version }}</p>
+	</div>
+</div>
+<!--	Type    -->
+<div class = 'form-group row'>
+	<label class = 'col-md-3' control-label>Type</label>
+	<div class = 'col-md-6'>
+		<p class="form-control">{{ requirement.type }}</p>
+	</div>
+</div>
+<!--	State    -->
+<div class = 'form-group row'>
+	<label class = 'col-md-3' control-label>State</label>
+	<div class = 'col-md-6'>
+		<p class="form-control">{{ requirement.state }}</p>
+	</div>
+</div>
+<!--	Functional    -->
+<div class = 'form-group row'>
+	<label class = 'col-md-3' control-label>Functional</label>
+	<div class = 'col-md-6'>
+		<p class="form-control">{{ functional_display[requirement.functional] }}</p>
+	</div>
+</div>
+<!--	Level    -->
+<div class = 'form-group row'>
+	<label class = 'col-md-3' control-label>Level</label>
+	<div class = 'col-md-6'>
+		<p class="form-control">{{ requirement.level }}</p>
+	</div>
+</div>
+<!--	Description    -->
+<div class = 'form-group row'>
+	<label class = 'col-md-3' control-label>Description</label>
+	<div class = 'col-md-8'>
+		<textarea class="form-control" readonly="true">{{ requirement.description }}</textarea>
+	</div>
+</div>
+<!--	Memo    -->
+<div class = 'form-group row'>
+	<label class = 'col-md-3' control-label>Memo</label>
+	<div class = 'col-md-8'>
+		<textarea class="form-control" readonly="true">{{ requirement.memo }}</textarea>
+	</div>
+</div>
+<div class = "form-group row">
+	<label class="col-md-3 control-label" >關聯Requirement</label>	
+	{% for relation in r_r_relationList1%}
+		<a class ="btn btn-xs btn-default">{{relation.name}}</a>
+	{% endfor %}
+	{% for relation in r_r_relationList2%}
+		<a class ="btn btn-xs btn-default">{{relation.name}}</a>
+	{% endfor %}
+</div>	
+<div class = "form-group row">
+	<label class="col-md-3 control-label" >關聯Test case</label>	
+	{% for relation in r_t_relationList%}
+		<a class ="btn btn-xs btn-default">{{relation.name}}</a>
+	{% endfor %}
+</div>
