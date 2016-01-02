@@ -82,7 +82,14 @@ class Usermanage extends CI_Controller
 				'password' => $this->input->post('password'),
 				'priority' => $this->input->post('priority'),
 			];
-			if (!$this->user->duplicateCheck(['email'=>$userdata['email']], 0)) 
+
+			$nowfield = $this->user->find($u_id);
+			$nameChange=0;
+			if ($userdata['email']!=$nowfield->email){
+				$nameChange = 1;
+			}
+
+			if (!$this->user->duplicateCheck(['email'=>$userdata['email']], $nameChange)) 
 			{
 				if ($users = $this->user->update($userdata,['u_id' => $u_id]))
 				{

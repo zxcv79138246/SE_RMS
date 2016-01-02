@@ -137,9 +137,10 @@ class Projectmanage extends CI_Controller
 				'name' => $this->input->post('name'),
 				'description' => $this->input->post('description'),
 			];
+			
 			$nowfield = $this->project->find($p_id);
 			$nameChange=0;
-			if ($projectData['name']!=$nowfield['name']){
+			if ($projectData['name'] != $nowfield->name){
 				$nameChange = 1;
 			}
 			if (!$this->project->duplicateCheck(['name'=>$projectData['name']], $nameChange)) 
