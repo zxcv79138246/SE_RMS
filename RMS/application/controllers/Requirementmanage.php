@@ -101,7 +101,7 @@ class Requirementmanage extends CI_Controller
 					'alter_flow' => $this->input->post('alter_flow')
 				];
 			}
-			if($this->requirement->duplicateReqCheck(['name' => $reqData['name'],'p_id' => $reqData['p_id']], 1))
+			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $reqData['p_id']], 1))
 			 {
 					$this->session->set_flashdata('message', "Requirement名稱重複");
 					$this->session->set_flashdata('type', 'danger');
@@ -222,9 +222,9 @@ class Requirementmanage extends CI_Controller
 
 	public function destroy($r_id)
 	{
-		$numberOf_r_r_relations1 = $this->r_r_relation->where(['r_id1' => $r_id]);
-		$numberOf_r_r_relations2 = $this->r_r_relation->where(['r_id2' => $r_id]);
-		$numberOf_r_t_relations = $this->r_t_relation->where(['r_id' => $r_id]);
+		$numberOf_r_r_relations1 = count($this->r_r_relation->where(['r_id1' => $r_id]));
+		$numberOf_r_r_relations2 = count($this->r_r_relation->where(['r_id2' => $r_id]));
+		$numberOf_r_t_relations = count($this->r_t_relation->where(['r_id' => $r_id]));
 		$numberOf_relation = $numberOf_r_r_relations1 + $numberOf_r_r_relations2 + $numberOf_r_t_relations;
 		$response=[];
 		if($numberOf_relation > 0)

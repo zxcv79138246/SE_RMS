@@ -37,8 +37,8 @@
 			</thead>
 			<tbody>
 				{% for key, requirement in requirements %}
-					<tr >
-						<td>{{ key + 1 }}</td>
+					<tr class = 'reqRow' reqId = '{{ requirement.r_id }}'>
+						<td class = 'seqNumber'>{{ key + 1 }}</td>
 						<td>{{ requirement.name }}</td>
 						<td>{{ requirement.level}}</td>
 						<td>{{ functional_display[requirement.functional] }}</td>
