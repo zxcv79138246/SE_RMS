@@ -47,9 +47,11 @@ $(function (){
 			data:
 			{
 				searchCondition: $('#searchCondition').val(),
+				searchTarget: $('#searchTarget').val(),
 			},
 			success:function(response)
-			{		
+			{	
+				console.log(response);
 				for(var i = 0; i<  $(".testcaseRow").length ;i++)
 				{
 					var currentRow = $(".testcaseRow")[i];
@@ -58,7 +60,9 @@ $(function (){
 				$.each(response,function(index,value){
 					$.each($(".testcaseRow"),function(rowIndex,rowValue)
 					{
-						if($(rowValue).attr('testcaseid')==value['t_id'])
+						if($(rowValue).attr('testcaseid')==value['t_id']&& $('#searchTarget').val()=='name')
+							$(rowValue).show();
+						if($(rowValue).attr('owner')==value['owner'] && $('#searchTarget').val()=='owner')
 							$(rowValue).show();
 					})
 				})

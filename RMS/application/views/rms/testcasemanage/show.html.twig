@@ -30,7 +30,7 @@
 </div>	
 <div class = "form-group row">
 	<label class="col-md-2 control-label" >關聯需求</label>	
-	{% for relation in relationNames%}
-		<p>{{relationNames.name}}</p>
+	{% for relation in relationList%}
+		<a class ="btn btn-xs btn-default">{{relation.name}}</a>
 	{% endfor %}
 </div>	
