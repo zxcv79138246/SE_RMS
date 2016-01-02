@@ -28,4 +28,14 @@ class Requirement_model extends MY_Model {
         $query = $this->db->get();
         return ($query->num_rows() + $is_create) > 1;
     }
+
+    public function like_search($p_id, $condition, $target)
+    {
+        $query = $this->db->query("SELECT A.* 
+                                    FROM 
+                                    (SELECT * FROM $this->table WHERE  `p_id` = $p_id) as A
+                                     WHERE A.{$target} LIKE '%$condition%'   
+                                    ");
+        return $query->result();
+    }
 }

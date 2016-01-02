@@ -1,15 +1,30 @@
 {% extends 'layout/layout.html.twig' %}
 {% block content %}
 <div class = "row form-group">
-	<!--	Search Block-->
-	<div class = "col-md-3">
-		<form class = "form" role = "search" action = "" method = "get">
-			<div class = "input-group">
-				<input type = "text" class = "form-control" placeholder = "Search" name = "search">
-				<span class = "input-group-btn">
-				<button class = "btn btn-default" type = "submit">Search</button>
-			</div>
-		</form>
+	<div class="col-md-4">
+		<!--	Search Block-->
+		<div class="input-group">
+			<input class="form-control" id="searchCondition_1" type="text" placeholder="Search" name="search">
+			<span class="input-group-btn">
+				<div class = 'nput-group-btn'>
+					<select class="form-control" id="searchCondition_2">
+						<option id = 'select_1'><p id = 'opt_display_1'></p></option>
+						<option id = 'select_2'><p id = 'opt_display_2'></p></option>
+					</select>
+				</div>
+			</span>
+			<span class="input-group-btn">					   
+				<div class ="select-list">
+					<select class="form-control" id="searchTarget" >
+						<option value="name">By Name</option>
+						<option id = 'function_opt' value="functional">By Functional</option>
+						<option id = 'state_opt' value="state">By State</option>
+						<option value="owner">By Owner</option>
+					</select>
+				</div>
+				<a class="btn-search btn btn-default" type="submit">Search</a>
+			</span>
+		</div>
 	</div>
 	<!--	new requirement btn-->
 	<div class="col-md-offset-8 col-md-1 pull-right">
@@ -30,6 +45,7 @@
 					<th>Functional</th>
 					<th>Description</th>
 					<th>State</th>
+					<th>Owner</th>
 					<th>查看</th>
 					<th>Edit</th>
 					<th>Remove</th>
@@ -37,13 +53,14 @@
 			</thead>
 			<tbody>
 				{% for key, requirement in requirements %}
-					<tr class = 'reqRow' reqId = '{{ requirement.r_id }}'>
+					<tr class = 'reqRow' reqId = '{{ requirement.r_id }}' owner = ' {{requirement.owner}} ' functional = '{{ requirement.functional }}' state = '{{ requirement.state }}'>
 						<td class = 'seqNumber'>{{ key + 1 }}</td>
 						<td>{{ requirement.name }}</td>
 						<td>{{ requirement.level}}</td>
 						<td>{{ functional_display[requirement.functional] }}</td>
 						<td>{{ requirement.description }}</td>
 						<td>{{ requirement.state }}</td>
+						<td>{{ requirement.ownerName }}</td>
 						<td><a data-url="{{ site_url(['/requirementmanage/info',requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
 						<td><a data-url="{{ site_url(['/requirementmanage/edit',requirement.r_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Edit</a></td>
 						<td><a data-url="{{ site_url(['/requirementmanage/destroy',requirement.r_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a></td>
