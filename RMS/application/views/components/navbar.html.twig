@@ -13,12 +13,12 @@
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav subsystem">
-				<li id = 'project_sub'><a href="{{ site_url('/projectmanage') }}">專案</a></li>
-				<li id = 'member_sub'><a href="{{ site_url('/usermanage') }}">會員管理</a></li>
-				<li id = 'req_sub'><a href="{{ site_url('/requirementmanage') }}">需求管理</a></li>
-				<li id = 'test_sub'><a href="{{ site_url('/testcasemanage') }}">TestCase</a></li>
-				<li id = 'relation_sub'><a href="{{ site_url('/relation') }}">關聯管理</a></li>
-				<li id = 'trace_sub'><a >追朔矩陣</a></li>
+				<li id='project_sub'><a href="{{ site_url('/projectmanage') }}">專案</a></li>
+				<li id='member_sub'><a href="{{ site_url('/usermanage') }}">會員管理</a></li>
+				<li id='req_sub'><a href="{{ site_url('/requirementmanage') }}">需求管理</a></li>
+				<li id='test_sub'><a href="{{ site_url('/testcasemanage') }}">TestCase</a></li>
+				<li id='relation_sub'><a href="{{ site_url('/relation') }}">關聯管理</a></li>
+				<li id='trace_sub'><a href="{{ site_url('/traceabilitymatrix') }}">追朔矩陣</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				{% if session.userdata.name %}
@@ -67,16 +67,21 @@
 
 <script>
 
-	if(window.location.pathname == '/RMS/index.php/index' || window.location.pathname == '/RMS/')
+	if(window.location.pathname == '/RMS/index.php/index' || window.location.pathname == '/RMS/')	//設定subsystem index
 	{
 		localStorage.setItem("subsystem", "-1");
+	}
+
+	if(window.location.pathname == '/RMS/index.php/requirementmanage')
+	{
+		localStorage.setItem("subsystem", "2");
 	}
 
 	$('.RMS_icon').click(function(event) {
 		localStorage.setItem("subsystem", "-1");
 	});
 
-	$('#project_sub').click(function(event) {		//設定subsystem index
+	$('#project_sub').click(function(event) {		
 		localStorage.setItem("subsystem", "0");
 	});
 
