@@ -37,26 +37,28 @@ class Testcasemanage extends CI_Controller
 
 	public function store()
 	{
-		$data =
-		[
-			'name' => $this->input->post('testcaseName'),
-			'description' => $this->input->post('testcaseDescription'),
-			'input_data' => $this->input->post('testcaseInput_data'),
-			'expected_results' => $this->input->post('testcaseExpected_results'),
-			'owner'	=> $this->session->userdata('u_id'),
-			'p_id'	=> $this->currentProject,
-			'attachment' => $this->input->post('testcaseAttachment'),
-		];
-		if($this->testcase->duplicateCheck(['name'=>$data['name'],'p_id'=>$data['p_id']],1))
-		 {
-				$this->session->set_flashdata('message', "Testcase名稱重複");
-				$this->session->set_flashdata('type', 'danger');
-		}
-		else 
-		{
-				$this->testcase->insert($data);
-				$this->session->set_flashdata('message', "TestCase {$data['name']} 新增成功");
-				$this->session->set_flashdata('type', 'success');
+		if($this->verification()){
+			$data =
+			[
+				'name' => $this->input->post('testcaseName'),
+				'description' => $this->input->post('testcaseDescription'),
+				'input_data' => $this->input->post('testcaseInput_data'),
+				'expected_results' => $this->input->post('testcaseExpected_results'),
+				'owner'	=> $this->session->userdata('u_id'),
+				'p_id'	=> $this->currentProject,
+				'attachment' => $this->input->post('testcaseAttachment'),
+			];
+			if($this->testcase->duplicateCheck(['name'=>$data['name']],1))
+			 {
+					$this->session->set_flashdata('message', "Testcase名稱重複");
+					$this->session->set_flashdata('type', 'danger');
+			}
+			else 
+			{
+					$this->testcase->insert($data);
+					$this->session->set_flashdata('message', "TestCase {$data['name']} 新增成功");
+					$this->session->set_flashdata('type', 'success');
+			}
 		}	
 		redirect('/testcasemanage');
 	}
@@ -77,7 +79,6 @@ class Testcasemanage extends CI_Controller
 			$response['t_id']=$t_id;
 		}
 		echo json_encode($response);
-
 	}
 
 	public function show($t_id)
@@ -111,7 +112,10 @@ class Testcasemanage extends CI_Controller
 			'expected_results' => $this->input->post('testcaseExpected_results'),
 			'attachment' => $this->input->post('testcaseAttachment'),
 		];
-		if($this->testcase->duplicateCheck(['name'=>$data['name'],'p_id'=>$this->currentProject],0))
+		$isCreate =0;
+		if($this->testcase->where(['t_id'=>$t_id])[0]->name != $testcase['name'])
+			$isCreate =1;
+		if($this->testcase->duplicateCheck(['name'=>$testcase['name'],'p_id'=>$this->currentProject],$isCreate))
 		 {
 				$this->session->set_flashdata('message', "Testcase名稱重複");
 				$this->session->set_flashdata('type', 'danger');
@@ -133,5 +137,21 @@ class Testcasemanage extends CI_Controller
 		 	$searchCondition = $this->input->post('searchCondition');
 		$result = $this->testcase->searchTestcase($this->currentProject,$searchCondition ,$this->input->post('searchTarget'));
 		 echo json_encode($result);
+	}
+
+	public function verification()
+	{
+		$this->form_validation->set_rules('testcaseName','Name','required');
+		$this->form_validation->set_rules('testcaseDescription','Description','required');
+		$this->form_validation->set_rules('testcaseInput_data','Input_data','required');
+		$this->form_validation->set_rules('testcaseExpected_results','Expected_results','required');
+
+		if (!$this->form_validation->run())
+		{
+			$this->session->set_flashdata('message', "有欄位為空值");
+			$this->session->set_flashdata('type', 'danger');
+		}
+		else
+			return true;
 	}
 } 
