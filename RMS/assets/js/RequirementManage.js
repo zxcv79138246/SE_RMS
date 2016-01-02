@@ -8,6 +8,7 @@ $(function (){
 			}
 		})
 	});
+
 	$(".remove-btn").click(function(event) {
 		$.ajax({
 			url: $(this).attr('data-url'),
@@ -38,21 +39,38 @@ $(function (){
 			}
 		})
 	});
+
 	$('#searchTarget').change(function(event){
-		console.log('Click opt');
-		$('#opt_display_1').attr('lable', 'Functional');
-		$('#opt_display_2').attr('lable', 'Non-functional');
+		$('.change_opt').remove();
+		if($('#searchTarget').val() == 'functional')
+		{
+			var option1 = $('<option class = "change_opt" value="1" selected = "selected">').text('Functional');
+			var option2 = $('<option class = "change_opt" value="0">').text('Non-functional');
+			$('#searchCondition_2').append(option1).append(option2);
+		}
+		else if($('#searchTarget').val() == 'state')
+		{
+			var option1 = $('<option class = "change_opt" value="待審核" selected = "selected">').text('待審核');
+			var option2 = $('<option class = "change_opt" value="已審核">').text('已審核');
+			$('#searchCondition_2').append(option1).append(option2);
+		}
+		else
+		{
+			var option = $('<option class = "change_opt" value="defult">').text('');
+			$('#searchCondition_2').append(option);
+		}
 	});
+
 	$(".btn-search").click(function(event) {
 		$.ajax({
-			url: '/RMS/index.php/requirementmanage/search',
+			url:'/RMS/index.php/requirementmanage/search',
 			dataType:'JSON',
 			type:'POST',
 			data:
 			{
-				searchCondition: $('#searchCondition').val(),
-				searchTarget_1: $('#searchTarget_1').val(),
-				searchTarget_2: $('#searchTarget_2').val(),
+				searchCondition_1: $('#searchCondition_1').val(),
+				searchCondition_2: $('#searchCondition_2').val(),
+				searchTarget: $('#searchTarget').val(),
 			},
 			success:function(response)
 			{	
