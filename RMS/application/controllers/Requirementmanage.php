@@ -101,7 +101,7 @@ class Requirementmanage extends CI_Controller
 					'alter_flow' => $this->input->post('alter_flow')
 				];
 			}
-			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $reqData['p_id']], 1))
+			if($this->requirement->duplicateReqCheck(['name' => $reqData['name'],'p_id' => $reqData['p_id']], 1))
 			 {
 					$this->session->set_flashdata('message', "Requirement名稱重複");
 					$this->session->set_flashdata('type', 'danger');
@@ -153,7 +153,7 @@ class Requirementmanage extends CI_Controller
 			$this->twig->display('rms/requirementmanage/info_usecase.html', compact('requirement', 'r_r_relationList1', 'r_r_relationList2', 'r_t_relationList', 'functional_display'));
 	}
 
-	public function update($type, $r_id)
+	public function update($type,$r_id)
 	{
 		if($this->verification($type))
 		{
@@ -172,7 +172,12 @@ class Requirementmanage extends CI_Controller
 					'state' => $state,
 					'owner' => $this->current_user,
 					'last_edit_date' => $tempDate,
-					'memo' => $this->input->post('memo')
+					'memo' => $this->input->post('memo'),
+					'target' => NULL,
+					'precondition' => NULL,
+					'postcondition' => NULL,
+					'main_flow' => NULL,
+					'alter_flow' => NULL
 				];
 			}
 			else
@@ -195,9 +200,14 @@ class Requirementmanage extends CI_Controller
 					'alter_flow' => $this->input->post('alter_flow')
 				];
 			}
-			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $this->current_project], 1))
+			$current_requirement = $this->requirement->find($r_id);
+			$change = 0;
+			if ($reqData['name'] != $current_requirement->name){
+				$change = 1;
+			}
+			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $this->current_project], $change))
 			{
-					$this->session->set_flashdata('message', "Requirement名稱重複");
+					$this->session->set_flashdata('message', "名字重複");
 					$this->session->set_flashdata('type', 'danger');
 			}
 			else 
@@ -208,6 +218,27 @@ class Requirementmanage extends CI_Controller
 			}
 		}
 		redirect('/requirementmanage');
+	}
+
+	public function destroy($r_id)
+	{
+		$numberOf_r_r_relations1 = $this->r_r_relation->where(['r_id1' => $r_id]);
+		$numberOf_r_r_relations2 = $this->r_r_relation->where(['r_id2' => $r_id]);
+		$numberOf_r_t_relations = $this->r_t_relation->where(['r_id' => $r_id]);
+		$numberOf_relation = $numberOf_r_r_relations1 + $numberOf_r_r_relations2 + $numberOf_r_t_relations;
+		$response=[];
+		if($numberOf_relation > 0)
+		{
+			$response['message'] = "尚有 {$numberOf_relation} 個關聯存在";
+			$response['messageType'] = 'warning';
+		}
+		else if ($result = $this->requirement->destory(['r_id'=>$r_id]))
+		{	
+			$response['message'] = "{$result[0]->name} 已被刪除";
+			$response['messageType'] = 'warning';			
+			$response['r_id']=$r_id;
+		}
+		echo json_encode($response);
 	}
 
 	public function verification($type)
