@@ -39,4 +39,20 @@ class R_and_R_relation_model extends MY_Model{
         $query = $this->db->query($sql);
         return $query->result();
     }
+
+    public function destoryRelation($r_id,$delR_ids)
+    {
+    	$sql = 'delete ';
+    	$sql .= "from {$this->table} ";
+    	$r1where = [];
+    	$r2Where = [];
+    	foreach ($delR_ids as $key => $delR_id) {
+    		$r1where[] = "r_id1 = {$delR_id}";
+    		$r2where[] = "r_id2 = {$delR_id}";
+    	}
+    	$sql .= "where ( r_id1 = {$r_id} and (" . implode(' or ', $r2where) . ') ) ';
+    	$sql .=  "or ( r_id2 = {$r_id} and (" . implode(' or ', $r1where) . ') ) ';
+    	$query = $this->db->query($sql);
+    	return $query;
+    }
 }

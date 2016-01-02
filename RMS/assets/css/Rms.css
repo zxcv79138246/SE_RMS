@@ -37,3 +37,7 @@
 .del-left{
 	right:100px;
 }
+
+.rel-btn button {
+	font-size: 12px;
+}
