@@ -24,7 +24,7 @@
 				<li  style ="{{ (session.userdata.priorityInProject == null) ? "display:none" : " " }}" id='test_sub'><a href="{{ site_url('/testcasemanage') }}">TestCase</a></li>
 
 				<li style ="{{ (session.userdata.priorityInProject == 0 or session.userdata.priorityInProject == NULL ) ? "display:none" : " " }}" id='relation_sub'><a href="{{ site_url('/relation') }}">關聯管理</a></li>
-				
+
 				<li style ="{{ (session.userdata.priorityInProject == null) ? "display:none" : " " }}" id='trace_sub'><a href="{{ site_url('/traceabilitymatrix') }}">追朔矩陣</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
@@ -35,6 +35,7 @@
     						<span class="caret"></span>
   						</a>
   						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  							<li><a href="#" data-toggle="modal" data-target=".change-modal">變更密碼</a></li>
   							<li><a href="{{ site_url('login/logout') }}">Logout</a></li>
   						</ul>
 					</li>
@@ -68,6 +69,37 @@
         			<button type="submit" class="btn btn-primary">登入</button>
     			</div>
       		</form>
+    	</div><!-- /.modal-content -->
+  	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- 改password -->
+<div class="modal change-modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+		    <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="model-title">Change Password</h4>
+		    </div>
+		    <form action="{{ site_url('login/changePS') }}" method="POST">
+      			<div class="modal-body" id="modal-login-body">
+        			<div class="input-group form-group">
+		            	<span class="input-group-addon">原密碼</span>
+		            	<input type="password" class="form-control" name = 'password'>
+		        	</div>
+		        	<div class="input-group form-group">
+		            	<span class="input-group-addon" name = 'password'>修改後密碼</span>
+		            	<input type="password" class="form-control"  name = 'newpassword'>
+		        	</div>
+		        	<div class="input-group form-group">
+		            	<span class="input-group-addon" name = 'password'>再輸入一次</span>
+		            	<input type="password" class="form-control"  name = 'onemore'>
+		        	</div>
+      			</div>
+      			<div class="modal-footer">
+		        	<button type="submit" class="btn btn-primary">修改</button>
+		    	</div>
+		    </form>
     	</div><!-- /.modal-content -->
   	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
