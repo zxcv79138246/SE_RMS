@@ -9,6 +9,7 @@
 			parent::__construct();
 			$this->load->model('requirement_model', 'requirement');
 			$this->load->model('reviewer_model', 'reviewer');
+			$this->load->model('project_member_model', 'project_member');
 			$this->load->model('user_model', 'user');
 			$this->current_user = $this->session->userdata('u_id');
 			$this->current_project = $this->session->userdata('p_id');
@@ -28,22 +29,92 @@
 				$this->session->set_flashdata('type', 'danger');
 				redirect('/index');
 			}
+			$templist = [];
 			$reviewerlist = $this->reviewer->getReviewByUIDPID($this->current_user, $this->current_project);
 			if($reviewerlist != false)
 			{
 				for($i=0; $i < count($reviewerlist); $i++)
 				{
 					//	Get requirement name
-					$requirement = $this->requirement->find($reviewerlist[$i]->r_id);
-					$reviewerlist[$i]->requirementName = $requirement->name;
-					//	Get Decision (Agree)
-					$reviewerlist[$i]->agree = $this->reviewer->getNumDicisionByRID($requirement->r_id, 2);
-					$reviewerlist[$i]->disagree = $this->reviewer->getNumDicisionByRID($requirement->r_id, 1);
-					$reviewerlist[$i]->unknow = $this->reviewer->getNumDicisionByRID($requirement->r_id, 0);
+					$requirement = $this->requirement->where(['r_id' => $reviewerlist[$i]->r_id]);
+					if($requirement[0]->state == '待審核' || $requirement[0]->state == '審核中')
+					{
+						$requirement[0]->agree = $this->reviewer->getNumDicisionByRID($requirement[0]->r_id, 2);
+						$requirement[0]->disagree = $this->reviewer->getNumDicisionByRID($requirement[0]->r_id, 1);
+						$requirement[0]->unknow = $this->reviewer->getNumDicisionByRID($requirement[0]->r_id, 0);
+						$requirement[0]->decision = $reviewerlist[$i]->decision;
+						$templist = array_merge($templist, $requirement);
+					}
 				}
 			}
 			$decision_display = ['未決定', '否決', '同意'];
-			$this->twig->display('rms/reviewrequirement/reviewrequirement.html', compact('reviewerlist', 'decision_display'));
+			$this->twig->display('rms/reviewrequirement/reviewrequirement.html', compact('templist', 'decision_display'));
+		}
+
+		public function powerpage()
+		{
+			if(is_null($this->current_user))
+			{
+				$this->session->set_flashdata('message', '尚未登入');
+				$this->session->set_flashdata('type', 'danger');
+				redirect('/index');
+			}
+			if(is_null($this->current_project))
+			{
+				$this->session->set_flashdata('message', '尚未選擇專案');
+				$this->session->set_flashdata('type', 'danger');
+				redirect('/index');
+			}
+			$requirement_list1 = $this->requirement->where(['p_id' => $this->current_project, 'state' => '待審核']);
+			$requirement_list2 = $this->requirement->where(['p_id' => $this->current_project, 'state' => '審核中']);
+			$requirement_list = array_merge($requirement_list1, $requirement_list2);
+			$this->twig->display('rms/reviewrequirement/power.html', compact('requirement_list'));
+		}
+
+		public function review_start($r_id)
+		{
+			$requirement = $this->requirement->find($r_id);
+			if($requirement->state == '待審核')
+			{
+				$data = ['state' => '審核中'];
+				$this->requirement->update($data, ['r_id' => $r_id]);
+				$this->session->set_flashdata('message', "Requirement名稱 {$requirement->name} 審核開始");
+				$this->session->set_flashdata('type', 'success');
+			}
+			else
+			{
+				$this->session->set_flashdata('message', "Requirement名稱 {$requirement->name} 審核中");
+				$this->session->set_flashdata('type', 'danger');
+			}
+			redirect('/reviewrequirement/powerpage');
+		}
+
+		public function end($r_id)
+		{
+			$requirement = $this->requirement->find($r_id);
+			$reviewerlist = $this->reviewer->getReviewByRID($r_id);
+			if($reviewerlist != false)
+			{
+				for($i=0; $i < count($reviewerlist); $i++)
+				{
+					//	Get requirement name
+					$user = $this->user->find($reviewerlist[$i]->u_id);
+					$reviewerlist[$i]->userName = $user->name;
+				}
+			}
+			$decision_display = ['未決定', '否決', '同意'];
+			$this->twig->display('rms/reviewrequirement/end.html', compact('reviewerlist', 'requirement', 'decision_display'));
+		}
+
+		public function review_end($r_id)
+		{
+			$decision = $this->input->post('decision');
+			$decision_display = ['', '審核失敗', '審核通過'];
+			$data = ['state' => $decision_display[$decision]];
+			$this->requirement->update($data, ['r_id' => $r_id]);
+			$this->session->set_flashdata('message', "Requirement名稱 {$requirement->name} 審核結束");
+			$this->session->set_flashdata('type', 'success');
+			redirect('/reviewrequirement/powerpage');
 		}
 
 		public function info($r_id)
@@ -68,6 +139,13 @@
 			$requirement = $this->requirement->find($r_id);
 			$decision_display = ['未決定', '否決', '同意'];
 			$this->twig->display('rms/reviewrequirement/review.html', compact('requirement', 'decision_display'));
+		}
+
+		public function power()
+		{
+			$requirement = $this->requirement->find($r_id);
+			$user = $this->
+			$this->twig->display('rms/reviewrequirement/review.html', compact('requirement', 'user'));
 		}
 
 		public function update($r_id)

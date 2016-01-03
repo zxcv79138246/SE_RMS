@@ -1,0 +1,50 @@
+<div class = 'form-group row'>
+	<label class="col-md-2 control-label" >Requirement</label>
+	<div class = 'col-md-6'>
+		<p name = "testcaseName" class="form-control">{{ requirement.name }}</p>
+	</div>
+</div>
+<div class = 'form-group row'>
+	<label class = 'col-md-2' control-label>Description</label>
+	<div class = 'col-md-8'>
+		<textarea class="form-control" readonly="true">{{ requirement.description }}</textarea>
+	</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">Review List</div>
+	<div class="panel-body">
+		<!-- Table -->
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>User</th>
+					<th>Decision</th>
+					<th>Comment</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for key, reviewer in reviewerlist %}
+					<tr>
+						<td class = 'seqNumber'>{{ key + 1 }}</td>
+						<td>{{ reviewer.userName }}</td>
+						<td>{{ decision_display[reviewer.decision] }}</td>
+						<td>{{ reviewer.comment}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<form class="form-horizontal" role="form" action="{{ site_url(['/reviewrequirement/review_end', requirement.r_id]) }}" method="POST">
+	<div class = 'form-group'>
+		<label class = 'col-md-2' control-label>審核決定</label>
+		<div class = 'col-md-5'>
+			<select class = 'form-control' name = 'decision'>
+				<option value = '2'>同意</option>
+				<option value = '1'>否決</option>
+			</select>
+		</div>
+	</div>
+	<button type="submit" class="btn btn-primary col-md-offset-10">Review</button>
+</form>

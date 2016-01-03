@@ -3,7 +3,7 @@
 <div class = "row form-group">
 	<!--	new requirement btn-->
 	<div class="col-md-offset-11">
-		<a href="{{ site_url('/reviewrequirement/powerpage') }}" class="btn btn-info">授予審核權</a>
+		<a href="{{ site_url('/reviewrequirement') }}" class="btn btn-info">審核需求</a>
 	</div>
 </div>
 
@@ -18,25 +18,21 @@
 					<tr>
 						<th>#</th>
 						<th>Requirement</th>
-						<th>Your decision</th>
-						<th>Decision(同意)</th>
-						<th>Decision(否決)</th>
-						<th>Decision(未決定)</th>
-						<th>查看</th>
-						<th>Review</th>
+						<th>State</th>
+						<th>審核開始</th>
+						<th>授權</th>
+						<th>審核結束</th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for key, review in templist %}
+					{% for key, requirement in requirement_list %}
 						<tr class = 'reqRow'>
 							<td class = 'seqNumber'>{{ key + 1 }}</td>
-							<td>{{ review.name }}</td>
-							<td>{{ decision_display[review.decision] }}</td>
-							<td>{{ review.agree }}</td>
-							<td>{{ review.disagree }}</td>
-							<td>{{ review.unknow }}</td>
-							<td><a data-url="{{ site_url(['/reviewrequirement/info', review.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
-							<td><a data-url="{{ site_url(['/reviewrequirement/review', review.r_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Review</a></td>
+							<td>{{ requirement.name }}</td>
+							<td>{{ requirement.state }}</td>
+							<td><a href="{{ site_url(['/reviewrequirement/review_start', requirement.r_id]) }}" class="btn btn-info btn-xs">審核開始</a></td>
+							<td><a data-url="{{ site_url(['/reviewrequirement/power', requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">授權</a></td>
+							<td><a data-url="{{ site_url(['/reviewrequirement/end', requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">審核結束</a></td>
 						</tr>
 					{% endfor %}
 				</tbody>
