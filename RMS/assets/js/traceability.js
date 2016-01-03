@@ -7,7 +7,7 @@ $(function()
 			$(cell).addClass("traceablity-Red");
 	})
 
-/*	$(".traceability-header").click(function(event){
+	$(".traceablity-header").click(function(event){
 		$.ajax({
 			url: $(this).attr('data-url'),
 			type: 'get',
@@ -15,5 +15,5 @@ $(function()
 				$('#modal-body').html(response);
 			}
 		})		
-	})*/
+	})	
 });

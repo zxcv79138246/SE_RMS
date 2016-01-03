@@ -16,11 +16,11 @@
 			<tr class="row">
 				<th class = "traceablity-cell"></th><!-- [0][0]空白欄位 -->
 				{% for row_header in row_headers  %}
-					<th class = "traceablity-cell traceablity-header" data-ID="{{row_header.id}}">{{row_header.name}}</th>
+					<th class = "traceablity-cell traceablity-header" data-url="{{ site_url([controllerName.one,row_header.id]) }}" data-toggle="modal" data-target=".edit-modal">{{row_header.name}}</th>
 				{% endfor %}
 			{% for col_header in col_headers %}
 				<tr class ="row">
-					<th class = "traceablity-cell traceablity-header" data-ID="{{col_header.id}}">{{col_header.name}}</th>
+					<th class = "traceablity-cell traceablity-header" data-url="{{site_url([controllerName.two,col_header.id]) }}" data-toggle="modal" data-target=".edit-modal">{{col_header.name}}</th>
 					{% for relaion in col_header.relations %}
 						<th  class ="traceablity-cell" >{{relaion}}</th>
 					{% endfor %}
@@ -28,5 +28,20 @@
 			{% endfor %}
 		</table>
 	</div>
+
+	<!--	浮框	-->
+	<div class="modal fade edit-modal" tabindex="-1" role="dialog">
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+	         	<div class="modal-header">
+	           		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      			<h3>詳細資料</h3>
+	      		</div>
+	      		<div class="modal-body" id="modal-body">
+	        		<p></p>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>	
 	<script src = '{{base_url('assets/js/traceability.js')}}'></script>
 {% endblock %}
