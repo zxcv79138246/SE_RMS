@@ -1,6 +1,8 @@
 {% extends 'layout/layout.html.twig' %}
 {% block content %}
+
 	<div class="row form-group">
+		<!--Search-->
 		<div class="col-md-4">
 			<div class="input-group">
 				<input id="searchCondition" type="text" class="form-control" placeholder="Search" name="search">
@@ -15,36 +17,41 @@
 				</span>
 			</div>
 		</div>
+		<!--New-->
 		<div  class="col-md-offset-8 col-md-1 pull-right" >
 			<a href="#" data-url="{{ site_url('/testcasemanage/create') }}" class="btn btn-primary edit-btn" data-toggle="modal" data-target=".edit-modal">＋NEW</a>
 		</div>
 	</div>
-	<div class="row col-md-10 col-md-offset-1 table-responsive">
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Name</th>
-					<th class="col-md-4">Description</th>
-					<th>Owner</th>
-					<th>查看</th>
-					<th>Edit</th>
-					<th>Remove</th>
-			</thead>
-			<tbody>
-			{% for key,testcase in testcases %}
-				<tr class="testcaseRow" testcaseID="{{testcase.t_id}}" owner="{{testcase.owner}}">
-					<td class="seqNumber">{{key+1}}</td>
-					<td>{{ testcase.name }}</td>
-					<td>{{ testcase.description }}</td>
-					<td>{{ testcase.ownerName }}</td>
-					<td><a data-url="{{ site_url(['/testcasemanage/show',testcase.t_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
-					<td><a data-url="{{ site_url(['/testcasemanage/edit',testcase.t_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Edit</a></td>
-					<td><a data-url="{{ site_url(['/testcasemanage/destroy',testcase.t_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a></td>					
-				</tr>
-			{% endfor %}
-			</tbody>
-		</table>
+	<!--Testcase List-->
+	<div class="panel panel-default">
+		<div class="panel-heading">Testcase List</div>
+		<div class="panel-body">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th class="col-md-4">Description</th>
+							<th>Owner</th>
+							<th>查看</th>
+							<th>Edit</th>
+							<th>Remove</th>
+					</thead>
+					<tbody>
+					{% for key,testcase in testcases %}
+						<tr class="testcaseRow" testcaseID="{{testcase.t_id}}" owner="{{testcase.owner}}">
+							<td class="seqNumber">{{key+1}}</td>
+							<td>{{ testcase.name }}</td>
+							<td>{{ testcase.description }}</td>
+							<td>{{ testcase.ownerName }}</td>
+							<td><a data-url="{{ site_url(['/testcasemanage/show',testcase.t_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
+							<td><a data-url="{{ site_url(['/testcasemanage/edit',testcase.t_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Edit</a></td>
+							<td><a data-url="{{ site_url(['/testcasemanage/destroy',testcase.t_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a></td>					
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>	
+		</div>
 	</div>
 	<div class="modal fade edit-modal" tabindex="-1" role="dialog">  <!-- 浮筐  -->
 	  	<div class="modal-dialog">

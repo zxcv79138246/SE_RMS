@@ -44,3 +44,28 @@
 .rel-btn button {
 	font-size: 12px;
 }
+
+.traceablity-cell{	
+	border-style: solid;
+	border-width: 2px;
+	text-align: center;
+	padding:0px 0px 0px 0px;
+}
+
+.traceablity-header{
+	background-color:#bbbbbb;
+}
+
+.traceablity-Green{
+	background-color:#66bb66;
+}
+
+.traceablity-Red{
+	background-color:#ff8888;
+}
+
+.traceablity-matrix
+{
+	border-style: solid;
+	border-width: 2px;
+}

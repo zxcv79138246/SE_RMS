@@ -1,0 +1,28 @@
+{% extends 'layout/layout.html.twig' %}
+{% block content %}
+	<div class="row col-md-12">
+		<h3 class="text-center relative">{{title}}</h3>
+		<div class="abs-right">
+				<a href="{{ site_url('traceabilitymatrix/R_T_relation')}}" class="btn btn-info">需求＆Testcase</a>
+				<a href="{{ site_url('traceabilitymatrix/R_R_relation')}}" class="btn btn-info">需求＆需求</a>
+		</div>
+	</div>
+	<div class="row col-md-12 table-responsive">
+		<table class="table traceablity-matrix">
+			<tr class="row">
+				<th class = "traceablity-cell"></th><!-- [0][0]空白欄位 -->
+				{% for row_header in row_headers  %}
+					<th class = "traceablity-cell traceablity-header" data-ID="{{row_header.id}}">{{row_header.name}}</th>
+				{% endfor %}
+			{% for col_header in col_headers %}
+				<tr class ="row">
+					<th class = "traceablity-cell traceablity-header" data-ID="{{col_header.id}}">{{col_header.name}}</th>
+					{% for relaion in col_header.relations %}
+						<th  class ="traceablity-cell" >{{relaion}}</th>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+	<script src = '{{base_url('assets/js/traceability.js')}}'></script>
+{% endblock %}

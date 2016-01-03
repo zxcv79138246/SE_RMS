@@ -1,0 +1,55 @@
+{% extends 'layout/layout.html.twig' %}
+{% block content %}
+<!--	Reviewer List	-->
+<div class="panel panel-default">
+	<div class="panel-heading">Review List</div>
+	<div class="panel-body">
+		<!-- Table -->
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Requirement</th>
+					<th>Your decision</th>
+					<th>Decision(許可)</th>
+					<th>Decision(否決)</th>
+					<th>Decision(未決定)</th>
+					<th>查看</th>
+					<th>Review</th>
+					<th>Edit</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for key, review in reviewerlist %}
+					<tr class = 'reqRow'>
+						<td class = 'seqNumber'>{{ key + 1 }}</td>
+						<td>{{ review.requirementName }}</td>
+						<td>{{ decision_display[review.decision] }}</td>
+						<td>{{ review.agree }}</td>
+						<td>{{ review.disagree }}</td>
+						<td>{{ review.unknow }}</td>
+						<td><a data-url="{{ site_url(['/reviewrequirement/info', review.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
+						<td><a class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Review</a></td>
+						<td><a class="btn btn-danger btn-xs edit-btn">Edit</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<!--	浮框	-->
+<div class="modal fade edit-modal" tabindex="-1" role="dialog">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+         	<div class="modal-header">
+           		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      			<h3>審核資料</h3>
+      		</div>
+      		<div class="modal-body" id="modal-body">
+        		<p></p>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<script src = '{{base_url('assets/js/ReviewRequirement.js')}}'></script>
+{% endblock %}

@@ -55,4 +55,13 @@ class R_and_R_relation_model extends MY_Model{
     	$query = $this->db->query($sql);
     	return $query;
     }
+
+    public function isExistRelation($r_id1,$r_id2)
+    {
+        $this->db->from($this->table);
+        $this->db->where('r_id1', $r_id1);
+        $this->db->where('r_id2', $r_id2);
+        $query = $this->db->get();
+        return ($query->num_rows()==1);
+    }
 }
