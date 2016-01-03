@@ -4,6 +4,7 @@ class Requirementmanage extends CI_Controller
 {
 	private $current_user = 0;
 	private $current_project = 0;
+	private $current_userPriority =0;
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +15,8 @@ class Requirementmanage extends CI_Controller
 		$this->load->model('R_and_t_relation_model', 'r_t_relation');
 		$this->current_user = $this->session->userdata('u_id');
 		$this->current_project = $this->session->userdata('p_id');
+		$this->current_userPriority = $this->session->userdata('priorityInProject');
+
 	}
 
 	public function index()
@@ -38,9 +41,11 @@ class Requirementmanage extends CI_Controller
 				$requirements[$i]->ownerName = $ownerName;
 			}
 		}
+		//  priority 
+		$priority = $this->current_userPriority;
 		//	Functional value is 1, Non-functional value is 0 (in database)
 		$functional_display = ['Non-functional', 'Functional'];
-		$this->twig->display('rms/requirementmanage/requirementmanage.html', compact('requirements', 'functional_display'));
+		$this->twig->display('rms/requirementmanage/requirementmanage.html', compact('requirements', 'functional_display','priority'));
 	}
 
 	public function create()
