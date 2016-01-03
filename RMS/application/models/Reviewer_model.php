@@ -10,20 +10,27 @@ class Reviewer_model extends MY_Model {
         parent::__construct();
     }
 
-    public function all($p_id,$u_id)
+    public function getReviewByUIDPID($u_id, $p_id)
     {
-    	$query = $this->db->get($this->table,['p_id' => $p_id ,$this->$primaryKey[0] => $u_id]);
-    	return $query->result();
+        $query = $this->db->get_where($this->table, ['u_id' => $u_id, 'p_id' => $p_id]);
+        if ($query->result())
+            return $query->result();
+        else
+            return false;
     }
 
-    public function find($u_id,$r_id)
+    public function getReviewByRID($r_id)
     {
-    	$query = $this->db->get_where($this->table, [$this->primaryKey[0] => $u_id , $this->primaryKey[1] => $r_id]);
-    	if ($query->result())
-    		return $query->result()[0];
-    	else
-    		return false;
+        $query = $this->db->get_where($this->table, ['r_id' => $r_id]);
+        if ($query->result())
+            return $query->result();
+        else
+            return false;
     }
 
-    
+    public function getNumDicisionByRID($r_id, $disicion)
+    {
+        $query = $this->db->get_where($this->table, ['r_id' => $r_id, 'decision' => $disicion]);
+        return ($query->num_rows());
+    }
 }
