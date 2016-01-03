@@ -16,6 +16,15 @@ class Project_member_model extends MY_Model
 			return false;
 	}
 
+    public function getPriority($u_id,$p_id){
+        $this->db->select('priority');
+        $this->db->from($this->table);
+        $this->db->where('u_id',$u_id);
+        $this->db->where('p_id',$p_id);
+        $query = $this->db->get();
+        return $query->result()[0];
+    }
+
 	public function isMember($u_id,$p_id)
 	{
 		$query = $this->db->get_where($this->table, ['p_id'=> $p_id, 'u_id' => $u_id]);

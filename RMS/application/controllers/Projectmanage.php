@@ -12,9 +12,9 @@ class Projectmanage extends CI_Controller
 		$this->load->model('project_model', 'project');
 		$this->load->model('project_member_model','projectMember');
 		$this->load->model('user_model','user');
-		if ($this->session->userdata('priority') != 1)
+		if ($this->session->userdata('priority') == null)
 		{
-			$this->session->set_flashdata('message', '權限不足');
+			$this->session->set_flashdata('message', '尚未登入');
 			$this->session->set_flashdata('type', 'danger');
 			redirect('/index');
 		}
@@ -173,7 +173,13 @@ class Projectmanage extends CI_Controller
 
 	public function intoProject($p_id)
 	{
-		$data = ['p_id'=>$p_id];
+		
+		$u_id = $this->session->userdata('u_id');
+		
+		$priorityInProject = $this->projectMember->getPriority($u_id,$p_id);
+		//var_dump($priorityInProject->priority);
+		//exit;
+		$data = ['p_id'=>$p_id,'priorityInProject'=>$priorityInProject->priority];
 		$this->session->set_userdata($data); 
 		redirect('/requirementmanage');
 	}
