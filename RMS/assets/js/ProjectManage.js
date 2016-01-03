@@ -27,21 +27,23 @@ $(function(){
                             {
                                 var $name =  $('<a>').addClass('btn btn-success btn-xs')
                                                      .attr('data-priority', response.projectPriority)
-                                                     .attr('id', 'btnu_id-'+response.userID);
+                                                     .attr('id', 'a-uid-'+response.userID);
                             }else if (response.projectPriority == 1)
                             {
                                 var $name =  $('<a>').addClass('btn btn-info btn-xs')
-                                                     .attr('data-priority', response.projectPriority)
-                                                     .attr('id', 'btnu_id-'+response.userID); 
+                                                    .attr('data-priority', response.projectPriority)
+                                                     .attr('id', 'a-uid-'+response.userID); 
                             }else
                             {
                                 var $name = $('<a>').addClass('btn btn-default btn-xs')
                                                     .attr('data-priority', response.projectPriority)
-                                                    .attr('id', 'btnu_id-'+response.userID);
+                                                    .attr('id', 'a-uid-'+response.userID);
                             }
             	           var $data = $('<span>')
                                             .addClass('member')
                                             .attr('data-uId', response.userID)
+                                            .attr('id','btnu_id-'+response.userID)
+                                            .attr('data-priority', response.projectPriority)
                                             .html(response.userID + ', ' + response.userName);
             				var $remove = $('<a>')
     										.addClass('btn btn-danger btn-xs removeMember')
@@ -70,6 +72,37 @@ $(function(){
                                     $('#u_id-'+response.u_id).remove();
                                 })
                             });
+                            $('.member').click(function(event) {
+                                var u_id = $(this).attr('data-uId');
+                                var priority = $(this).attr('data-priority');
+                                $.ajax({
+                                    url: '/RMS/index.php/projectmanage/changePriority/' + u_id + '/' + p_id + '/' + priority,
+                                    dataType: 'JSON',
+                                    data: {
+                                        u_id: u_id,
+                                        p_id: p_id,
+                                        priority : priority,
+                                    },
+                                })
+                                .success(function(response) {
+                                    $('#btnu_id-'+u_id).attr('data-priority',response)
+                                    if (response == 0)
+                                    {
+                                        $('#a-uid-'+u_id).removeClass('btn-success');
+                                        $('#a-uid-'+u_id).addClass('btn-default');
+                                    }
+                                    else if (response == 1)
+                                    {
+                                        $('#a-uid-'+u_id).removeClass('btn-default');
+                                        $('#a-uid-'+u_id).addClass('btn-info');
+                                    }
+                                    else
+                                    {
+                                        $('#a-uid-'+u_id).removeClass('btn-info');
+                                        $('#a-uid-'+u_id).addClass('btn-success');
+                                    }
+                                })
+                            });
             			}
             		})            		
             	});
@@ -87,15 +120,16 @@ $(function(){
                         },
                     })
                     .success(function(response) {
+                        console.log(response);
                         $('#btnu_id-'+u_id).attr('data-priority',response)
                         if (response == 0)
                         {
                             $('#a-uid-'+u_id).removeClass('btn-success');
-                            $('#a-uid-'+u_id).addClass('btn-dafault');
+                            $('#a-uid-'+u_id).addClass('btn-default');
                         }
                         else if (response == 1)
                         {
-                            $('#a-uid-'+u_id).removeClass('btn-dafault');
+                            $('#a-uid-'+u_id).removeClass('btn-default');
                             $('#a-uid-'+u_id).addClass('btn-info');
                         }
                         else
@@ -103,12 +137,6 @@ $(function(){
                             $('#a-uid-'+u_id).removeClass('btn-info');
                             $('#a-uid-'+u_id).addClass('btn-success');
                         }
-                        // var $option = $('<option>')
-                        //                     .attr('id','opt-'+response.u_id)
-                        //                     .attr('value',response.u_id)
-                        //                     .html(response.u_id+ ', ' + response.name);
-                        // $option.appendTo($('#newMember'));
-                        // $('#u_id-' + response.u_id).remove();       //刪除後加入選項
                     })
                 });
                 
