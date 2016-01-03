@@ -1,6 +1,5 @@
 {% extends 'layout/layout.html.twig' %}
 {% block content %}
-
 	<div class="row form-group">
 		<!--Search-->
 		<div class="col-md-4">
@@ -14,12 +13,16 @@
 						</select>
 					</div>
 					 <a class="btn-search btn btn-default" type="submit">Search</a>
+					}
 				</span>
 			</div>
 		</div>
 		<!--New-->
 		<div  class="col-md-offset-8 col-md-1 pull-right" >
-			<a href="#" data-url="{{ site_url('/testcasemanage/create') }}" class="btn btn-primary edit-btn" data-toggle="modal" data-target=".edit-modal">＋NEW</a>
+				<!--非客戶可使用的功能-->
+				{% if priority != 0 %}	
+					<a href="#" data-url="{{ site_url('/testcasemanage/create') }}" class="btn btn-primary edit-btn" data-toggle="modal" data-target=".edit-modal">＋NEW</a>
+				{% endif %}
 		</div>
 	</div>
 	<!--Testcase List-->
@@ -34,8 +37,11 @@
 							<th class="col-md-4">Description</th>
 							<th>Owner</th>
 							<th>查看</th>
-							<th>Edit</th>
-							<th>Remove</th>
+							<!--非客戶可使用的功能-->
+							{% if priority != 0 %}								
+								<th>Edit</th>
+								<th>Remove</th>
+							{% endif %}
 					</thead>
 					<tbody>
 					{% for key,testcase in testcases %}
@@ -45,8 +51,11 @@
 							<td>{{ testcase.description }}</td>
 							<td>{{ testcase.ownerName }}</td>
 							<td><a data-url="{{ site_url(['/testcasemanage/show',testcase.t_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
-							<td><a data-url="{{ site_url(['/testcasemanage/edit',testcase.t_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Edit</a></td>
-							<td><a data-url="{{ site_url(['/testcasemanage/destroy',testcase.t_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a></td>					
+							<!--非客戶可使用的功能-->
+							{% if priority != 0 %}	
+								<td><a data-url="{{ site_url(['/testcasemanage/edit',testcase.t_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Edit</a></td>
+								<td><a data-url="{{ site_url(['/testcasemanage/destroy',testcase.t_id]) }}" class="btn btn-danger btn-xs remove-btn">Remove</a></td>
+							{% endif %}					
 						</tr>
 					{% endfor %}
 					</tbody>

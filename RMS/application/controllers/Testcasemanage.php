@@ -4,6 +4,7 @@ class Testcasemanage extends CI_Controller
 {
 	private $currentProject =0;
 	private $currentUser =0;
+	private $userPriority =0;
 	function __construct()
 	{
 		parent::__construct();
@@ -11,8 +12,10 @@ class Testcasemanage extends CI_Controller
 		$this->load->model('R_and_t_relation_model','RTrelation');
 		$this->load->model('Requirement_model','requirement');
 		$this->load->model('User_model','user');
+		$this->load->model('Project_member_model','member');
 		$this->currentProject = $this->session->userdata('p_id');
 		$this->currentUser = $this->session->userdata('u_id');	
+		$this->userPriority = $this->session->userdata('priorityInProject');
 	}
 
 	public function index()
@@ -34,12 +37,13 @@ class Testcasemanage extends CI_Controller
 			$ownerName = $this->user->where(['u_id'=>$testcases[$i]->owner])[0]->name;
 			$testcases[$i]->ownerName = $ownerName;
 		}		
-		$this->twig->display("rms/testcasemanage/testcasemanage.html",compact("testcases"));
+		$priority = $this->userPriority;
+		$this->twig->display("rms/testcasemanage/testcasemanage.html",compact("testcases","priority"));
 	}
 
 	public function create()
 	{
-		$this->twig->display("rms/testcasemanage/create.html");	
+		$this->twig->display("rms/testcasemanage/create.html");
 	}
 
 	public function store()
