@@ -4,6 +4,7 @@
 	{
 		private $current_user = 0;
 		private $current_project = 0;
+		private $priority = 0;
 		function __construct()
 		{
 			parent::__construct();
@@ -13,10 +14,12 @@
 			$this->load->model('user_model', 'user');
 			$this->current_user = $this->session->userdata('u_id');
 			$this->current_project = $this->session->userdata('p_id');
+			$this->priority = $this->session->userdata('priorityInProject');
 		}
 
 		public function index()
 		{
+			$priority = $this->priority;
 			if(is_null($this->current_user))
 			{
 				$this->session->set_flashdata('message', '尚未登入');
@@ -48,11 +51,17 @@
 				}
 			}
 			$decision_display = ['未決定', '否決', '同意'];
-			$this->twig->display('rms/reviewrequirement/reviewrequirement.html', compact('templist', 'decision_display'));
+			$this->twig->display('rms/reviewrequirement/reviewrequirement.html', compact('templist', 'decision_display', 'priority'));
 		}
 
 		public function powerpage()
 		{
+			if($this->priority != 2)
+			{
+				$this->session->set_flashdata('message', '權限不足');
+				$this->session->set_flashdata('type', 'danger');
+				redirect('/reviewrequirement');
+			}
 			if(is_null($this->current_user))
 			{
 				$this->session->set_flashdata('message', '尚未登入');
@@ -108,12 +117,22 @@
 
 		public function review_end($r_id)
 		{
-			$decision = $this->input->post('decision');
-			$decision_display = ['', '審核失敗', '審核通過'];
-			$data = ['state' => $decision_display[$decision]];
-			$this->requirement->update($data, ['r_id' => $r_id]);
-			$this->session->set_flashdata('message', "Requirement名稱 {$requirement->name} 審核結束");
-			$this->session->set_flashdata('type', 'success');
+			$requirement = $this->requirement->find($r_id);
+			if($requirement->state != '待審核')
+			{
+				$decision = $this->input->post('decision');
+				$decision_display = ['', '審核失敗', '審核通過'];
+				$data = ['state' => $decision_display[$decision]];
+				$this->requirement->update($data, ['r_id' => $r_id]);
+				$this->reviewer->destory(['r_id' => $r_id]);
+				$this->session->set_flashdata('message', "Requirement名稱 {$requirement->name} 審核結束");
+				$this->session->set_flashdata('type', 'success');
+			}
+			else
+			{
+				$this->session->set_flashdata('message', "Requirement名稱 {$requirement->name} 審核尚未開始");
+				$this->session->set_flashdata('type', 'danger');
+			}
 			redirect('/reviewrequirement/powerpage');
 		}
 
@@ -141,11 +160,30 @@
 			$this->twig->display('rms/reviewrequirement/review.html', compact('requirement', 'decision_display'));
 		}
 
-		public function power()
+		public function power($r_id)
 		{
 			$requirement = $this->requirement->find($r_id);
-			$user = $this->
-			$this->twig->display('rms/reviewrequirement/review.html', compact('requirement', 'user'));
+			$user_list = $this->project_member->where(['p_id' => $this->current_project]);
+			$is_reviewer = [];
+			$not_reviewer = [];
+			for ($i = 0, $j = 0, $k = 0; $i < count($user_list); $i++)
+			{
+				$array = array($user_list[$i]);
+				$name = $this->user->where(['u_id' => $user_list[$i]->u_id])[0]->name;
+				if(count($this->reviewer->where(['u_id' => $user_list[$i]->u_id, 'r_id' => $r_id])) != 0)
+				{
+					$is_reviewer = array_merge($is_reviewer, $array);
+					$is_reviewer[$j]->name = $name;
+					$j++;
+				}
+				else
+				{
+					$not_reviewer = array_merge($not_reviewer, $array);
+					$not_reviewer[$k]->name = $name;
+					$k++;
+				}
+			}
+			$this->twig->display('rms/reviewrequirement/review_power.html', compact('requirement', 'is_reviewer', 'not_reviewer'));
 		}
 
 		public function update($r_id)
