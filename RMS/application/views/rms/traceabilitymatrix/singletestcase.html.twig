@@ -1,0 +1,31 @@
+{% extends 'layout/layout.html.twig' %}
+{% block content %}
+	<div class="row col-md-12">
+		<div class="abs-left">
+				<a href="{{ site_url('traceabilitymatrix/notReviewedRequirement')}}" class="btn btn-primary">未審核完成的需求</a>
+				<a href="{{ site_url('traceabilitymatrix/singletestcase')}}" class="btn btn-warning">無對應需求的測試</a>
+		</div>			
+		<h3 class="text-center relative">{{title}}</h3>
+		<div class="abs-right">
+				<a href="{{ site_url('traceabilitymatrix/R_T_relation')}}" class="btn btn-info">需求＆Testcase</a>
+				<a href="{{ site_url('traceabilitymatrix/R_R_relation')}}" class="btn btn-info">需求＆需求</a>
+		</div>
+	</div>
+	<div class="col-md-offset-3 col-md-6 row table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<th>#</th>
+				<th>名稱</th>
+			</thead>
+			<tbody>
+				{% for key,testcase in testcases %}
+				<tr>
+						<th>{{key+1}}</th>
+						<th>{{testcase.name}}</th>
+				</tr>		
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<script src = '{{base_url('assets/js/traceability.js')}}'></script>
+{% endblock %}
