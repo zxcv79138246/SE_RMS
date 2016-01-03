@@ -10,7 +10,7 @@
 		<textarea class="form-control" readonly="true">{{ requirement.description }}</textarea>
 	</div>
 </div>
-<form class="form-horizontal" role="form" action="{{ site_url(['/projectmanage/update', project.p_id]) }}" method="POST">
+<div class="form-horizontal">
 	<div class="form-group">
 		<label class="col-md-2 control-label">審核成員</label>
 		<div class = "memberListFrame">
@@ -41,9 +41,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-1">
-				<a type="submit" class="btn btn-warning btn-xs" id='Addmember'>＋Add</a>
-			</div>
 		</div>
-	<button type="submit" class="btn btn-primary col-md-offset-10">Update</button>
-</form>
+	<button type="submit" class="btn btn-primary col-md-offset-10" id = 'Addmember'>+Add</button>
+</div>
+<script>
+	var r_id = {{ requirement.r_id }};
+	var p_id = {{ project }}
+</script>
