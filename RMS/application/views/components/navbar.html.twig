@@ -16,7 +16,7 @@
 				<li id='project_sub'><a href="{{ site_url('/projectmanage') }}">專案</a></li>
 				<li id='member_sub'><a href="{{ site_url('/usermanage') }}">會員管理</a></li>
 				<li id='req_sub'><a href="{{ site_url('/requirementmanage') }}">需求管理</a></li>
-				<li id='req_sub'><a href="{{ site_url('/reviewrequirement') }}">需求審核</a></li>
+				<li id='review_sub'><a href="{{ site_url('/reviewrequirement') }}">需求審核</a></li>
 				<li id='test_sub'><a href="{{ site_url('/testcasemanage') }}">TestCase</a></li>
 				<li id='relation_sub'><a href="{{ site_url('/relation') }}">關聯管理</a></li>
 				<li id='trace_sub'><a href="{{ site_url('/traceabilitymatrix') }}">追朔矩陣</a></li>
@@ -94,16 +94,20 @@
 		localStorage.setItem("subsystem", "2");
 	});
 
-	$('#test_sub').click(function(event) {
+	$('#review_sub').click(function(event) {
 		localStorage.setItem("subsystem", "3");
 	});
 
-	$('#relation_sub').click(function(event) {
+	$('#test_sub').click(function(event) {
 		localStorage.setItem("subsystem", "4");
 	});
 
-	$('#trace_sub').click(function(event) {
+	$('#relation_sub').click(function(event) {
 		localStorage.setItem("subsystem", "5");
+	});
+
+	$('#trace_sub').click(function(event) {
+		localStorage.setItem("subsystem", "6");
 	});
 
 	var index = localStorage.getItem("subsystem");
