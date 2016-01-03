@@ -14,8 +14,8 @@ class Test_project_member extends CI_Controller
 		$project_member_model = 'project_member_model';
 
 		$user_data = [
-			'email' => 'projectTest@gmail.com',
-			'name' => 'TestAccount',
+			'email' => 'TestMan@gmail.com',
+			'name' => 'TestManS',
 			'password' => 'passwd',
 			'priority' => 0
 		];
@@ -33,6 +33,7 @@ class Test_project_member extends CI_Controller
 		if(!$this->user->where(['email' => $user_data['email']]))
 			$this->user->insert($user_data);
 		$u_id = $this->user->where(['email' => $user_data['email']])[0]->u_id;
+		$name = $this->user->where(['u_id'=>$u_id])[0]->name;
 
 		//	Insert project
 		$project_data = [
@@ -57,18 +58,26 @@ class Test_project_member extends CI_Controller
 		if(!$this->project_member->where(['p_id'=>$p_id,'u_id'=>$u_id]))
 			$this->project_member->insert($member_data);
 
-		//$this->TEST_FIND($p_id);
+		$this->TEST_FIND($p_id);
+		$this->TEST_GETPRIORITY($member_data);
 		$this->TEST_ISMEMBER($member_data);
-		$this->TEST_DATAINPROJECT($member_data,$user_data);
+		$this->TEST_MEMBERDATAINPROJECT($member_data,$user_data);
+		$this->TETS_ALLMEMBERNAME($p_id,$name);
 
-		$this->TEST_DESTROY($member_data);
+		//$this->TEST_DESTROY($member_data);
 		echo $this->unit->report();
 		
 	}
 
-	function TEST_FIND($data){
-		$test = $this->project_member->find($data);
-		$this->unit->run($test,true,"TEST_FIND");
+	function TEST_FIND($p_id){
+		$test = $this->project_member->find($p_id);
+		$this->unit->run($test->p_id,$p_id,"TEST_FIND");
+	}
+
+	function TEST_GETPRIORITY($member_data)
+	{
+		$test = $this->project_member->getPriority($member_data['u_id'],$member_data['p_id']);
+		$this->unit->run($test->priority,$member_data['priority'],"TEST_GETPRIORITY");
 	}
 
 	function TEST_ISMEMBER($data){
@@ -76,22 +85,26 @@ class Test_project_member extends CI_Controller
 		$this->unit->run($test,true,"TEST_ISMEMBER");
 	}
 
-	function TEST_DATAINPROJECT($data,$udata){
+	function TEST_MEMBERDATAINPROJECT($data,$udata){
 		$alldata = [
 			'userID' => $data['u_id'],
 			'userName' => $udata['name'],
 			'projectPriority' => $data['priority'],
 			'projectID' => $data['p_id']
 		];
-		$test = $this->project_member->dataInProject($data['u_id'],$data['p_id']);
-		$this->unit->run($test->userName,$alldata['userName'],"TEST_DATAINPROJECT");
+		$test = $this->project_member->memberDataInProject($data['u_id'],$data['p_id']);
+		$this->unit->run($test->userName,$alldata['userName'],"TEST_MEMBERDATAINPROJECT");
+	}	
+
+	function TETS_ALLMEMBERNAME($p_id,$name){
+		$test = $this->project_member->allMemberName($p_id)[0]->userName;
+		$this->unit->run($test,$name,'ALLMEMBERNAME');
 	}
 
 	function TEST_DESTROY($data){
-		$this->user->destory('u_id = '. $data['u_id']);
-		$this->project->destory('p_id = ' . $data['p_id']);
 		$this->project_member->destory('p_id = ' . $data['p_id'] . ' AND u_id = ' . $data['u_id']);
-
+		$this->project->destory('p_id = ' . $data['p_id']);
+		$this->user->destory('u_id = '. $data['u_id']);
 	}
 
 }
