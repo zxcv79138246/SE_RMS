@@ -1,0 +1,30 @@
+<form class="form-horizontal" role="form" action="{{ site_url(['/reviewrequirement/update', requirement.r_id]) }}" method="POST">
+	<div class = 'form-group row'>
+	<label class="col-md-2 control-label" >Requirement</label>
+	<div class = 'col-md-5'>
+		<p name = "testcaseName" class="form-control">{{ requirement.name }}</p>
+	</div>
+	</div>
+	<div class = 'form-group row'>
+		<label class = 'col-md-2' control-label>Description</label>
+		<div class = 'col-md-8'>
+			<textarea class="form-control" readonly="true">{{ requirement.description }}</textarea>
+		</div>
+	</div>
+	<div class = 'form-group'>
+		<label class = 'col-md-2' control-label>Decision</label>
+		<div class = 'col-md-5'>
+			<select class = 'form-control' name = 'decision'>
+				<option value = '2'>同意</option>
+				<option value = '1'>否決</option>
+			</select>
+		</div>
+	</div>
+	<div class = 'form-group'>
+		<label class = 'col-md-2' control-label>Comment</label>
+		<div class = 'col-md-8'>
+			<input type = 'text' class = 'form-control' name = 'comment'>
+		</div>
+	</div>
+	<button type="submit" class="btn btn-primary col-md-offset-10">Review</button>
+</form>
