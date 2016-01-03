@@ -30,9 +30,20 @@
 							<td class = 'seqNumber'>{{ key + 1 }}</td>
 							<td>{{ requirement.name }}</td>
 							<td>{{ requirement.state }}</td>
-							<td><a href="{{ site_url(['/reviewrequirement/review_start', requirement.r_id]) }}" class="btn btn-info btn-xs">審核開始</a></td>
-							<td><a data-url="{{ site_url(['/reviewrequirement/power', requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">授權</a></td>
-							<td><a data-url="{{ site_url(['/reviewrequirement/end', requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">審核結束</a></td>
+							<td>
+								{% if requirement.state != '審核中' %}
+								<a href="{{ site_url(['/reviewrequirement/review_start', requirement.r_id]) }}" class="btn btn-info btn-xs">審核開始</a>
+								{% endif %}
+							</td>
+							<td>
+								{% if requirement.state != '待審核' %}
+								<a data-url="{{ site_url(['/reviewrequirement/power', requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">授權</a></td>
+								{% endif %}
+							<td>
+								{% if requirement.state != '待審核' %}
+								<a data-url="{{ site_url(['/reviewrequirement/end', requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">審核結束</a>
+								{% endif %}
+							</td>
 						</tr>
 					{% endfor %}
 				</tbody>
