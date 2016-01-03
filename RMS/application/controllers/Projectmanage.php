@@ -51,7 +51,7 @@ class Projectmanage extends CI_Controller
 	public function edit($p_id)
 	{
 		$project = $this->project->where(['p_id' =>$p_id])[0];
-		$users = $this->user->where(['priority' => '0','priority' => '1']);
+		$users = $this->user->editUser();
 		$memberUser=[];
 		$notMemberUser=[];
 		foreach($users as $user)

@@ -27,4 +27,16 @@ class User_model extends MY_Model {
         $query = $this->db->query("SELECT * FROM $this->table WHERE $target LIKE '%$condition%'");
         return $query->result();
     }
+
+    public function editUser()
+    {
+        $this->db->from($this->table);
+        $this->db->or_where('priority','0');
+        $this->db->or_where('priority','1');
+        $query=$this->db->get();
+        if ($query)
+            return $query->result();
+        else 
+            return [];
+    }
 }
