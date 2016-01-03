@@ -1,0 +1,58 @@
+{% extends 'layout/layout.html.twig' %}
+{% block content %}
+<div class = "row form-group">
+	<!--	new requirement btn-->
+	<div class="col-md-offset-11">
+		<a href="{{ site_url('/reviewrequirement') }}" class="btn btn-info">審核需求</a>
+	</div>
+</div>
+
+<div class="row form-group">
+	<!--	Reviewer List	-->
+	<div class="panel panel-default">
+		<div class="panel-heading">Review List</div>
+		<div class="panel-body">
+			<!-- Table -->
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Requirement</th>
+						<th>State</th>
+						<th>審核開始</th>
+						<th>授權</th>
+						<th>審核結束</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for key, requirement in requirement_list %}
+						<tr class = 'reqRow'>
+							<td class = 'seqNumber'>{{ key + 1 }}</td>
+							<td>{{ requirement.name }}</td>
+							<td>{{ requirement.state }}</td>
+							<td><a href="{{ site_url(['/reviewrequirement/review_start', requirement.r_id]) }}" class="btn btn-info btn-xs">審核開始</a></td>
+							<td><a data-url="{{ site_url(['/reviewrequirement/power', requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">授權</a></td>
+							<td><a data-url="{{ site_url(['/reviewrequirement/end', requirement.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">審核結束</a></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!--	浮框	-->
+	<div class="modal fade edit-modal" tabindex="-1" role="dialog">
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+	         	<div class="modal-header">
+	           		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      			<h3>審核資料</h3>
+	      		</div>
+	      		<div class="modal-body" id="modal-body">
+	        		<p></p>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+</div>
+<script src = '{{base_url('assets/js/ReviewRequirement.js')}}'></script>
+{% endblock %}
