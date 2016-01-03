@@ -51,7 +51,6 @@ $(function (){
 			},
 			success:function(response)
 			{	
-				console.log(response);
 				for(var i = 0; i<  $(".testcaseRow").length ;i++)
 				{
 					var currentRow = $(".testcaseRow")[i];
@@ -66,9 +65,7 @@ $(function (){
 							$(rowValue).show();
 					})
 				})
-			}
-
-			
+			}			
 		})		
 	});
 });
