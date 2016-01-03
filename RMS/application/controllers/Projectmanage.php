@@ -122,6 +122,21 @@ class Projectmanage extends CI_Controller
 			echo json_encode($user);
 	}
 
+	public function changePriority($u_id , $p_id , $priority)
+	{
+		if ($priority!=2)
+		{
+			$nextpriority = $priority+1;
+		}else
+		{ 
+			$nextpriority = 0;
+		}
+		$condition = ['u_id'=>$u_id,'p_id'=>$p_id];
+		$user = $this->projectMember->update(['priority'=>$nextpriority],$condition);
+		if ($user)
+			echo json_encode($nextpriority);
+	}
+
 	public function update($p_id)
 	{
 		if ($this->verification())
@@ -174,4 +189,5 @@ class Projectmanage extends CI_Controller
 		$this->session->set_userdata($data); 
 		redirect('/requirementmanage');
 	}
-}
+
+	}

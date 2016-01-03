@@ -19,21 +19,25 @@
 					<div class="col-md-9 member-list">
 						{% for user in memberUser %}
 							<span id="u_id-{{user.uID}}">
-								{% if (user.projectPriority == 2) %}
+								{% if (user.uID == project.leader) %}
 									<a class="btn  btn-primary btn-xs">
-										<span class="member" data-uId= "{{user.uID}}" data-uName = "{{user.userName}}">{{user.uID}}, {{user.userName}}</span>
+										<span class="owner" data-uId= "{{user.uID}}" data-uName = "{{user.userName}}" data-priority="{{user.projectPriority}}">{{user.uID}}, {{user.userName}}</span>
+									</a>
+								{% elseif (user.projectPriority == 2) %}
+									<a class="btn  btn-success btn-xs" id="a-uid-{{user.uID}}">
+										<span class="member" data-priority="{{user.projectPriority}}" data-uId= "{{user.uID}}" data-uName = "{{user.userName}}" id="btnu_id-{{user.uID}}">{{user.uID}}, {{user.userName}}</span>
 										{% if (user.uID != project.leader) %}
 										<a class="btn btn-danger btn-xs removeMember" data-uId="{{user.uID}}">x</a>
 										{% endif %}
 									</a>
 								{% elseif (user.projectPriority == 1) %}
-									<a class="btn  btn-info btn-xs">
-									<span class="member" data-uId= "{{user.uID}}" data-uName = "{{user.userName}}">{{user.uID}}, {{user.userName}}</span>
+									<a class="btn  btn-info btn-xs" id="a-uid-{{user.uID}}">
+									<span class="member" data-priority="{{user.projectPriority}}" data-uId= "{{user.uID}}" data-uName = "{{user.userName}}" id="btnu_id-{{user.uID}}">{{user.uID}}, {{user.userName}}</span>
 									<a class="btn btn-danger btn-xs removeMember" data-uId="{{user.uID}}">x</a>
 									</a>
 								{% else %}
-									<a class="btn  btn-default btn-xs">
-									<span class="member" data-uId= "{{user.uID}}" data-uName = "{{user.userName}}">{{user.uID}}, {{user.userName}}</span>
+									<a class="btn  btn-default btn-xs" data-priority="{{user.projectPriority}}" id="a-uid-{{user.uID}}">
+									<span class="member" data-priority="{{user.projectPriority}}" data-uId= "{{user.uID}}" data-uName = "{{user.userName}}" id="btnu_id-{{user.uID}}">{{user.uID}}, {{user.userName}}</span>
 									<a class="btn btn-danger btn-xs removeMember" data-uId="{{user.uID}}">x</a>
 									</a>
 								{% endif %}
