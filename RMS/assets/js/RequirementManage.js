@@ -44,24 +44,28 @@ $(function (){
 		$('.change_opt').remove();
 		if($('#searchTarget').val() == 'functional')
 		{
+			$('#searchCondition_2').removeAttr('readonly', 'true');
 			var option1 = $('<option class = "change_opt" value="1" selected = "selected">').text('Functional');
 			var option2 = $('<option class = "change_opt" value="0">').text('Non-functional');
 			$('#searchCondition_2').append(option1).append(option2);
+			$('#searchCondition_1').attr('readonly', 'true');
 		}
 		else if($('#searchTarget').val() == 'state')
 		{
+			$('#searchCondition_2').removeAttr('readonly', 'true');
 			var option1 = $('<option class = "change_opt" value="待審核" selected = "selected">').text('待審核');
 			var option2 = $('<option class = "change_opt" value="已審核">').text('已審核');
 			$('#searchCondition_2').append(option1).append(option2);
+			$('#searchCondition_1').attr('readonly', 'true');
 		}
 		else
 		{
-			var option = $('<option class = "change_opt" value="defult">').text('');
-			$('#searchCondition_2').append(option);
+			$('#searchCondition_1').removeAttr('readonly', 'true');
+			$('#searchCondition_2').attr('readonly', 'true');
 		}
 	});
 
-	$(".btn-search").click(function(event) {
+	$(".btn-search").click(function(event){
 		$.ajax({
 			url:'/RMS/index.php/requirementmanage/search',
 			dataType:'JSON',
@@ -74,16 +78,15 @@ $(function (){
 			},
 			success:function(response)
 			{	
-				console.log(response);
-				for(var i = 0; i<  $(".reqRow").length ;i++)
+				for(var i = 0; i < $(".reqRow").length; i++)
 				{
 					var currentRow = $(".reqRow")[i];
 					$(currentRow).hide();
-				}		
+				}
 				$.each(response,function(index,value){
 					$.each($(".reqRow"),function(rowIndex,rowValue)
 					{
-						if($(rowValue).attr('reqId')==value['r_id']&& $('#searchTarget').val()=='name')
+						if($(rowValue).attr('reqId')==value['r_id'] && $('#searchTarget').val()=='name')
 							$(rowValue).show();
 						if($(rowValue).attr('functional')==value['functional'] && $('#searchTarget').val()=='functional')
 							$(rowValue).show();
