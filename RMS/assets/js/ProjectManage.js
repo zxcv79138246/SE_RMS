@@ -25,7 +25,7 @@ $(function(){
             				
                             if (response.projectPriority == 2)
                             {
-                                var $name =  $('<a>').addClass('btn btn-primary btn-xs')
+                                var $name =  $('<a>').addClass('btn btn-success btn-xs')
                                                      .attr('data-priority', response.projectPriority)
                                                      .attr('id', 'btnu_id-'+response.userID);
                             }else if (response.projectPriority == 1)
