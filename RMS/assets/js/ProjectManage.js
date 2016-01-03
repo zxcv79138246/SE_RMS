@@ -22,9 +22,18 @@ $(function(){
             			{
                             var $span = $('<span>')
                                             .attr('id','u_id-'+response.userID);
-            				var $name = $('<a>')
-            								.addClass('btn btn-default btn-xs')
-                            var $data = $('<span>')
+            				
+                            if (response.projectPriority == 2)
+                            {
+                                var $name =  $('<a>').addClass('btn btn-primary btn-xs');
+                            }else if (response.projectPriority == 1)
+                            {
+                                var $name =  $('<a>').addClass('btn btn-info btn-xs');  
+                            }else
+                            {
+                                var $name = $('<a>').addClass('btn btn-default btn-xs');
+                            }
+            	           var $data = $('<span>')
                                             .addClass('member')
                                             .attr('data-uId', response.userID)
                                             .html(response.userID + ', ' + response.userName);
@@ -52,7 +61,7 @@ $(function(){
                                                         .attr('value',response.u_id)
                                                         .html(response.u_id+ ', ' + response.name);
                                     $option.appendTo($('#newMember'));
-                                    $('#u_id-' + response.u_id).remove();
+                                    $('#u_id-'+response.u_id).remove();
                                 })
                             });
             			}

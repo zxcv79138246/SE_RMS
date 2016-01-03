@@ -51,16 +51,10 @@ class Projectmanage extends CI_Controller
 	public function edit($p_id)
 	{
 		$project = $this->project->where(['p_id' =>$p_id])[0];
-		$users = $this->user->editUser();
-		$memberUser=[];
-		$notMemberUser=[];
-		foreach($users as $user)
-		{
-			if($this->projectMember->isMember($user->u_id,$p_id))
-				$memberUser[count($memberUser)]=$user;
-			else
-				$notMemberUser[count($notMemberUser)]=$user;
-		}
+		$users = $this->user->inProject($p_id);
+		$memberUser = $this->user->inProject($p_id);
+		$notMemberUser= $this->user->outsideProject($p_id);;
+		
 		$this->twig->display('rms/projectmanage/edit.html',compact('project','notMemberUser','memberUser'));
 	}
 
@@ -101,7 +95,6 @@ class Projectmanage extends CI_Controller
 	public function getProjectData($p_id)
 	{
 		$members = $this->projectMember->allMemberName($p_id);
-		//var_dump($p_id);
 		if ($members)
 			echo json_encode($members);
 	}

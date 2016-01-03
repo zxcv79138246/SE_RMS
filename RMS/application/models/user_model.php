@@ -39,4 +39,29 @@ class User_model extends MY_Model {
         else 
             return [];
     }
+
+    public function inProject($p_id)
+    {
+        $this->db->select('user.u_id AS uID, user.name AS userName, project_member.priority AS projectPriority');
+        $this->db->from($this->table);
+        $this->db->join('project_member','project_member.u_id = user.u_id');
+        $this->db->where('p_id',$p_id);
+        $this->db->where('user.priority != ', 2);
+        $query=$this->db->get();
+
+        return $query->result();
+    }
+
+    public function outsideProject($p_id)
+    {
+        $query = $this->db->query("SELECT `user`.`u_id` AS uID, `user`.`name` AS userName
+                                    FROM $this->table
+                                    WHERE `user`.`priority` != 2 AND  `user`.`u_id` NOT IN (
+                                                                                            SELECT `u_id`
+                                                                                            FROM project_member
+                                                                                            WHERE p_id = $p_id
+                                                                                            )                                       
+                                    ");
+        return $query->result();        
+    }
 }
