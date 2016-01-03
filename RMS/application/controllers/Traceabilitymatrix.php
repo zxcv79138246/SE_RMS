@@ -38,6 +38,7 @@ class Traceabilitymatrix extends CI_Controller
 		$title = 'Requirement and Requirement';
 		$row_headers = $this->requirement->where(['p_id'=>$this->currentProject]);
 		$col_headers = $this->requirement->where(['p_id'=>$this->currentProject]); 
+		$controllerName=['one'=>'requirementmanage/info','two'=>'requirementmanage/info'];
 		foreach ($col_headers as $col) {
 			$relations=[];
 			$col->id=$col->r_id;
@@ -54,7 +55,7 @@ class Traceabilitymatrix extends CI_Controller
 			$col->relations=$relations;
 			# code...
 		}
-		$this->twig->display('rms/traceabilitymatrix/traceabilitymatrix.html',compact('title','row_headers','col_headers'));		
+		$this->twig->display('rms/traceabilitymatrix/traceabilitymatrix.html',compact('title','row_headers','col_headers','controllerName'));		
 	}
 
 	public function R_T_relation()
@@ -62,6 +63,7 @@ class Traceabilitymatrix extends CI_Controller
 		$title = 'Requirement and Testcase';
 		$row_headers = $this->testcase->where(['p_id'=>$this->currentProject]);
 		$col_headers = $this->requirement->where(['p_id'=>$this->currentProject]);
+		$controllerName=['one'=>'testcasemanage/show','two'=>'requirementmanage/info'];
 		foreach ($col_headers as $col) {
 			$relations=[];
 			$col->id=$col->r_id;
@@ -76,7 +78,7 @@ class Traceabilitymatrix extends CI_Controller
 			$col->relations=$relations;
 			# code...
 		}
-		$this->twig->display('rms/traceabilitymatrix/traceabilitymatrix.html',compact('title','row_headers','col_headers'));
+		$this->twig->display('rms/traceabilitymatrix/traceabilitymatrix.html',compact('title','row_headers','col_headers','controllerName'));
 	}
 
 	public function notReviewedRequirement()
