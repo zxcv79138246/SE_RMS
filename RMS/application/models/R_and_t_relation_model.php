@@ -85,5 +85,12 @@ class R_and_T_Relation_model extends MY_Model{
         return ($query->num_rows()==1);
     }
 
-
+    public function isInTable($condition)
+    {
+        $this->db->from($this->table);
+        foreach($condition as $key=>$value)
+            $this->db->where($key, $value);
+        $query= $this->db->get();
+        return ($query->num_rows()>0);
+    }
 }

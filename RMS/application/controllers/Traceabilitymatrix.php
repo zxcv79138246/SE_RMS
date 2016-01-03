@@ -78,4 +78,30 @@ class Traceabilitymatrix extends CI_Controller
 		}
 		$this->twig->display('rms/traceabilitymatrix/traceabilitymatrix.html',compact('title','row_headers','col_headers'));
 	}
+
+	public function notReviewedRequirement()
+	{
+		$title = '未完成審核的需求列表';
+		$allRequirements = $this->requirement->where(['p_id'=>$this->currentProject]);
+		$requirements =[];
+		foreach($allRequirements as $requirement)
+		{
+			if($requirement->state=='審核中' || $requirement->state=='待審核')
+				$requirements[count($requirements)] = $requirement;
+		}
+		$this->twig->display('rms/traceabilitymatrix/notreviewedRequirement.html',compact('title','requirements'));
+	}
+
+	public function singletestcase()
+	{
+		$title = '無對應需求的Testcase';
+		$allTestcases = $this->testcase->where(['p_id'=>$this->currentProject]);
+		$testcases=[];
+		foreach($allTestcases as $testcase)
+		{
+			if(!$this->RTModel->isInTable(['t_id'=>$testcase->t_id]))
+				$testcases[count($testcases)] = $testcase;
+		}
+		$this->twig->display('rms/traceabilitymatrix/singletestcase.html',compact('title','testcases'));		
+	}
 }
