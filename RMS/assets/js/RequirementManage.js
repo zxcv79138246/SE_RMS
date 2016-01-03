@@ -54,8 +54,10 @@ $(function (){
 		{
 			$('#searchCondition_2').removeAttr('readonly', 'true');
 			var option1 = $('<option class = "change_opt" value="待審核" selected = "selected">').text('待審核');
-			var option2 = $('<option class = "change_opt" value="已審核">').text('已審核');
-			$('#searchCondition_2').append(option1).append(option2);
+			var option2 = $('<option class = "change_opt" value="審核中">').text('審核中');
+			var option3 = $('<option class = "change_opt" value="審核通過">').text('審核通過');
+			var option4 = $('<option class = "change_opt" value="審核失敗">').text('審核失敗');
+			$('#searchCondition_2').append(option1).append(option2).append(option3).append(option4);
 			$('#searchCondition_1').attr('readonly', 'true');
 		}
 		else

@@ -162,6 +162,7 @@
 
 		public function power($r_id)
 		{
+			$project = $this->current_project;
 			$requirement = $this->requirement->find($r_id);
 			$user_list = $this->project_member->where(['p_id' => $this->current_project]);
 			$is_reviewer = [];
@@ -183,7 +184,31 @@
 					$k++;
 				}
 			}
-			$this->twig->display('rms/reviewrequirement/review_power.html', compact('requirement', 'is_reviewer', 'not_reviewer'));
+			$this->twig->display('rms/reviewrequirement/review_power.html', compact('requirement', 'project', 'is_reviewer', 'not_reviewer'));
+		}
+
+		public function add_reviewer()
+		{
+			$u_id = $this->input->post('u_id');
+			if(!is_null($u_id))
+			{
+				$r_id = $this->input->post('r_id');
+				$p_id = $this->input->post('p_id');
+				$data = ['u_id' => $u_id, 'r_id' => $r_id, 'p_id' => $p_id];
+				$result = $this->reviewer->insert($data);
+				if($result)
+					$user = $this->user->where(['u_id' => $u_id])[0];
+				echo json_encode($user);
+			}
+		}
+
+		public function remove_reviewer($u_id , $r_id)
+		{	
+			$data = ['u_id'=>$u_id,'r_id'=>$r_id];
+			$resault = $this->reviewer->destory($data);
+			$user = $this->user->find($u_id);
+			if ($resault)
+				echo json_encode($user);
 		}
 
 		public function update($r_id)
