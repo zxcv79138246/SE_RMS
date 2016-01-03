@@ -18,7 +18,7 @@
 				<li id='req_sub'><a href="{{ site_url('/requirementmanage') }}">需求管理</a></li>
 				<li id='review_sub'><a href="{{ site_url('/reviewrequirement') }}">需求審核</a></li>
 				<li id='test_sub'><a href="{{ site_url('/testcasemanage') }}">TestCase</a></li>
-				<li style = "" id='relation_sub'><a href="{{ site_url('/relation') }}">關聯管理</a></li>
+				<li style ="{{ (session.userdata.priorityInProject != 2 ) ? "display:none" : " " }}" id='relation_sub'><a href="{{ site_url('/relation') }}">關聯管理</a></li>
 				<li id='trace_sub'><a href="{{ site_url('/traceabilitymatrix') }}">追朔矩陣</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">

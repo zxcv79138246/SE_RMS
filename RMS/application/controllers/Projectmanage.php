@@ -177,8 +177,6 @@ class Projectmanage extends CI_Controller
 		$u_id = $this->session->userdata('u_id');
 		
 		$priorityInProject = $this->projectMember->getPriority($u_id,$p_id);
-		//var_dump($priorityInProject->priority);
-		//exit;
 		$data = ['p_id'=>$p_id,'priorityInProject'=>$priorityInProject->priority];
 		$this->session->set_userdata($data); 
 		redirect('/requirementmanage');
