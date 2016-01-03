@@ -76,5 +76,14 @@ class R_and_T_Relation_model extends MY_Model{
     	return $query;
     }
 
+    public function isExistRelation($r_id,$t_id)
+    {
+        $this->db->from($this->table);
+        $this->db->where('r_id', $r_id);
+        $this->db->where('t_id', $t_id);
+        $query = $this->db->get();
+        return ($query->num_rows()==1);
+    }
+
 
 }

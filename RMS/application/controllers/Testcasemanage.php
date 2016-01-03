@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Testcasemanage extends CI_Controller
 {
 	private $currentProject =0;
+	private $currentUser =0;
 	function __construct()
 	{
 		parent::__construct();
@@ -11,17 +12,23 @@ class Testcasemanage extends CI_Controller
 		$this->load->model('Requirement_model','requirement');
 		$this->load->model('User_model','user');
 		$this->currentProject = $this->session->userdata('p_id');
-	}
-
-	public function selectProject($p_id)
-	{
-		$this->currentProject=$p_id;
-		$testcases = $this->testcase->where(['p_id'=>$this->currentProject]);
-		$this->twig->display("rms/testcasemanage/testcasemanage.html",compact("testcases"));
+		$this->currentUser = $this->session->userdata('u_id');	
 	}
 
 	public function index()
 	{
+		if(is_null($this->currentUser))
+		{
+			$this->session->set_flashdata('message', '尚未登入');
+			$this->session->set_flashdata('type', 'danger');
+			redirect('/index');
+		}
+		if(is_null($this->currentProject))
+		{
+			$this->session->set_flashdata('message', '尚未選擇專案');
+			$this->session->set_flashdata('type', 'danger');
+			redirect('/index');
+		}		
 		$testcases = $this->testcase->where(['p_id'=>$this->currentProject]);
 		for($i=0 ;$i<count($testcases);$i++){
 			$ownerName = $this->user->where(['u_id'=>$testcases[$i]->owner])[0]->name;
