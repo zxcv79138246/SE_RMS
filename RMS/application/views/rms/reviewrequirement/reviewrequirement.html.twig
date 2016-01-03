@@ -11,12 +11,11 @@
 					<th>#</th>
 					<th>Requirement</th>
 					<th>Your decision</th>
-					<th>Decision(許可)</th>
+					<th>Decision(同意)</th>
 					<th>Decision(否決)</th>
 					<th>Decision(未決定)</th>
 					<th>查看</th>
 					<th>Review</th>
-					<th>Edit</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,8 +28,7 @@
 						<td>{{ review.disagree }}</td>
 						<td>{{ review.unknow }}</td>
 						<td><a data-url="{{ site_url(['/reviewrequirement/info', review.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
-						<td><a class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Review</a></td>
-						<td><a class="btn btn-danger btn-xs edit-btn">Edit</a></td>
+						<td><a data-url="{{ site_url(['/reviewrequirement/review', review.r_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Review</a></td>
 					</tr>
 				{% endfor %}
 			</tbody>

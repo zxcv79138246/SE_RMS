@@ -42,7 +42,7 @@
 					$reviewerlist[$i]->unknow = $this->reviewer->getNumDicisionByRID($requirement->r_id, 0);
 				}
 			}
-			$decision_display = ['未決定', '否決', '許可'];
+			$decision_display = ['未決定', '否決', '同意'];
 			$this->twig->display('rms/reviewrequirement/reviewrequirement.html', compact('reviewerlist', 'decision_display'));
 		}
 
@@ -59,8 +59,44 @@
 					$reviewerlist[$i]->userName = $user->name;
 				}
 			}
-			$decision_display = ['未決定', '否決', '許可'];
+			$decision_display = ['未決定', '否決', '同意'];
 			$this->twig->display('rms/reviewrequirement/info.html', compact('reviewerlist', 'requirement', 'decision_display'));
+		}
+
+		public function review($r_id)
+		{
+			$requirement = $this->requirement->find($r_id);
+			$decision_display = ['未決定', '否決', '同意'];
+			$this->twig->display('rms/reviewrequirement/review.html', compact('requirement', 'decision_display'));
+		}
+
+		public function update($r_id)
+		{
+			$requirement = $this->requirement->find($r_id);
+			if($this->verification())
+			{
+				$review_data = [
+					'decision' => $this->input->post('decision'),
+					'comment' => $this->input->post('comment')
+				];
+				$this->reviewer->update($review_data, ['u_id' => $this->current_user, 'r_id' => $r_id]);
+				$this->session->set_flashdata('message', "Requirement名稱 {$requirement->name} 審核成功");
+				$this->session->set_flashdata('type', 'success');
+			}
+			redirect('/reviewrequirement');
+		}
+
+		public function verification()
+		{
+			$this->form_validation->set_rules('decision','Decision','required');
+			$this->form_validation->set_rules('comment','Comment','required');
+			if (!$this->form_validation->run())
+			{
+				$this->session->set_flashdata('message', "有欄位為空值");
+				$this->session->set_flashdata('type', 'danger');
+			}
+			else
+				return true;
 		}
 	}
 ?>
