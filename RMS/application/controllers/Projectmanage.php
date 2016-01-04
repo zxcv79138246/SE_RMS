@@ -12,6 +12,7 @@ class Projectmanage extends CI_Controller
 		$this->load->model('project_model', 'project');
 		$this->load->model('project_member_model','projectMember');
 		$this->load->model('user_model','user');
+		$this->load->model('reviewer_model', 'reviewer');
 		if ($this->session->userdata('priority') == null)
 		{
 			$this->session->set_flashdata('message', '尚未登入');
@@ -116,6 +117,7 @@ class Projectmanage extends CI_Controller
 	public function removeMember($u_id , $p_id)
 	{	
 		$data = ['u_id'=>$u_id,'p_id'=>$p_id];
+		$this->reviewer->destory($data);
 		$resault = $this->projectMember->destory($data);
 		$user = $this->user->find($u_id);
 		if ($resault)
@@ -131,6 +133,8 @@ class Projectmanage extends CI_Controller
 		{ 
 			$nextpriority = 0;
 		}
+		if($nextpriority!=1)
+			$this->reviewer->destory(['u_id'=>$u_id,'p_id'=>$p_id]);
 		$condition = ['u_id'=>$u_id,'p_id'=>$p_id];
 		$user = $this->projectMember->update(['priority'=>$nextpriority],$condition);
 		if ($user)
