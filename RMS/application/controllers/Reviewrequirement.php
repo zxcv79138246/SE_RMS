@@ -33,20 +33,37 @@
 				redirect('/index');
 			}
 			$templist = [];
-			$reviewerlist = $this->reviewer->getReviewByUIDPID($this->current_user, $this->current_project);
-			if($reviewerlist != false)
+			if($this->priority == 2)
 			{
-				for($i=0; $i < count($reviewerlist); $i++)
+				$requirementlist = $this->requirement->where(['p_id' => $this->current_project]);
+				for($i = 0; $i < count($requirementlist); $i++)
 				{
-					//	Get requirement name
-					$requirement = $this->requirement->where(['r_id' => $reviewerlist[$i]->r_id]);
-					if($requirement[0]->state == '待審核' || $requirement[0]->state == '審核中')
+					if($requirementlist[$i]->state == '審核中')
 					{
-						$requirement[0]->agree = $this->reviewer->getNumDicisionByRID($requirement[0]->r_id, 2);
-						$requirement[0]->disagree = $this->reviewer->getNumDicisionByRID($requirement[0]->r_id, 1);
-						$requirement[0]->unknow = $this->reviewer->getNumDicisionByRID($requirement[0]->r_id, 0);
-						$requirement[0]->decision = $reviewerlist[$i]->decision;
-						$templist = array_merge($templist, $requirement);
+						$requirementlist[$i]->agree = $this->reviewer->getNumDicisionByRID($requirementlist[$i]->r_id, 2);
+						$requirementlist[$i]->disagree = $this->reviewer->getNumDicisionByRID($requirementlist[$i]->r_id, 1);
+						$requirementlist[$i]->unknow = $this->reviewer->getNumDicisionByRID($requirementlist[$i]->r_id, 0);
+						$templist = array_merge($templist, array($requirementlist[$i]));
+					}
+				}
+			}
+			else
+			{
+				$reviewerlist = $this->reviewer->getReviewByUIDPID($this->current_user, $this->current_project);
+				if($reviewerlist != false)
+				{
+					for($i=0; $i < count($reviewerlist); $i++)
+					{
+						//	Get requirement name
+						$requirement = $this->requirement->where(['r_id' => $reviewerlist[$i]->r_id]);
+						if($requirement[0]->state == '審核中')
+						{
+							$requirement[0]->agree = $this->reviewer->getNumDicisionByRID($requirement[0]->r_id, 2);
+							$requirement[0]->disagree = $this->reviewer->getNumDicisionByRID($requirement[0]->r_id, 1);
+							$requirement[0]->unknow = $this->reviewer->getNumDicisionByRID($requirement[0]->r_id, 0);
+							$requirement[0]->decision = $reviewerlist[$i]->decision;
+							$templist = array_merge($templist, $requirement);
+						}
 					}
 				}
 			}
@@ -170,18 +187,21 @@
 			for ($i = 0, $j = 0, $k = 0; $i < count($user_list); $i++)
 			{
 				$array = array($user_list[$i]);
-				$name = $this->user->where(['u_id' => $user_list[$i]->u_id])[0]->name;
-				if(count($this->reviewer->where(['u_id' => $user_list[$i]->u_id, 'r_id' => $r_id])) != 0)
+				$user = $this->user->where(['u_id' => $user_list[$i]->u_id])[0];
+				if($user_list[$i]->priority != 2 && $user->priority != 2)
 				{
-					$is_reviewer = array_merge($is_reviewer, $array);
-					$is_reviewer[$j]->name = $name;
-					$j++;
-				}
-				else
-				{
-					$not_reviewer = array_merge($not_reviewer, $array);
-					$not_reviewer[$k]->name = $name;
-					$k++;
+					if(count($this->reviewer->where(['u_id' => $user_list[$i]->u_id, 'r_id' => $r_id])) != 0)
+					{
+						$is_reviewer = array_merge($is_reviewer, $array);
+						$is_reviewer[$j]->name = $user->name;
+						$j++;
+					}
+					else
+					{
+						$not_reviewer = array_merge($not_reviewer, $array);
+						$not_reviewer[$k]->name = $user->name;
+						$k++;
+					}
 				}
 			}
 			$this->twig->display('rms/reviewrequirement/review_power.html', compact('requirement', 'project', 'is_reviewer', 'not_reviewer'));

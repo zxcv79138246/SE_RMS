@@ -4,7 +4,7 @@
 	<!--	new requirement btn-->
 	<div class="col-md-offset-11">
 		{% if priority == 2 %}
-		<a href="{{ site_url('/reviewrequirement/powerpage') }}" class="btn btn-info">授予審核權</a>
+		<a href="{{ site_url('/reviewrequirement/powerpage') }}" class="btn btn-info">審核管理</a>
 		{% endif %}
 	</div>
 </div>
@@ -20,12 +20,16 @@
 					<tr>
 						<th>#</th>
 						<th>Requirement</th>
+						{% if priority != 2%}
 						<th>Your decision</th>
+						{% endif %}
 						<th>Decision(同意)</th>
 						<th>Decision(否決)</th>
 						<th>Decision(未決定)</th>
 						<th>查看</th>
+						{% if priority != 2%}
 						<th>Review</th>
+						{% endif %}
 					</tr>
 				</thead>
 				<tbody>
@@ -33,12 +37,16 @@
 						<tr class = 'reqRow'>
 							<td class = 'seqNumber'>{{ key + 1 }}</td>
 							<td>{{ review.name }}</td>
+							{% if priority != 2%}
 							<td>{{ decision_display[review.decision] }}</td>
+							{% endif %}
 							<td>{{ review.agree }}</td>
 							<td>{{ review.disagree }}</td>
 							<td>{{ review.unknow }}</td>
 							<td><a data-url="{{ site_url(['/reviewrequirement/info', review.r_id]) }}" class="btn btn-info btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">查看</a></td>
+							{% if priority != 2%}
 							<td><a data-url="{{ site_url(['/reviewrequirement/review', review.r_id]) }}" class="btn btn-primary btn-xs edit-btn"  data-toggle="modal" data-target=".edit-modal">Review</a></td>
+							{% endif %}
 						</tr>
 					{% endfor %}
 				</tbody>
