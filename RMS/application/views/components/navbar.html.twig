@@ -25,7 +25,7 @@
 
 				<li style ="{{ (session.userdata.priorityInProject == 0 or session.userdata.priorityInProject == NULL ) ? "display:none" : " " }}" id='relation_sub'><a href="{{ site_url('/relation') }}">關聯管理</a></li>
 
-				<li style ="{{ (session.userdata.priorityInProject == null) ? "display:none" : " " }}" id='trace_sub'><a href="{{ site_url('/traceabilitymatrix') }}">追朔矩陣</a></li>
+				<li style ="{{ (session.userdata.priorityInProject == null) ? "display:none" : " " }}" id='trace_sub'><a href="{{ site_url('/traceabilitymatrix') }}">報表</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				{% if session.userdata.name %}
