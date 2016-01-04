@@ -188,7 +188,7 @@
 			{
 				$array = array($user_list[$i]);
 				$user = $this->user->where(['u_id' => $user_list[$i]->u_id])[0];
-				if($user_list[$i]->priority != 2 && $user->priority != 2)
+				if($user_list[$i]->priority == 1 && $user->priority != 2)
 				{
 					if(count($this->reviewer->where(['u_id' => $user_list[$i]->u_id, 'r_id' => $r_id])) != 0)
 					{
