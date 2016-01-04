@@ -92,7 +92,7 @@ class Relation extends CI_Controller
 		$requirement_ids = $this->input->post('requirement_to[]');
 		$test_ids = $this->input->post('test_to[]');
 		$data = [];
-		if ($requirement_ids == null || $requirement_ids == null)
+		if ($requirement_ids == null || $test_ids == null)
 		{
 			$this->session->set_flashdata('message','新增或需求欄位為空值');
 			$this->session->set_flashdata('type','danger');

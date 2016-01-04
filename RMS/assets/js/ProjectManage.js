@@ -174,13 +174,10 @@ $(function(){
         })
         .success(function(response) {
             var membersName='';
-            console.log(response);
             //console.log(response[0].userName);
             for (var i in response){
                 membersName = membersName + response[i].userName + ', ';
-                console.log(response[i].userName);
             }
-            console.log('#pro-'+p_id);
             $('#pro-'+p_id).attr('data-content',"建立日期："+ projectDate+ "<br /> 成員： <br />" + membersName);
         }) 
     });
