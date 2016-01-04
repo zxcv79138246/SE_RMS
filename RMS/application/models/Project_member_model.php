@@ -2,6 +2,7 @@
 class Project_member_model extends MY_Model
 {
 	public $table = 'project_member';
+    protected $primaryKey = 'p_id';
 	function __construct()
 	{
 		parent::__construct();
@@ -9,9 +10,9 @@ class Project_member_model extends MY_Model
 
 	public function find($p_id)
 	{
-		$query = $this->db->get_where($this->table,[$primaryKey[0] => $p_id]);
+		$query = $this->db->get_where($this->table,[$this->primaryKey => $p_id]);
 		if($query->result())
-			return $query->result[0];
+			return $query->result()[0];
 		else
 			return false;
 	}
