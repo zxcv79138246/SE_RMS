@@ -10,6 +10,7 @@ class Requirementmanage extends CI_Controller
 		parent::__construct();
 		$this->load->model('user_model', 'user');
 		$this->load->model('Requirement_model', 'requirement');
+		$this->load->model('reviewer_model', 'reviewer');
 		$this->load->model('Testcase_model', 'testcase');
 		$this->load->model('R_and_r_relation_model', 'r_r_relation');
 		$this->load->model('R_and_t_relation_model', 'r_t_relation');
@@ -220,14 +221,15 @@ class Requirementmanage extends CI_Controller
 			}
 			if($this->requirement->duplicateCheck(['name' => $reqData['name'],'p_id' => $this->current_project], $change))
 			{
-					$this->session->set_flashdata('message', "名字重複");
-					$this->session->set_flashdata('type', 'danger');
+				$this->session->set_flashdata('message', "名字重複");
+				$this->session->set_flashdata('type', 'danger');
 			}
 			else 
 			{
-					$this->requirement->update($reqData, ['r_id' => $r_id]);
-					$this->session->set_flashdata('message', "Requirement名稱 {$reqData['name']} 修改成功");
-					$this->session->set_flashdata('type', 'success');
+				$this->requirement->update($reqData, ['r_id' => $r_id]);
+				$this->reviewer->destory(['r_id' => $r_id]);
+				$this->session->set_flashdata('message', "Requirement名稱 {$reqData['name']} 修改成功");
+				$this->session->set_flashdata('type', 'success');
 			}
 		}
 		redirect('/requirementmanage');
