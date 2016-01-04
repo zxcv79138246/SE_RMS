@@ -166,6 +166,7 @@ $(function(){
     //置入提示視窗資料
     $('.project').click(function(event) {
         var p_id = $(this).attr('data-proID');
+        var projectDate = $(this).attr('data-prodate');
         $.ajax({
             url: '/RMS/index.php/projectmanage/getProjectData/' + p_id,
             dataType: 'JSON',
@@ -180,7 +181,7 @@ $(function(){
                 console.log(response[i].userName);
             }
             console.log('#pro-'+p_id);
-            $('#pro-'+p_id).attr('data-content',"建立日期：project.date <br /> 成員： <br />" + membersName);
+            $('#pro-'+p_id).attr('data-content',"建立日期："+ projectDate+ "<br /> 成員： <br />" + membersName);
         }) 
     });
 

@@ -10,7 +10,7 @@
 		<div class = "row">
 		{% for key,project in projects %}
 			<div class="col-md-3 relative">
-				<div class="projectBlock caption project" data-container="body" data-toggle="popover" data-placement="bottom" data-content="" data-proID="{{project.p_id}}" id = "pro-{{project.p_id}}">
+				<div class="projectBlock caption project" data-prodate="{{project.date}}" data-container="body" data-toggle="popover" data-placement="bottom" data-content="" data-proID="{{project.p_id}}" id = "pro-{{project.p_id}}">
 					<h4 class="text-center projectName">{{ project.name }}</h4>
 					<label>管理者: {{project.leaderName}}</label>
 					<br />
