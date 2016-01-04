@@ -9,6 +9,28 @@
 	background-color: rgba(128,172,216,0.8);
 }
 
+.projectBlockUser
+{
+	background-color: rgba(125,206,82,0.5);
+	height: 240px;
+	margin-top: 20px;
+}
+.projectBlockUser:hover
+{
+	background-color: rgba(125,206,82,0.8);
+}
+
+.projectBlockDev
+{
+	background-color: rgba(232,116,97,0.5);
+	height: 240px;
+	margin-top: 20px;
+}
+.projectBlockDev:hover
+{
+	background-color: rgba(232,116,97,0.8);
+}
+
 .relative {
 	position: relative;
 }

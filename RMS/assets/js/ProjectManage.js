@@ -1,4 +1,9 @@
 $(function(){
+    $('.priority-0').removeClass('projectBlock');
+    $('.priority-0').addClass('projectBlockUser');
+    $('.priority-1').removeClass('projectBlock');
+    $('.priority-1').addClass('projectBlockDev');
+
 	$('.edit-btn').click(function(event) {
 		$.ajax({
             url: $(this).attr('data-url'),

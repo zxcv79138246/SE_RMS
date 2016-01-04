@@ -21,7 +21,7 @@ class Project_model extends MY_Model {
 
     public function participate($u_id)
     {
-        $query = $this->db->query("SELECT P.*, U.`name` AS leaderName 
+        $query = $this->db->query("SELECT P.*, U.`name` AS leaderName , P_M.`priority` AS projectPriority
                                     FROM `project` AS P
                                     LEFT JOIN `user` AS U ON P.`leader` = U.`u_id`
                                     LEFT JOIN `project_member` AS P_M ON P_M.`p_id` = P.`p_id`
