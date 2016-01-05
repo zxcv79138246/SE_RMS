@@ -17,7 +17,6 @@ $(function (){
 					}
 				})
 				$('.Validate').click(function(event){
-					console.log($('#testcaseName').attr('data-tid'));
 					$.ajax({
 						url: '/RMS/index.php/relation/validateRTRelation/',
 						type:'POST',
@@ -28,12 +27,31 @@ $(function (){
 							r_id: $(this).attr('data-rid'),
 						},
 						success: function(response){
-							
 						}
 					})					
 					$(this).removeClass('Validate');
 					$(this).removeClass('needValidate');
-					$(this).attr('needValidate',0);						
+					$(this).attr('needValidate',0);
+					$.ajax({
+						url: '/RMS/index.php/testcasemanage/needValidate/',
+						type:'POST',
+						dataType:'JSON',
+						data:
+						{
+							t_id: $('#testcaseName').attr('data-tid'),
+						},
+						success: function(response)
+						{
+							console.log(response);
+							if(response.needValidate==false)
+								$.each($(".testcaseRow"),function(index,row){
+									if($(row).attr('testcaseID')== $('#testcaseName').attr('data-tid')){
+										$(row).attr('needValidate',0);
+										$(row).removeClass('needValidate');
+									}
+								})
+						}
+					})					
 				})
 			}
 		})

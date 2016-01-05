@@ -168,4 +168,16 @@ class Testcasemanage extends CI_Controller
 		else
 			return true;
 	}
+
+	public function needValidate()
+	{
+		$t_id = $this->input->post('t_id'); 
+		$query = $this->RTrelation->needValidate(['t_id = '. $t_id]);
+		$response=
+		[
+			'needValidate' => $query,
+			't_id' => $t_id,
+		];
+		echo json_encode($response);
+	}
 } 
