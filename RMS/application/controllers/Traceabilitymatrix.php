@@ -29,7 +29,7 @@ class Traceabilitymatrix extends CI_Controller
 			$this->session->set_flashdata('type', 'danger');
 			redirect('/index');
 		}
-		$title ='Traceablity Matrix';
+		$title ='Report System';
 		$this->twig->display('rms/traceabilitymatrix/traceabilitymatrix.html',compact('title'));		
 	}
 

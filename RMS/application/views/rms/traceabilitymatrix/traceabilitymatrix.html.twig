@@ -11,23 +11,25 @@
 				<a href="{{ site_url('traceabilitymatrix/R_R_relation')}}" class="btn btn-info">需求＆需求追溯矩陣</a>
 		</div>
 	</div>
-	<div class="row col-md-12 table-responsive">
-		<table class="table traceablity-matrix">
-			<tr class="row">
-				<th class = "traceablity-cell"></th><!-- [0][0]空白欄位 -->
-				{% for row_header in row_headers  %}
-					<th class = "traceablity-cell traceablity-header" data-url="{{ site_url([controllerName.one,row_header.id]) }}" data-toggle="modal" data-target=".edit-modal">{{row_header.name}}</th>
-				{% endfor %}
-			{% for col_header in col_headers %}
-				<tr class ="row">
-					<th class = "traceablity-cell traceablity-header" data-url="{{site_url([controllerName.two,col_header.id]) }}" data-toggle="modal" data-target=".edit-modal">{{col_header.name}}</th>
-					{% for relaion in col_header.relations %}
-						<th  class ="traceablity-cell" >{{relaion}}</th>
+	{% if title != "Report System"  %}
+		<div class="row col-md-12 table-responsive">
+			<table class="table traceablity-matrix">
+				<tr class="row">
+					<th class = "traceablity-cell">  </th><!-- [0][0]空白欄位 -->
+					{% for row_header in row_headers  %}
+						<th class = "traceablity-cell traceablity-header" data-url="{{ site_url([controllerName.one,row_header.id]) }}" data-toggle="modal" data-target=".edit-modal">{{row_header.name}}</th>
 					{% endfor %}
-				</tr>
-			{% endfor %}
-		</table>
-	</div>
+				{% for col_header in col_headers %}
+					<tr class ="row">
+						<th class = "traceablity-cell traceablity-header" data-url="{{site_url([controllerName.two,col_header.id]) }}" data-toggle="modal" data-target=".edit-modal">{{col_header.name}}</th>
+						{% for relaion in col_header.relations %}
+							<th  class ="traceablity-cell" >{{relaion}}</th>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	{% endif %}
 
 	<!--	浮框	-->
 	<div class="modal fade edit-modal" tabindex="-1" role="dialog">
