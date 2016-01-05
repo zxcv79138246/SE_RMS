@@ -33,7 +33,7 @@ class Testcase_model extends MY_Model {
                                     FROM 
                                     (SELECT * FROM $this->table WHERE  `p_id` = $p_id) as A
                                      WHERE A.{$target} LIKE '%$likeCondition%'   
-                                    ");
+                                    )");
         return $query->result();
     }
 
