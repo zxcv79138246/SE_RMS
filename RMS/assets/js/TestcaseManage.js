@@ -1,10 +1,40 @@
 $(function (){
+	$.each($(".testcaseRow"),function(index,row){
+		if($(row).attr('needValidate')==1)
+			$(row).addClass('needValidate');
+	})
+
 	$(".edit-btn").click(function(event) {
 		$.ajax({
 			url: $(this).attr('data-url'),
 			type: 'get',
 			success:function (response){
 				$('#modal-body').html(response);
+				$.each($(".relation"),function(index,element){
+					if($(element).attr('needValidate') == 1){
+						$(element).addClass('needValidate');
+						$(element).addClass('Validate');
+					}
+				})
+				$('.Validate').click(function(event){
+					console.log($('#testcaseName').attr('data-tid'));
+					$.ajax({
+						url: '/RMS/index.php/relation/validateRTRelation/',
+						type:'POST',
+						dataType:'JSON',
+						data:
+						{
+							t_id: $('#testcaseName').attr('data-tid'),
+							r_id: $(this).attr('data-rid'),
+						},
+						success: function(response){
+							
+						}
+					})					
+					$(this).removeClass('Validate');
+					$(this).removeClass('needValidate');
+					$(this).attr('needValidate',0);						
+				})
 			}
 		})
 	});

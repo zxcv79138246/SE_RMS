@@ -36,6 +36,7 @@ class Testcasemanage extends CI_Controller
 		for($i=0 ;$i<count($testcases);$i++){
 			$ownerName = $this->user->where(['u_id'=>$testcases[$i]->owner])[0]->name;
 			$testcases[$i]->ownerName = $ownerName;
+			$testcases[$i]->needValidate = $this->RTrelation->needValidate(['t_id = '. $testcases[$i]->t_id]);
 		}		
 		$priority = $this->userPriority;
 		$this->twig->display("rms/testcasemanage/testcasemanage.html",compact("testcases","priority"));
@@ -102,6 +103,8 @@ class Testcasemanage extends CI_Controller
 			$relationNames =[];
 			$requirement = $this->requirement->where(['r_id'=>$relation->r_id])[0];
 			$relationNames['name'] = $requirement->name;
+			$relationNames['needValidate'] = $this->RTrelation->needValidate(['r_id = ' . $requirement->r_id , 't_id = ' .$t_id]);
+			$relationNames['r_id'] = $requirement->r_id;
 			$relationList[count($relationList)] = $relationNames;
 		}
 		$this->twig->display("rms/testcasemanage/show.html",compact('testcase','relationList'));	

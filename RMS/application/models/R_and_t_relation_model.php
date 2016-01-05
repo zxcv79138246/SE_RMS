@@ -93,4 +93,23 @@ class R_and_T_Relation_model extends MY_Model{
         $query= $this->db->get();
         return ($query->num_rows()>0);
     }
+
+    public function revalidate($r_id)
+    {
+        $sql = 'update ';
+        $sql .= $this->table;
+        $sql .= " SET is_validate = 0";
+        $sql .= " WHERE r_id = " . $r_id;
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function needValidate($condition)
+    {
+        $sql = 'select * ';
+        $sql .= "FROM ".$this->table;
+        $sql .= " WHERE (". implode(' and ', $condition ) .") and is_validate = 0";
+        $query = $this->db->query($sql);
+        return ($query->num_rows()>0);
+    }
 }

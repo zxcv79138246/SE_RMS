@@ -227,6 +227,7 @@ class Requirementmanage extends CI_Controller
 			else 
 			{
 				$this->requirement->update($reqData, ['r_id' => $r_id]);
+				$this->r_t_relation->revalidate($r_id);
 				$this->reviewer->destory(['r_id' => $r_id]);
 				$this->session->set_flashdata('message', "Requirement名稱 {$reqData['name']} 修改成功");
 				$this->session->set_flashdata('type', 'success');

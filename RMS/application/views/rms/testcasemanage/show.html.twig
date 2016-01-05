@@ -1,7 +1,7 @@
-<div class = "form-group row">
+<div class = "form-group row" >
 	<label class="col-md-2 control-label" >測試名稱</label>	
 	<div class = "col-md-5">
-		<p name = "testcaseName" class="form-control" >{{testcase.name}}</p>
+		<p name = "testcaseName" id ="testcaseName" class="form-control" data-tid = "{{testcase.t_id}}">{{testcase.name}}</p>
 	</div>
 </div>
 <div class = "form-group row">
@@ -31,6 +31,6 @@
 <div class = "form-group row">
 	<label class="col-md-2 control-label" >關聯需求</label>	
 	{% for relation in relationList%}
-		<a class ="btn btn-xs btn-default">{{relation.name}}</a>
+		<a class ="relation btn btn-xs btn-default" needValidate="{{relation.needValidate}}" data-rid="{{relation.r_id}}" >{{relation.name}}</a>
 	{% endfor %}
 </div>	

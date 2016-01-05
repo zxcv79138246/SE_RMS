@@ -45,7 +45,7 @@
 					</thead>
 					<tbody>
 					{% for key,testcase in testcases %}
-						<tr class="testcaseRow" testcaseID="{{testcase.t_id}}" owner="{{testcase.owner}}">
+						<tr class="testcaseRow" testcaseID="{{testcase.t_id}}" owner="{{testcase.owner}}" needValidate="{{testcase.needValidate}}">
 							<td class="seqNumber">{{key+1}}</td>
 							<td>{{ testcase.name }}</td>
 							<td>{{ testcase.description }}</td>

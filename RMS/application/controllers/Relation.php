@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 class Relation extends CI_Controller
 {
-	
+	public $table = 'r_and_t_relation';
 	function __construct()
 	{
 		parent::__construct();
@@ -99,9 +99,10 @@ class Relation extends CI_Controller
 			redirect('/relation');
 		}else
 		{
+			$IS_VALIDATE=1;
 			foreach ($requirement_ids as $key => $requirement) {
 				foreach ($test_ids as $key => $test) {
-					$data[] = ['r_id'=>$requirement,'t_id'=>$test];
+					$data[] = ['r_id'=>$requirement,'t_id'=>$test,'is_validate'=>$IS_VALIDATE];
 				}
 			}
 			$request = $this->r_t->insertBatch($data);
@@ -231,5 +232,13 @@ class Relation extends CI_Controller
 		$relReqs=$this->r_t->searchRelReq($t_id);
 		$relTests="";
 		$this->twig->display('rms/relation/del_rt.html',compact('requirements','testcases','relReqs','relTests','req','test'));
+	}
+
+	public function validateRTRelation()
+	{
+		$r_id = $this->input->post('r_id');
+		$t_id = $this->input->post('t_id');
+		$query = $this->r_t->update(['is_validate' => 1],['r_id'=>$r_id, 't_id'=>$t_id]);
+		echo json_encode($t_id);
 	}
 }
