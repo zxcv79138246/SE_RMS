@@ -29,7 +29,7 @@ class Traceabilitymatrix extends CI_Controller
 			$this->session->set_flashdata('type', 'danger');
 			redirect('/index');
 		}
-		$title ='Traceablity Matrix';
+		$title ='Report System';
 		$this->twig->display('rms/traceabilitymatrix/traceabilitymatrix.html',compact('title'));		
 	}
 
@@ -105,5 +105,18 @@ class Traceabilitymatrix extends CI_Controller
 				$testcases[count($testcases)] = $testcase;
 		}
 		$this->twig->display('rms/traceabilitymatrix/singletestcase.html',compact('title','testcases'));		
+	}
+
+	public function reqWithoutTestcase()
+	{
+		$title = '無對應Testcase的需求';
+		$allRequirements = $this->requirement->where(['p_id'=>$this->currentProject]);
+		$requirements=[];
+		foreach($allRequirements as $requirement)
+		{
+			if(!$this->RTModel->isInTable(['r_id'=>$requirement->r_id]))
+				$requirements[count($requirements)] = $requirement;
+		}
+		$this->twig->display('rms/traceabilitymatrix/reqwithouttestcase.html',compact('title','requirements'));	
 	}
 }

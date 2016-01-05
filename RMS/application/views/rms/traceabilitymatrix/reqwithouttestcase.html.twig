@@ -12,20 +12,20 @@
 				<a href="{{ site_url('traceabilitymatrix/R_R_relation')}}" class="btn btn-info">需求＆需求追溯矩陣</a>
 		</div>
 	</div>
-	<div class="row col-md-12 table-responsive">
+	<div class="col-md-offset-3 col-md-6 row table-responsive">
 		<table class="table table-hover">
-			<tr>
+			<thead>
 				<th>#</th>
 				<th>名稱</th>
-				<th>狀態</th>
-			</tr>
-			{% for key,requirement in requirements %}
-			<tr>
-					<th>{{key+1}}</th>
-					<th>{{requirement.name}}</th>
-					<th>{{requirement.state}}</th>
-			</tr>		
-			{% endfor %}
+			</thead>
+			<tbody>
+				{% for key,requirement in requirements %}
+				<tr>
+						<th>{{key+1}}</th>
+						<th>{{requirement.name}}</th>
+				</tr>		
+				{% endfor %}
+			</tbody>
 		</table>
 	</div>
 	<script src = '{{base_url('assets/js/traceability.js')}}'></script>
