@@ -2,8 +2,11 @@
 
 
 sever os: Fedora 22
+
 apache: v2.4.17
+
 php: php7
+
 db: mariadb10.0.21(opensource版MySQL) 配合phpMyAdmin 4.5.2
 
 
@@ -11,6 +14,7 @@ db: mariadb10.0.21(opensource版MySQL) 配合phpMyAdmin 4.5.2
 
 
 後端php framwwork:CodeIgniter3
+
 連接到DB及baseURL設定 在application/config/中的congfig.php,database.php
 
 
